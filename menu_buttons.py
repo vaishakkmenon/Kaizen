@@ -10,7 +10,10 @@ from aqt.qt import QAction, QMenu
 # Import the necessary components from other add-on files
 from . import settings
 from . import patcher
-from .gamification.taiyaki_store import open_taiyaki_store
+try:
+    from .gamification.taiyaki_store import open_taiyaki_store
+except Exception:
+    open_taiyaki_store = None
 from . import credits_dialog
 
 # A module-level variable to hold the addon path, set once on setup.
@@ -63,19 +66,15 @@ def setup_kaizen_menu(addon_path):
     profile_action.triggered.connect(open_profile)
     onigiri_menu.addAction(profile_action)
 
-    # Create Gamification submenu
-    gamification_menu = QMenu("Gamification", mw)
-
-    restaurant_action = QAction("Restaurant Level", mw)
-    restaurant_action.triggered.connect(patcher.open_restaurant_level_dialog)
-    gamification_menu.addAction(restaurant_action)
-
-    store_action = QAction("Mr. Taiyaki Store", mw)
-    store_action.triggered.connect(open_taiyaki_store)
-    gamification_menu.addAction(store_action)
-    
-    # Add the Gamification submenu to the main menu
-    onigiri_menu.addMenu(gamification_menu)
+    # Gamification submenu disabled
+    # gamification_menu = QMenu("Gamification", mw)
+    # restaurant_action = QAction("Restaurant Level", mw)
+    # restaurant_action.triggered.connect(patcher.open_restaurant_level_dialog)
+    # gamification_menu.addAction(restaurant_action)
+    # store_action = QAction("Mr. Taiyaki Store", mw)
+    # store_action.triggered.connect(open_taiyaki_store)
+    # gamification_menu.addAction(store_action)
+    # onigiri_menu.addMenu(gamification_menu)
 
     # Create the 'Settings' action (opens settings to General tab, index 0)
     settings_action = QAction("Kaizen Settings", mw)

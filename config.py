@@ -74,7 +74,7 @@ DEFAULTS = {
         "show_reviewer_header": True,
     },
     "daily_special": {
-        "enabled": True,
+        "enabled": False,
         "current_progress": 0,
         "target": 100,  # Default target of 100 reviews for the daily special
         "last_updated": None,

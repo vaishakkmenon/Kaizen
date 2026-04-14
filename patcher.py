@@ -38,14 +38,26 @@ from typing import Optional, Dict, List, Tuple, Any, Callable, Union
 from . import config
 from . import kaizen_renderer
 from . import deck_tree_updater
-from .gamification import restaurant_level
+try:
+    from .gamification import restaurant_level
+except Exception:
+    restaurant_level = None
 from . import menu_buttons, settings, heatmap, fonts
-from .gamification.gamification import get_gamification_manager
+try:
+    from .gamification.gamification import get_gamification_manager
+except Exception:
+    get_gamification_manager = None
 from .fonts import get_all_fonts
 from . import deck_tree_updater
-from .gamification import focus_dango
+try:
+    from .gamification import focus_dango
+except Exception:
+    focus_dango = None
 from .constants import COLOR_LABELS
-from .gamification.restaurant_level_ui import RestaurantLevelWidget
+try:
+    from .gamification.restaurant_level_ui import RestaurantLevelWidget
+except Exception:
+    RestaurantLevelWidget = None
 
 # --- Menu Styling ---
 def apply_menu_styling():
@@ -433,8 +445,9 @@ class RestaurantLevelDialog(QDialog):
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         
-        self.widget = RestaurantLevelWidget(self)
-        layout.addWidget(self.widget)
+        if RestaurantLevelWidget is not None:
+            self.widget = RestaurantLevelWidget(self)
+            layout.addWidget(self.widget)
         
         self.setLayout(layout)
 
@@ -464,9 +477,11 @@ class MrTaiyakiStoreDialog(QDialog):
         self.render()
 
     def render(self):
+        if restaurant_level is None:
+            return
         conf = config.get_config()
         addon_package = mw.addonManager.addonFromModule(__name__)
-        
+
         store_data = restaurant_level.manager.get_store_data()
         store_data["image_base_path"] = f"/_addons/{addon_package}/system_files/gamification_images/restaurant_folder/"
         store_data["coin_image_path"] = f"/_addons/{addon_package}/system_files/gamification_images/Tayaki_coin.png"
@@ -485,6 +500,8 @@ class MrTaiyakiStoreDialog(QDialog):
         self.web.stdHtml(body_html, css=css_files, js=js_files, head=head_html, context=self)
 
     def _on_bridge_cmd(self, cmd: str) -> Any:
+        if restaurant_level is None:
+            return None
         if cmd.startswith("buy_item:"):
             item_id = cmd.split(":", 1)[1]
             success, msg = restaurant_level.manager.buy_item(item_id)
@@ -501,7 +518,7 @@ class MrTaiyakiStoreDialog(QDialog):
             item_id = cmd.split(":", 1)[1]
             success, msg = restaurant_level.manager.equip_item(item_id)
             return {"success": success, "message": msg}
-            
+
         return None
 
 _store_dialog = None
@@ -760,6 +777,8 @@ def _get_stats_html():
 
 
 def _get_restaurant_level_profile_html() -> str:
+    if restaurant_level is None:
+        return ""
     payload = restaurant_level.manager.get_progress_payload()
     if not payload.get("enabled") or not payload.get("showProfilePage"):
         return ""
@@ -1004,7 +1023,7 @@ def on_webview_js_message(handled, message, context):
     Unified handler for messages from all webviews.
     """
     if isinstance(context, Reviewer):
-        if focus_dango.is_focus_dango_enabled():
+        if focus_dango is not None and focus_dango.is_focus_dango_enabled():
             exit_commands = ["decks", "add", "browse", "stats", "sync"]
             if message in exit_commands:
                 if focus_dango.intercept_exit_attempt(message):
@@ -1159,7 +1178,7 @@ def on_webview_js_message(handled, message, context):
         # Focus Dango check for exit commands
         exit_commands = ["decks", "add", "browse", "stats", "sync"]
         if cmd in exit_commands:
-            if focus_dango.is_focus_dango_enabled():
+            if focus_dango is not None and focus_dango.is_focus_dango_enabled():
                 if focus_dango.intercept_exit_attempt(cmd):
                     focus_dango.show_dango_dialog()
                     return (True, None)
@@ -2440,7 +2459,7 @@ def generate_reviewer_top_bar_html_and_css():
 
     
     # Inject theme color CSS if a theme is active
-    if show_restaurant_chip:
+    if show_restaurant_chip and restaurant_level is not None:
         theme_color = restaurant_level.manager.get_current_theme_color()
         if theme_color:
             # Convert hex to RGB for shadow

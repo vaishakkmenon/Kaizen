@@ -30,7 +30,10 @@ from aqt import mw, gui_hooks
 from aqt.theme import theme_manager
 from typing import Union
 from . import config
-from .gamification import restaurant_level
+try:
+    from .gamification import restaurant_level
+except Exception:
+    restaurant_level = None
 from .config import DEFAULTS
 from .constants import COLOR_LABELS, ICON_DEFAULTS, DEFAULT_ICON_SIZES, ALL_THEME_KEYS, REVIEWER_THEME_KEYS
 from .themes import THEMES 

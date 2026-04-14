@@ -8,7 +8,10 @@ from aqt import mw
 from . import patcher
 from aqt.deckbrowser import DeckBrowser, RenderDeckNodeContext
 from . import config, heatmap, deck_tree_updater, sidebar_api
-from .gamification import restaurant_level
+try:
+    from .gamification import restaurant_level
+except Exception:
+    restaurant_level = None
 from .templates import custom_body_template
 import copy
 
@@ -348,10 +351,12 @@ def _get_kaizen_restaurant_level_html() -> str:
     """
     Generates the HTML for the Restaurant Level widget.
     """
+    if restaurant_level is None:
+        return ""
     # Invalidate cache to ensure fresh data when deck browser is rendered
     # REVERTED: Do NOT invalidate here. It causes lag on every render.
     # restaurant_level.manager.invalidate_daily_cache()
-    
+
     # Get Restaurant Level Data
     rl_payload = restaurant_level.manager.get_progress_payload()
     if not rl_payload.get("enabled"):
@@ -1100,7 +1105,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     
     profile_pic_html_expanded = _get_profile_pic_html(user_name, addon_package)
 
-    rl_payload = restaurant_level.manager.get_progress_payload()
+    rl_payload = restaurant_level.manager.get_progress_payload() if restaurant_level is not None else {}
     rl_chip = ""
     if rl_payload.get("enabled") and rl_payload.get("showProfileBar"):
         percent = rl_payload.get("progressFraction") or 0.0
@@ -1132,7 +1137,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     
     # Inject CSS for theme colors if a theme is active
     theme_css = ""
-    rl_theme_color = restaurant_level.manager.get_current_theme_color()
+    rl_theme_color = restaurant_level.manager.get_current_theme_color() if restaurant_level is not None else None
     if rl_theme_color:
         theme_css = f"""
         <style id="profile-bar-theme-colors">

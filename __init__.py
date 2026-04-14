@@ -11,18 +11,30 @@ from . import patcher
 from . import settings
 from . import config
 from . import menu_buttons
-from .gamification import mochi_messages
-from .gamification import mod_transfer_window
+try:
+    from .gamification import mochi_messages
+except Exception:
+    mochi_messages = None
+try:
+    from .gamification import mod_transfer_window
+except Exception:
+    mod_transfer_window = None
 from . import welcome_dialog
 from . import deck_tree_updater
 from . import webview_handlers
-from .gamification import focus_dango
+try:
+    from .gamification import focus_dango
+except Exception:
+    focus_dango = None
 from . import birthday_dialog
 from . import icon_chooser
 from .sidebar_api import register_sidebar_action
 
 # --- SHOP INTEGRATION IMPORT ---
-from .gamification.taiyaki_store import open_taiyaki_store
+try:
+    from .gamification.taiyaki_store import open_taiyaki_store
+except Exception:
+    open_taiyaki_store = None
 
 
 
@@ -317,11 +329,13 @@ def on_profile_did_open():
     # Apply Full Hide Mode (hide menu bar on Windows/Linux)
     apply_full_hide_mode()
 
-    # Verify coin integrity on startup (requires mw.col)
-    verify_coin_integrity()
-    
-    # Initialize the Shop Menu Item (requires mw.col)
-    setup_shop_menu()
+    conf = config.get_config()
+    if conf.get("gamificationMode", False):
+        # Verify coin integrity on startup (requires mw.col)
+        verify_coin_integrity()
+
+        # Initialize the Shop Menu Item (requires mw.col)
+        setup_shop_menu()
 
     # Show welcome popup if needed (requires mw.col)
     maybe_show_welcome_popup()
