@@ -358,9 +358,9 @@ def handle_onigiri_commands(handled, message, context):
     """
     Route custom Onigiri commands to their respective handlers.
     """
-    if message.startswith("onigiri_show_transfer_window:"):
+    if message.startswith("kaizen_show_transfer_window:"):
         try:
-            source_dids_json = message.replace("onigiri_show_transfer_window:", "")
+            source_dids_json = message.replace("kaizen_show_transfer_window:", "")
             show_transfer_window(source_dids_json)
             return True
         except Exception as e:

@@ -9,7 +9,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
     """
     Centralized handler for webview commands from the deck browser.
     """
-    if cmd == "onigiri_create_deck":
+    if cmd == "kaizen_create_deck":
         try:
              # tooltip("Debug: Opening Create Deck Dialog...")
              if not hasattr(create_deck_dialog, 'CreateDeckDialog'):
@@ -26,7 +26,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
              tooltip(f"Error showing create deck dialog: {e}")
              return (True, None)
 
-    if cmd.startswith("onigiri_collapse:"):
+    if cmd.startswith("kaizen_collapse:"):
         try:
             deck_id = cmd.split(":", 1)[1]
             if isinstance(context, DeckBrowser):
@@ -36,7 +36,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
             print(f"Onigiri: Error handling deck collapse: {e}")
         return (True, None)
 
-    if cmd.startswith("onigiri_toggle_favorite:"):
+    if cmd.startswith("kaizen_toggle_favorite:"):
         try:
             deck_id = cmd.split(":", 1)[1] # Keep as string for consistency
             
@@ -71,7 +71,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
             traceback.print_exc()
             return (True, None) # Still handle the command
         
-    if cmd.startswith("onigiri_show_transfer_window:"):
+    if cmd.startswith("kaizen_show_transfer_window:"):
         try:
             from . import mod_transfer_window
             json_payload = cmd.split(":", 1)[1]

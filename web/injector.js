@@ -89,7 +89,7 @@
             { id: 'browse', cmd: 'browse', title: 'Browser' },
             { id: 'stats', cmd: 'stats', title: 'Stats' },
             { id: 'sync', cmd: 'sync', title: 'Sync' },
-            { id: 'settings', cmd: 'openOnigiriSettings', title: 'Settings' },
+            { id: 'settings', cmd: 'openKaizenSettings', title: 'Settings' },
             { id: 'more', cmd: null, title: 'More' }
         ];
 
@@ -142,7 +142,7 @@
 
         const items = [
             { label: 'Get Shared', id: 'get_shared', cmd: 'shared' },
-            { label: 'Create Deck', id: 'create_deck', cmd: 'onigiri_create_deck' },
+            { label: 'Create Deck', id: 'create_deck', cmd: 'kaizen_create_deck' },
             { label: 'Import File', id: 'import_file', cmd: 'import' }
         ];
 
@@ -358,7 +358,7 @@
 
             // Show the transfer window with the selected deck IDs
             if (typeof pycmd === 'function') {
-                pycmd(`onigiri_show_transfer_window:${JSON.stringify(selectedDids)}`);
+                pycmd(`kaizen_show_transfer_window:${JSON.stringify(selectedDids)}`);
             } else {
                 console.error('pycmd is not available');
                 alert('Error: Communication with Anki failed. Please restart Anki.');

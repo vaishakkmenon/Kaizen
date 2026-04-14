@@ -406,7 +406,7 @@ const OnigiriEditor = {
     openTransferWindow: function() {
         if (this.SELECTED_DECKS.size === 0) return;
         const payload = Array.from(this.SELECTED_DECKS);
-        pycmd(`onigiri_show_transfer_window:${JSON.stringify(payload)}`);
+        pycmd(`kaizen_show_transfer_window:${JSON.stringify(payload)}`);
     }
 };
 

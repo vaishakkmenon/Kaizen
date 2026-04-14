@@ -46,7 +46,7 @@ BUTTON_HTML = {
         </div>
     """,
     "settings": """
-        <div class="menu-item action-settings" onclick="pycmd('openOnigiriSettings')">
+        <div class="menu-item action-settings" onclick="pycmd('openKaizenSettings')">
             <i class="icon"></i>
             <span>Settings</span>
         </div>
@@ -62,7 +62,7 @@ BUTTON_HTML = {
                     <i class="icon"></i>
                     <span>Get Shared</span>
                 </div>
-                <div class="menu-item action-create-deck" onclick="pycmd('onigiri_create_deck')">
+                <div class="menu-item action-create-deck" onclick="pycmd('kaizen_create_deck')">
                     <i class="icon"></i>
                     <span>Create Deck</span>
                 </div>
@@ -987,7 +987,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
                     
                     const deckRow = event.target.closest('tr.deck');
                     if (deckRow && deckRow.dataset.did) {
-                        pycmd(`onigiri_collapse:${deckRow.dataset.did}`);
+                        pycmd(`kaizen_collapse:${deckRow.dataset.did}`);
                     }
                     return false;
                 }

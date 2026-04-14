@@ -1066,7 +1066,7 @@ def on_webview_js_message(handled, message, context):
             if hasattr(mw.deckBrowser, 'web') and mw.deckBrowser.web:
                 mw.deckBrowser.web.eval(f"SyncStatusManager.setSyncStatus('{sync_status}');")
             return (True, None)
-        if cmd == "openOnigiriSettings":
+        if cmd == "openKaizenSettings":
             settings.open_settings(0)
             return (True, None)
         if cmd == "shared":
@@ -3544,7 +3544,7 @@ def _onigiri_render_deck_node(self, node, ctx) -> str:
     
     fav_star_html = f"""
     <span class="favorite-star-icon {fav_class}"
-          onclick="event.stopPropagation(); pycmd('onigiri_toggle_favorite:{node.deck_id}')"
+          onclick="event.stopPropagation(); pycmd('kaizen_toggle_favorite:{node.deck_id}')"
           title="Toggle favorite">
     </span>
     """
@@ -3696,7 +3696,7 @@ def _onigiri_render_deck_node(self, node, ctx) -> str:
     buf.append(f"<tr class='{klass} {deck_type_class}' id='{node.deck_id}' data-did='{node.deck_id}'>")
 
     if node.children:
-        collapse_link = f"<a class='collapse {state_class}' href=# onclick='return pycmd(\"onigiri_collapse:{node.deck_id}\")'>{prefix}</a>"
+        collapse_link = f"<a class='collapse {state_class}' href=# onclick='return pycmd(\"kaizen_collapse:{node.deck_id}\")'>{prefix}</a>"
     else:
         collapse_link = "<span class=collapse></span>"
 
