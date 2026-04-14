@@ -36,7 +36,7 @@ from datetime import datetime, timedelta
 from urllib.parse import urlparse, parse_qs, urlencode, unquote, quote_plus
 from typing import Optional, Dict, List, Tuple, Any, Callable, Union
 from . import config
-from . import onigiri_renderer
+from . import kaizen_renderer
 from . import deck_tree_updater
 from .gamification import restaurant_level
 from . import menu_buttons, settings, heatmap, fonts

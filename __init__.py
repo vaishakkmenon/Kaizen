@@ -2,7 +2,7 @@ import os
 import json
 from aqt import mw, gui_hooks
 from aqt.deckbrowser import DeckBrowser
-from . import onigiri_renderer
+from . import kaizen_renderer
 from aqt.reviewer import Reviewer
 from aqt.overview import Overview
 from aqt.toolbar import Toolbar, BottomBar
@@ -300,7 +300,7 @@ def setup_global_hooks():
     # Move UI patching to initial_setup so it happens after mw.col is initialized.
     # We rely on using 'wrap' for compatibility, so it's safe to run this later.
     patcher.apply_patches()
-    menu_buttons.setup_onigiri_menu(addon_path)
+    menu_buttons.setup_kaizen_menu(addon_path)
     
     # Install the toolbar bridge AFTER other addons have loaded their hooks
     from . import sidebar_api
@@ -365,7 +365,7 @@ def on_profile_did_open():
 patcher.patch_congrats_page()
 
 # Initialize renderer immediately
-DeckBrowser._renderPage = onigiri_renderer.render_onigiri_deck_browser
+DeckBrowser._renderPage = kaizen_renderer.render_kaizen_deck_browser
 
 # Patch _render_deck_node at top-level to ensure it's applied before first render
 # This is critical - if done later (in apply_patches via main_window_did_init),

@@ -14,7 +14,7 @@ class WelcomeDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Welcome to Onigiri")
+        self.setWindowTitle("Welcome to Kaizen")
         self.setMinimumSize(500, 450)
         self.setMaximumSize(500, 450)
         self.setModal(True)

@@ -3,7 +3,7 @@ import json
 from aqt import mw
 from aqt.deckbrowser import DeckBrowser, RenderDeckNodeContext
 from anki.decks import DeckId
-from . import onigiri_renderer
+from . import kaizen_renderer
 
 def _render_deck_tree_html_only(deck_browser: DeckBrowser) -> str:
     """
@@ -15,7 +15,7 @@ def _render_deck_tree_html_only(deck_browser: DeckBrowser) -> str:
         tree_data = deck_browser._render_data.tree
     else:
         tree_data = deck_browser.mw.col.sched.deck_due_tree()
-        deck_browser._render_data = onigiri_renderer.RenderData(tree=tree_data)
+        deck_browser._render_data = kaizen_renderer.RenderData(tree=tree_data)
     
     ctx = RenderDeckNodeContext(current_deck_id=deck_browser.mw.col.decks.get_current_id())
     # Note: _render_deck_node is patched by Onigiri in patcher.py
@@ -34,7 +34,7 @@ def on_deck_collapse(deck_browser: DeckBrowser, deck_id: str) -> None:
 
         # Refresh the tree data *after* collapse state has changed
         tree_data = deck_browser.mw.col.sched.deck_due_tree()
-        deck_browser._render_data = onigiri_renderer.RenderData(tree=tree_data)
+        deck_browser._render_data = kaizen_renderer.RenderData(tree=tree_data)
         
         # Re-render only the deck tree
         new_tree_html = _render_deck_tree_html_only(deck_browser)
@@ -140,7 +140,7 @@ def refresh_deck_tree_state(deck_browser: DeckBrowser) -> None:
     try:
         # Refresh the tree data
         tree_data = deck_browser.mw.col.sched.deck_due_tree()
-        deck_browser._render_data = onigiri_renderer.RenderData(tree=tree_data)
+        deck_browser._render_data = kaizen_renderer.RenderData(tree=tree_data)
         
         # Re-render only the deck tree
         new_tree_html = _render_deck_tree_html_only(deck_browser)

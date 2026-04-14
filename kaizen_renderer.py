@@ -477,7 +477,7 @@ def _get_onigiri_restaurant_level_html() -> str:
 
 # --- The Main Rendering Function ---
 
-def render_onigiri_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
+def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     """
     A complete replacement for Anki's DeckBrowser._renderPage.
     It builds the entire modern UI, including Onigiri and external widgets,
