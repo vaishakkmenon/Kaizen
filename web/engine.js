@@ -1,6 +1,6 @@
 // Onigiri Performance Engine
 
-window.OnigiriEngine = {
+window.KaizenEngine = {
     currentHoveredRow: null,
 
     init: function() {
@@ -260,7 +260,7 @@ window.OnigiriEngine = {
 
 // Initialize the engine once the DOM is ready.
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => OnigiriEngine.init());
+    document.addEventListener('DOMContentLoaded', () => KaizenEngine.init());
 } else {
-    OnigiriEngine.init();
+    KaizenEngine.init();
 }

@@ -4,8 +4,8 @@
     with different views for Year, Month, and Week.
 */
 
-// Ensure the OnigiriHeatmap object exists
-window.OnigiriHeatmap = window.OnigiriHeatmap || {};
+// Ensure the KaizenHeatmap object exists
+window.KaizenHeatmap = window.KaizenHeatmap || {};
 
 (function (exports) {
     "use strict";
@@ -360,4 +360,4 @@ window.OnigiriHeatmap = window.OnigiriHeatmap || {};
         draw();
     };
 
-})(window.OnigiriHeatmap);
+})(window.KaizenHeatmap);

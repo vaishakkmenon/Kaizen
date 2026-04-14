@@ -984,7 +984,7 @@ class ProfileDialog(QDialog):
         heatmap_data, heatmap_config = _get_heatmap_data_and_config_for_profile()
         self.web.eval(f"""
             if (document.getElementById('onigiri-profile-heatmap-container')) {{
-                OnigiriHeatmap.render('onigiri-profile-heatmap-container', {json.dumps(heatmap_data)}, {json.dumps(heatmap_config)});
+                KaizenHeatmap.render('onigiri-profile-heatmap-container', {json.dumps(heatmap_data)}, {json.dumps(heatmap_config)});
             }}
         """)
 

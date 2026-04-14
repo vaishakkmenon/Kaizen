@@ -378,7 +378,7 @@ def on_deck_browser_did_render(deck_browser: DeckBrowser):
     if "heatmap" in grid_layout:
         try:
             heatmap_data, heatmap_config = heatmap.get_heatmap_and_config()
-            js = f"OnigiriHeatmap.render('onigiri-heatmap-container', {json.dumps(heatmap_data)}, {json.dumps(heatmap_config)});"
+            js = f"KaizenHeatmap.render('onigiri-heatmap-container', {json.dumps(heatmap_data)}, {json.dumps(heatmap_config)});"
             deck_browser.web.eval(js)
         except Exception as e:
             pass

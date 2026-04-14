@@ -927,11 +927,11 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     self._render_data = RenderData(tree=tree_data)
     tree_html = deck_tree_updater._render_deck_tree_html_only(self)
     
-    # Add OnigiriEngine JavaScript
+    # Add KaizenEngine JavaScript
     onigiri_engine_js = """
     <script>
     // Onigiri Performance Engine
-    window.OnigiriEngine = {
+    window.KaizenEngine = {
         currentHoveredRow: null,
 
         init: function() {
@@ -939,7 +939,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
             if (!this.deckListContainer) return;
             this.bindEvents();
             this.observeMutations();
-            console.log('OnigiriEngine initialized');
+            console.log('KaizenEngine initialized');
         },
 
         saveScrollPosition: function() {
@@ -1053,9 +1053,9 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
 
     // Initialize the engine once the DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => OnigiriEngine.init());
+        document.addEventListener('DOMContentLoaded', () => KaizenEngine.init());
     } else {
-        OnigiriEngine.init();
+        KaizenEngine.init();
     }
     </script>
     """

@@ -1,5 +1,5 @@
 (function () {
-    if (window.OnigiriNotifications) {
+    if (window.KaizenNotifications) {
         return;
     }
 
@@ -27,7 +27,7 @@
                 const job = pendingQueue.shift();
                 job();
             } catch (err) {
-                console.error("OnigiriNotifications: pending job failed", err);
+                console.error("KaizenNotifications: pending job failed", err);
             }
         }
     }
@@ -164,5 +164,5 @@
         },
     };
 
-    window.OnigiriNotifications = api;
+    window.KaizenNotifications = api;
 })();

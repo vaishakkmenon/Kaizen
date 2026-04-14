@@ -823,9 +823,9 @@ class RestaurantLevelManager:
             f"const progress = {progress_json};"
             "try {"
                 # 1. Dispatch Notifications
-                "if (window.OnigiriNotifications) {"
+                "if (window.KaizenNotifications) {"
                     f"const items = {payload};"
-                    "items.forEach(item => window.OnigiriNotifications.show(item));"
+                    "items.forEach(item => window.KaizenNotifications.show(item));"
                 "}"
                 
                 # 2. Update Deck Browser Widget (Restaurant Level)

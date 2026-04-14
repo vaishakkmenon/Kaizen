@@ -67,8 +67,8 @@ class MochiMessenger:
                 webviews.append(web)
 
         script = (
-            "if (window.OnigiriNotifications) {"
-            f"window.OnigiriNotifications.show({payload});"
+            "if (window.KaizenNotifications) {"
+            f"window.KaizenNotifications.show({payload});"
             "}"
         )
 

@@ -59,7 +59,7 @@ def on_deck_collapse(deck_browser: DeckBrowser, deck_id: str) -> None:
             }});
             
             // 2. Update the tree HTML
-            OnigiriEngine.updateDeckTree({new_tree_html});
+            KaizenEngine.updateDeckTree({new_tree_html});
             
             // 3. Re-apply the stored state to the *new* checkboxes
             checkboxStateMap.forEach((isChecked, did) => {{
@@ -165,7 +165,7 @@ def refresh_deck_tree_state(deck_browser: DeckBrowser) -> None:
             }});
             
             // 2. Update the tree HTML
-            OnigiriEngine.updateDeckTree({new_tree_html});
+            KaizenEngine.updateDeckTree({new_tree_html});
             
             // 3. Re-apply the stored state to the *new* checkboxes
             checkboxStateMap.forEach((isChecked, did) => {{
