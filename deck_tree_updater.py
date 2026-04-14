@@ -91,12 +91,12 @@ def on_decks_move(data_str: str) -> None:
     It closes the transfer window and refreshes the main Deck Browser.
     """
     # Close the transfer window first, if it exists
-    if hasattr(mw, "onigiri_transfer_window") and mw.onigiri_transfer_window:
+    if hasattr(mw, "kaizen_transfer_window") and mw.kaizen_transfer_window:
         try:
-            mw.onigiri_transfer_window.close()
+            mw.kaizen_transfer_window.close()
         except Exception as e:
             print(f"Onigiri: Could not close transfer window: {e}")
-        mw.onigiri_transfer_window = None
+        mw.kaizen_transfer_window = None
 
     try:
         print(f"Onigiri: on_decks_move called with data_str: {data_str}")

@@ -15,7 +15,7 @@
         self.overview_bg_single_color_container = QWidget()
         single_color_layout = QVBoxLayout(self.overview_bg_single_color_container)
         self.overview_bg_single_color_row = self._create_color_picker_row(
-            "Background Color", conf.get("onigiri_overview_bg_light_color", "#FFFFFF"), "overview_bg_single"
+            "Background Color", conf.get("kaizen_overview_bg_light_color", "#FFFFFF"), "overview_bg_single"
         )
         single_color_layout.addLayout(self.overview_bg_single_color_row)
         
@@ -23,10 +23,10 @@
         self.overview_bg_separate_colors_container = QWidget()
         separate_colors_layout = QVBoxLayout(self.overview_bg_separate_colors_container)
         self.overview_bg_light_color_row = self._create_color_picker_row(
-            "Background (Light Mode)", conf.get("onigiri_overview_bg_light_color", "#FFFFFF"), "overview_bg_light"
+            "Background (Light Mode)", conf.get("kaizen_overview_bg_light_color", "#FFFFFF"), "overview_bg_light"
         )
         self.overview_bg_dark_color_row = self._create_color_picker_row(
-            "Background (Dark Mode)", conf.get("onigiri_overview_bg_dark_color", "#2C2C2C"), "overview_bg_dark"
+            "Background (Dark Mode)", conf.get("kaizen_overview_bg_dark_color", "#2C2C2C"), "overview_bg_dark"
         )
         separate_colors_layout.addLayout(self.overview_bg_light_color_row)
         separate_colors_layout.addLayout(self.overview_bg_dark_color_row)
@@ -43,7 +43,7 @@
         self.overview_bg_color_theme_mode_group.addButton(self.overview_bg_color_theme_mode_separate)
         
         # Load saved theme mode or default to single
-        overview_bg_color_theme_mode = mw.col.conf.get("onigiri_overview_bg_color_theme_mode", "single")
+        overview_bg_color_theme_mode = mw.col.conf.get("kaizen_overview_bg_color_theme_mode", "single")
         self.overview_bg_color_theme_mode_single.setChecked(overview_bg_color_theme_mode == "single")
         self.overview_bg_color_theme_mode_separate.setChecked(overview_bg_color_theme_mode == "separate")
         
@@ -78,7 +78,7 @@
         self.overview_bg_image_theme_mode_group.addButton(self.overview_bg_image_theme_mode_separate)
         
         # Load saved theme mode or default to single
-        overview_bg_image_theme_mode = mw.col.conf.get("onigiri_overview_bg_image_theme_mode", "single")
+        overview_bg_image_theme_mode = mw.col.conf.get("kaizen_overview_bg_image_theme_mode", "single")
         self.overview_bg_image_theme_mode_single.setChecked(overview_bg_image_theme_mode == "single")
         self.overview_bg_image_theme_mode_separate.setChecked(overview_bg_image_theme_mode == "separate")
         
@@ -97,7 +97,7 @@
         single_image_layout.setContentsMargins(0, 10, 0, 0)
         self.galleries["overview_bg_single"] = {}
         single_image_layout.addWidget(self._create_image_gallery_group(
-            "overview_bg_single", "user_files/main_bg", "onigiri_overview_bg_image", 
+            "overview_bg_single", "user_files/main_bg", "kaizen_overview_bg_image", 
             title="Background Image", is_sub_group=True
         ))
         
@@ -107,12 +107,12 @@
         sep_layout.setContentsMargins(0, 10, 0, 0)
         self.galleries["overview_bg_light"] = {}
         sep_layout.addWidget(self._create_image_gallery_group(
-            "overview_bg_light", "user_files/main_bg", "onigiri_overview_bg_image_light", 
+            "overview_bg_light", "user_files/main_bg", "kaizen_overview_bg_image_light", 
             title="Light Mode Background", is_sub_group=True
         ))
         self.galleries["overview_bg_dark"] = {}
         sep_layout.addWidget(self._create_image_gallery_group(
-            "overview_bg_dark", "user_files/main_bg", "onigiri_overview_bg_image_dark", 
+            "overview_bg_dark", "user_files/main_bg", "kaizen_overview_bg_image_dark", 
             title="Dark Mode Background", is_sub_group=True
         ))
         
@@ -139,14 +139,14 @@
         self.overview_bg_blur_spinbox.setMinimum(0)
         self.overview_bg_blur_spinbox.setMaximum(100)
         self.overview_bg_blur_spinbox.setSuffix(" %")
-        self.overview_bg_blur_spinbox.setValue(conf.get("onigiri_overview_bg_blur", 0))
+        self.overview_bg_blur_spinbox.setValue(conf.get("kaizen_overview_bg_blur", 0))
         
         self.overview_bg_opacity_label = QLabel("Opacity:")
         self.overview_bg_opacity_spinbox = QSpinBox()
         self.overview_bg_opacity_spinbox.setMinimum(0)
         self.overview_bg_opacity_spinbox.setMaximum(100)
         self.overview_bg_opacity_spinbox.setSuffix(" %")
-        self.overview_bg_opacity_spinbox.setValue(conf.get("onigiri_overview_bg_opacity", 100))
+        self.overview_bg_opacity_spinbox.setValue(conf.get("kaizen_overview_bg_opacity", 100))
         
         effects_layout.addWidget(self.overview_bg_blur_label)
         effects_layout.addWidget(self.overview_bg_blur_spinbox)

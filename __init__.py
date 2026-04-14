@@ -37,7 +37,7 @@ sys.modules[__name__].addon_path = addon_path
 
 def generate_notification_position_css(conf):
     """Generates CSS for notification positioning logic."""
-    pos = conf.get("onigiri_reviewer_notification_position", "top-right")
+    pos = conf.get("kaizen_reviewer_notification_position", "top-right")
     
     css = ".onigiri-notification-stack { "
     
@@ -75,7 +75,7 @@ def inject_menu_files(web_content, context):
     is_top_toolbar = isinstance(context, Toolbar)
     is_bottom_toolbar = isinstance(context, BottomBar)
     is_reviewer_bottom_bar = type(context).__name__ == "ReviewerBottomBar"
-    # Inject global Onigiri CSS only for deck browser and overview, NOT reviewer
+    # Inject global Kaizen CSS only for deck browser and overview, NOT reviewer
     # Reviewer has its own dedicated CSS and doesn't need text-related global styles
     if is_deck_browser or is_overview:
         web_content.head += patcher.generate_dynamic_css(conf)
@@ -370,11 +370,11 @@ DeckBrowser._renderPage = kaizen_renderer.render_kaizen_deck_browser
 # Patch _render_deck_node at top-level to ensure it's applied before first render
 # This is critical - if done later (in apply_patches via main_window_did_init),
 # the initial deck browser render would use Anki's default, missing icons/counts
-DeckBrowser._render_deck_node = patcher._onigiri_render_deck_node
+DeckBrowser._render_deck_node = patcher._kaizen_render_deck_node
 
 def on_deck_browser_did_render(deck_browser: DeckBrowser):
     conf = config.get_config()
-    grid_layout = conf.get("onigiriWidgetLayout", {}).get("grid", {})
+    grid_layout = conf.get("kaizenWidgetLayout", {}).get("grid", {})
     if "heatmap" in grid_layout:
         try:
             heatmap_data, heatmap_config = heatmap.get_heatmap_and_config()
@@ -387,7 +387,7 @@ def on_deck_browser_did_render(deck_browser: DeckBrowser):
     update_sync_status_indicator()
 
 def update_sync_status_indicator():
-    """Updates the sync status indicator in the Onigiri menu."""
+    """Updates the sync status indicator in the Kaizen menu."""
     try:
         sync_status = patcher.get_sync_status()
         # Update in deck browser
@@ -402,7 +402,7 @@ def on_state_change(new_state, old_state):
       
 def on_deck_browser_will_show(deck_browser: DeckBrowser):
     """
-    Ensures that Onigiri takes control of external hooks at the last possible moment,
+    Ensures that Kaizen takes control of external hooks at the last possible moment,
     right before the deck browser is displayed for the first time. This guarantees
     that other add-ons have had time to register their hooks.
     """

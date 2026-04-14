@@ -180,11 +180,11 @@ def _get_profile_pic_html(user_name: str, addon_package: str, css_class: str = "
         return f'<img src="{pic_url}" class="{css_class}">'
     else:
         # Use default profile picture when none is selected or file doesn't exist
-        default_pic = "onigiri-san.png"
+        default_pic = "kaizen-default.png"
         pic_url = f"/_addons/{addon_package}/system_files/profile_default/{default_pic}"
         return f'<img src="{pic_url}" class="{css_class}">'
 
-def _get_onigiri_stat_card_html(label: str, value: str, widget_id: str) -> str:
+def _get_kaizen_stat_card_html(label: str, value: str, widget_id: str) -> str:
     return f"""<div class="stat-card {widget_id}-card"><h3>{label}</h3><p>{value}</p></div>"""
 
 # Global Cache for stats to prevent re-querying on every render frame
@@ -192,7 +192,7 @@ _DASHBOARD_STATS_CACHE = {}
 _DASHBOARD_LAST_UPDATE = 0
 _DASHBOARD_CACHE_TTL = 3 # 3 seconds is enough to prevent spam during animations, but keeps it fresh
 
-def _get_onigiri_retention_html() -> str:
+def _get_kaizen_retention_html() -> str:
     # Use cached retention if available and fresh
     global _DASHBOARD_STATS_CACHE, _DASHBOARD_LAST_UPDATE
     now = __import__("time").time()
@@ -237,7 +237,7 @@ def _get_onigiri_retention_html() -> str:
     </div>
     """
 
-def _get_onigiri_heatmap_html() -> str:
+def _get_kaizen_heatmap_html() -> str:
     skeleton_cells = "".join(["<div class='skeleton-cell'></div>" for _ in range(371)])
     return f"""
     <div id='onigiri-heatmap-container'>
@@ -246,13 +246,13 @@ def _get_onigiri_heatmap_html() -> str:
     </div>"""
 
 # --- ADD THIS NEW FUNCTION ---
-def _get_onigiri_favorites_html() -> str:
+def _get_kaizen_favorites_html() -> str:
     """
     Generates the HTML for the favorites widget.
     Automatically cleans up deleted decks from the favorites list.
     """
     try:
-        favorite_dids = mw.col.conf.get("onigiri_favorite_decks", [])
+        favorite_dids = mw.col.conf.get("kaizen_favorite_decks", [])
         if not favorite_dids:
             return """
             <div class="onigiri-favorites-widget">
@@ -311,7 +311,7 @@ def _get_onigiri_favorites_html() -> str:
         
         # Clean up deleted decks from favorites if any were found
         if len(valid_dids) != len(favorite_dids):
-            mw.col.conf["onigiri_favorite_decks"] = valid_dids
+            mw.col.conf["kaizen_favorite_decks"] = valid_dids
             mw.col.setMod()
             removed_count = len(favorite_dids) - len(valid_dids)
             print(f"Onigiri: Cleaned up {removed_count} deleted/ghost deck(s) from favorites")
@@ -344,7 +344,7 @@ def _get_onigiri_favorites_html() -> str:
         return "<div class='onigiri-favorites-widget'>Error loading favorites.</div>"
 # --- END OF NEW FUNCTION ---
 
-def _get_onigiri_restaurant_level_html() -> str:
+def _get_kaizen_restaurant_level_html() -> str:
     """
     Generates the HTML for the Restaurant Level widget.
     """
@@ -489,10 +489,10 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     addon_package = mw.addonManager.addonFromModule(__name__)
     
     # --- Part 1: Build Onigiri Widgets Grid ---
-    onigiri_layout = conf.get("onigiriWidgetLayout", {}).get("grid", {})
-    col_count = conf.get("onigiriWidgetLayout", {}).get("column_count", 4) # Default to 4
+    kaizen_layout = conf.get("kaizenWidgetLayout", {}).get("grid", {})
+    col_count = conf.get("kaizenWidgetLayout", {}).get("column_count", 4) # Default to 4
 
-    onigiri_grid_html = ""
+    kaizen_grid_html = ""
     
     # Check cache for main stats
     global _DASHBOARD_STATS_CACHE, _DASHBOARD_LAST_UPDATE, _DASHBOARD_CACHE_TTL
@@ -520,17 +520,17 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     seconds_per_card = time_today_seconds / cards_today if cards_today > 0 else 0
 
     widget_generators = {
-        "studied": lambda: _get_onigiri_stat_card_html("Studied", f"{cards_today} cards", "studied"),
-        "time": lambda: _get_onigiri_stat_card_html("Time", f"{time_today_minutes:.1f} min", "time"),
-        "pace": lambda: _get_onigiri_stat_card_html("Pace", f"{seconds_per_card:.1f} s/card", "pace"),
-        "retention": _get_onigiri_retention_html,
-        "heatmap": _get_onigiri_heatmap_html,
-        "favorites": _get_onigiri_favorites_html, # <-- ADD THIS LINE
-        "restaurant_level": _get_onigiri_restaurant_level_html,
+        "studied": lambda: _get_kaizen_stat_card_html("Studied", f"{cards_today} cards", "studied"),
+        "time": lambda: _get_kaizen_stat_card_html("Time", f"{time_today_minutes:.1f} min", "time"),
+        "pace": lambda: _get_kaizen_stat_card_html("Pace", f"{seconds_per_card:.1f} s/card", "pace"),
+        "retention": _get_kaizen_retention_html,
+        "heatmap": _get_kaizen_heatmap_html,
+        "favorites": _get_kaizen_favorites_html, # <-- ADD THIS LINE
+        "restaurant_level": _get_kaizen_restaurant_level_html,
     }
     
     if col_count > 0:
-        for widget_id, widget_config in onigiri_layout.items():
+        for widget_id, widget_config in kaizen_layout.items():
             if widget_id in widget_generators:
                 pos = widget_config.get("pos", 0)
                 row_span = widget_config.get("row", 1)
@@ -538,7 +538,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
                 row = pos // col_count + 1
                 col = pos % col_count + 1
                 style = f"grid-area: {row} / {col} / span {row_span} / span {col_span};"
-                onigiri_grid_html += f'<div class="onigiri-widget-container" style="{style}">{widget_generators[widget_id]()}</div>'
+                kaizen_grid_html += f'<div class="onigiri-widget-container" style="{style}">{widget_generators[widget_id]()}</div>'
 
     # --- Part 2: Build External Add-on Widgets (into the same unified grid) ---
     external_hooks = patcher._get_external_hooks()
@@ -574,7 +574,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     title_html = f'<h1 class="onigiri-widget-title">{stats_title}</h1>' if stats_title else ""
 
     # Combine both Onigiri and External widgets into a single unified grid
-    unified_grid_html = onigiri_grid_html + external_widgets_html
+    unified_grid_html = kaizen_grid_html + external_widgets_html
 
     # [CHANGED] Updated CSS to force grid expansion and row height
     stats_block_html = f"""
@@ -1061,8 +1061,8 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     """
     
     # --- Part 5: Populate the Main Template ---
-    is_collapsed = mw.col.conf.get("onigiri_sidebar_collapsed", False)
-    is_focused = mw.col.conf.get("onigiri_deck_focus_mode", False)
+    is_collapsed = mw.col.conf.get("kaizen_sidebar_collapsed", False)
+    is_focused = mw.col.conf.get("kaizen_deck_focus_mode", False)
     
     # Check for Sidebar Only Mode (0 columns or 0 rows)
     is_sidebar_only = (col_count == 0 or conf.get('unifiedGridRows', 6) == 0)
@@ -1090,7 +1090,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
             bg_image_url = f"/_addons/{addon_package}/user_files/profile_bg/{profile_bg_image}"
         else:
             # Use default background image when none is selected or file doesn't exist
-            bg_image_url = f"/_addons/{addon_package}/system_files/profile_default/onigiri-bg.png"
+            bg_image_url = f"/_addons/{addon_package}/system_files/profile_default/kaizen-bg.png"
         bg_style_str = f"background-image: url('{bg_image_url}'); background-size: cover; background-position: center;"
         bg_class_str = "with-image-bg"
     elif profile_bg_mode == "custom":

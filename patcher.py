@@ -193,7 +193,7 @@ def _get_profile_pic_html(user_name: str, addon_package: str, css_class: str = "
         return f'<img src="{pic_url}" class="{css_class}">'
     else:
         # Use default profile picture when none is selected or file doesn't exist
-        default_pic = "onigiri-san.png"
+        default_pic = "kaizen-default.png"
         pic_url = f"/_addons/{addon_package}/system_files/profile_default/{default_pic}"
         return f'<img src="{pic_url}" class="{css_class}">'
 
@@ -516,14 +516,14 @@ def open_mr_taiyaki_store_dialog():
 def generate_profile_page_background_css():
     """Generates the CSS for the profile page's main container background."""
     # Reads the mode ("color" or "gradient") you set in the settings
-    mode = mw.col.conf.get("onigiri_profile_page_bg_mode", "color")
+    mode = mw.col.conf.get("kaizen_profile_page_bg_mode", "color")
 
     if mode == "gradient":
         # Uses the correct "gradient" color keys
-        light1 = mw.col.conf.get("onigiri_profile_page_bg_light_color1", "#FFFFFF")
-        light2 = mw.col.conf.get("onigiri_profile_page_bg_light_color2", "#E0E0E0")
-        dark1 = mw.col.conf.get("onigiri_profile_page_bg_dark_color1", "#424242")
-        dark2 = mw.col.conf.get("onigiri_profile_page_bg_dark_color2", "#212121")
+        light1 = mw.col.conf.get("kaizen_profile_page_bg_light_color1", "#FFFFFF")
+        light2 = mw.col.conf.get("kaizen_profile_page_bg_light_color2", "#E0E0E0")
+        dark1 = mw.col.conf.get("kaizen_profile_page_bg_dark_color1", "#424242")
+        dark2 = mw.col.conf.get("kaizen_profile_page_bg_dark_color2", "#212121")
         return f"""
         <style id="onigiri-profile-page-bg">
             .onigiri-profile-page {{
@@ -537,8 +537,8 @@ def generate_profile_page_background_css():
         """
     else: # Solid color
         # Uses the correct "solid color" keys
-        light_color = mw.col.conf.get("onigiri_profile_page_bg_light_color1", "#F5F5F5")
-        dark_color = mw.col.conf.get("onigiri_profile_page_bg_dark_color1", "#2c2c2c")
+        light_color = mw.col.conf.get("kaizen_profile_page_bg_light_color1", "#F5F5F5")
+        dark_color = mw.col.conf.get("kaizen_profile_page_bg_dark_color1", "#2c2c2c")
         return f"""
         <style id="onigiri-profile-page-bg">
             .onigiri-profile-page {{ background-color: {light_color} !important; }}
@@ -815,7 +815,7 @@ def _get_profile_header_html(conf, addon_package):
             bg_url = f"/_addons/{addon_package}/user_files/profile_bg/{bg_image_file}"
         else:
             # Use default background image when none is selected or file doesn't exist
-            bg_url = f"/_addons/{addon_package}/system_files/profile_default/onigiri-bg.png"
+            bg_url = f"/_addons/{addon_package}/system_files/profile_default/kaizen-bg.png"
         bg_style = f"background-image: url('{bg_url}'); background-size: cover; background-position: center;"
     elif bg_mode == "custom":
         light_color = mw.col.conf.get("modern_menu_profile_bg_color_light", "#EEEEEE")
@@ -838,9 +838,9 @@ def _generate_profile_html_body():
     stats_page_content = ""
 
     # These variable definitions were missing and have been restored.
-    show_light = mw.col.conf.get("onigiri_profile_show_theme_light", True)
-    show_dark = mw.col.conf.get("onigiri_profile_show_theme_dark", True)
-    show_bgs = mw.col.conf.get("onigiri_profile_show_backgrounds", True)
+    show_light = mw.col.conf.get("kaizen_profile_show_theme_light", True)
+    show_dark = mw.col.conf.get("kaizen_profile_show_theme_dark", True)
+    show_bgs = mw.col.conf.get("kaizen_profile_show_backgrounds", True)
 
     if show_light: theme_page_content += _get_theme_colors_html("light", conf)
     if show_dark: theme_page_content += _get_theme_colors_html("dark", conf)
@@ -1061,7 +1061,7 @@ def on_webview_js_message(handled, message, context):
                 mw.deckBrowser.web.eval("SyncStatusManager.setSyncing(true);")
             mw.onSync()
             return (True, None)
-        if cmd == "onigiri_check_sync_status":
+        if cmd == "kaizen_check_sync_status":
             sync_status = get_sync_status()
             if hasattr(mw.deckBrowser, 'web') and mw.deckBrowser.web:
                 mw.deckBrowser.web.eval(f"SyncStatusManager.setSyncStatus('{sync_status}');")
@@ -1102,7 +1102,7 @@ def on_webview_js_message(handled, message, context):
         if cmd.startswith("saveSidebarState:"):
             try:
                 is_collapsed = cmd.split(":")[1] == 'true'
-                mw.col.conf["onigiri_sidebar_collapsed"] = is_collapsed
+                mw.col.conf["kaizen_sidebar_collapsed"] = is_collapsed
                 mw.col.setMod()
             except Exception as e:
                 print(f"Onigiri: Error saving sidebar state: {e}")
@@ -1111,7 +1111,7 @@ def on_webview_js_message(handled, message, context):
         if cmd.startswith("saveDeckFocusState:"):
             try:
                 is_focused = cmd.split(":")[1] == 'true'
-                mw.col.conf["onigiri_deck_focus_mode"] = is_focused
+                mw.col.conf["kaizen_deck_focus_mode"] = is_focused
                 mw.col.setMod()
             except Exception as e:
                 print(f"Onigiri: Error saving deck focus state: {e}")
@@ -1148,7 +1148,7 @@ def on_webview_js_message(handled, message, context):
             context.web.eval("SyncStatusManager.setSyncing(true);")
             mw.onSync()
             return (True, None)
-        if cmd == "onigiri_check_sync_status":
+        if cmd == "kaizen_check_sync_status":
             sync_status = get_sync_status()
             context.web.eval(f"SyncStatusManager.setSyncStatus('{sync_status}');")
             return (True, None)
@@ -1181,7 +1181,7 @@ def on_webview_js_message(handled, message, context):
             context.web.eval("SyncStatusManager.setSyncing(true);")
             mw.onSync()
             return (True, None)
-        if cmd == "onigiri_check_sync_status":
+        if cmd == "kaizen_check_sync_status":
             sync_status = get_sync_status()
             context.web.eval(f"SyncStatusManager.setSyncStatus('{sync_status}');")
             return (True, None)
@@ -1197,7 +1197,7 @@ def patch_overview():
 	max_hide = conf.get("maxHide", False)
 	flow_mode = conf.get("flowMode", False)
     
-	overview_style = mw.col.conf.get("onigiri_overview_style", "pro")
+	overview_style = mw.col.conf.get("kaizen_overview_style", "pro")
 	style_class = "mini-overview" if overview_style == "mini" else ""
 
 	mini_css = ""
@@ -1521,7 +1521,7 @@ def patch_congrats_page():
                     bg_image_url = f"/_addons/{addon_package}/user_files/profile_bg/{profile_bg_image}"
                 else:
                     # Use default background image when none is selected or file doesn't exist
-                    bg_image_url = f"/_addons/{addon_package}/system_files/profile_default/onigiri-bg.png"
+                    bg_image_url = f"/_addons/{addon_package}/system_files/profile_default/kaizen-bg.png"
                 bg_style_str = f"background-image: url('{bg_image_url}'); background-size: cover; background-position: center;"
                 bg_class_str = "with-image-bg"
             elif profile_bg_mode == "custom":
@@ -1829,10 +1829,10 @@ def generate_deck_browser_backgrounds(addon_path):
             </style>
             """
     else: # sidebar_mode == 'main'
-        effect_mode = mw.col.conf.get("onigiri_sidebar_main_bg_effect_mode", "opaque")
+        effect_mode = mw.col.conf.get("kaizen_sidebar_main_bg_effect_mode", "opaque")
         
         if effect_mode == "glassmorphism":
-            intensity = mw.col.conf.get("onigiri_sidebar_main_bg_effect_intensity", 50)
+            intensity = mw.col.conf.get("kaizen_sidebar_main_bg_effect_intensity", 50)
             blur_px = (intensity / 100.0) * 15.0
             alpha = (intensity / 100.0) * 0.3
             
@@ -1849,11 +1849,11 @@ def generate_deck_browser_backgrounds(addon_path):
             </style>
             """
         else: # opaque color overlay
-            intensity = mw.col.conf.get("onigiri_sidebar_opaque_tint_intensity", 30)
+            intensity = mw.col.conf.get("kaizen_sidebar_opaque_tint_intensity", 30)
             alpha = intensity / 100.0
             
-            light_color_hex = mw.col.conf.get("onigiri_sidebar_opaque_tint_color_light", "#FFFFFF")
-            dark_color_hex = mw.col.conf.get("onigiri_sidebar_opaque_tint_color_dark", "#1D1D1D")
+            light_color_hex = mw.col.conf.get("kaizen_sidebar_opaque_tint_color_light", "#FFFFFF")
+            dark_color_hex = mw.col.conf.get("kaizen_sidebar_opaque_tint_color_dark", "#1D1D1D")
             
             light_rgba = _hex_to_rgba(light_color_hex, alpha)
             dark_rgba = _hex_to_rgba(dark_color_hex, alpha)
@@ -1874,7 +1874,7 @@ def generate_deck_browser_backgrounds(addon_path):
 def generate_reviewer_background_css(addon_path):
     """Generates CSS for the reviewer - exact copy of overview implementation with reviewer config keys."""
     conf = config.get_config()
-    reviewer_mode = conf.get("onigiri_reviewer_bg_mode", "main")
+    reviewer_mode = conf.get("kaizen_reviewer_bg_mode", "main")
     addon_name = os.path.basename(addon_path)
     
     # Show scrollbar with transparent background when needed
@@ -1913,8 +1913,8 @@ def generate_reviewer_background_css(addon_path):
         mode = mw.col.conf.get("modern_menu_background_mode", "color")
         light_color = mw.col.conf.get("modern_menu_bg_color_light", "#F5F5F5")
         dark_color = mw.col.conf.get("modern_menu_bg_color_dark", "#2C2C2C")
-        blur_val = conf.get("onigiri_reviewer_bg_main_blur", 0)
-        opacity_val = conf.get("onigiri_reviewer_bg_main_opacity", 100)
+        blur_val = conf.get("kaizen_reviewer_bg_main_blur", 0)
+        opacity_val = conf.get("kaizen_reviewer_bg_main_opacity", 100)
         
         if mode not in ["image", "image_color"]:
             return f"""<style id="onigiri-reviewer-background-style">
@@ -1952,8 +1952,8 @@ def generate_reviewer_background_css(addon_path):
         
     elif reviewer_mode == "color":
         # Solid color only
-        light_color = conf.get("onigiri_reviewer_bg_light_color", "#FFFFFF")
-        dark_color = conf.get("onigiri_reviewer_bg_dark_color", "#2C2C2C")
+        light_color = conf.get("kaizen_reviewer_bg_light_color", "#FFFFFF")
+        dark_color = conf.get("kaizen_reviewer_bg_dark_color", "#2C2C2C")
         return f"""<style id="onigiri-reviewer-background-style">
             body {{ background-color: {light_color} !important; }}
             .night-mode body {{ background-color: {dark_color} !important; }}
@@ -1973,17 +1973,17 @@ def generate_reviewer_background_css(addon_path):
         </style>"""
     
     else:  # image_color mode
-        light_color = conf.get("onigiri_reviewer_bg_light_color", "#FFFFFF")
-        dark_color = conf.get("onigiri_reviewer_bg_dark_color", "#2C2C2C")
-        blur_val = conf.get("onigiri_reviewer_bg_blur", 0)
-        opacity_val = conf.get("onigiri_reviewer_bg_opacity", 100)
+        light_color = conf.get("kaizen_reviewer_bg_light_color", "#FFFFFF")
+        dark_color = conf.get("kaizen_reviewer_bg_dark_color", "#2C2C2C")
+        blur_val = conf.get("kaizen_reviewer_bg_blur", 0)
+        opacity_val = conf.get("kaizen_reviewer_bg_opacity", 100)
         
-        image_mode = mw.col.conf.get("onigiri_reviewer_bg_image_theme_mode", "single")
+        image_mode = mw.col.conf.get("kaizen_reviewer_bg_image_theme_mode", "single")
         if image_mode == "separate":
-            light_img_file = conf.get("onigiri_reviewer_bg_image_light", "")
-            dark_img_file = conf.get("onigiri_reviewer_bg_image_dark", "")
+            light_img_file = conf.get("kaizen_reviewer_bg_image_light", "")
+            dark_img_file = conf.get("kaizen_reviewer_bg_image_dark", "")
         else:
-            light_img_file = conf.get("onigiri_reviewer_bg_image", "")
+            light_img_file = conf.get("kaizen_reviewer_bg_image", "")
             dark_img_file = light_img_file
 
         light_img_url = f"/_addons/{addon_name}/user_files/reviewer_bg/{light_img_file}" if light_img_file else "none"
@@ -2047,7 +2047,7 @@ def generate_reviewer_background_css(addon_path):
 def generate_overview_background_css(addon_path):
     """Generates CSS for the overview screen with instant background rendering using CSS pseudo-elements."""
     conf = config.get_config()
-    overview_mode = conf.get("onigiri_overview_bg_mode", "main")
+    overview_mode = conf.get("kaizen_overview_bg_mode", "main")
     
     # Defaults
     light_color = "#F5F5F5"
@@ -2065,8 +2065,8 @@ def generate_overview_background_css(addon_path):
         dark_color = mw.col.conf.get("modern_menu_bg_color_dark", "#2C2C2C")
         
         # Use overview-specific blur/opacity for main mode
-        blur_val = conf.get("onigiri_overview_bg_main_blur", 0)
-        opacity_val = conf.get("onigiri_overview_bg_main_opacity", 100)
+        blur_val = conf.get("kaizen_overview_bg_main_blur", 0)
+        opacity_val = conf.get("kaizen_overview_bg_main_opacity", 100)
         
         if main_mode in ["image", "image_color"]:
             is_image_mode = True
@@ -2080,25 +2080,25 @@ def generate_overview_background_css(addon_path):
                 
     elif overview_mode == "color":
         # Solid color only
-        light_color = conf.get("onigiri_overview_bg_light_color", "#FFFFFF")
-        dark_color = conf.get("onigiri_overview_bg_dark_color", "#2C2C2C")
+        light_color = conf.get("kaizen_overview_bg_light_color", "#FFFFFF")
+        dark_color = conf.get("kaizen_overview_bg_dark_color", "#2C2C2C")
         is_image_mode = False
         
     elif overview_mode == "image_color":
         # Image + Color
-        light_color = conf.get("onigiri_overview_bg_light_color", "#FFFFFF")
-        dark_color = conf.get("onigiri_overview_bg_dark_color", "#2C2C2C")
+        light_color = conf.get("kaizen_overview_bg_light_color", "#FFFFFF")
+        dark_color = conf.get("kaizen_overview_bg_dark_color", "#2C2C2C")
         
-        blur_val = conf.get("onigiri_overview_bg_blur", 0)
-        opacity_val = conf.get("onigiri_overview_bg_opacity", 100)
+        blur_val = conf.get("kaizen_overview_bg_blur", 0)
+        opacity_val = conf.get("kaizen_overview_bg_opacity", 100)
         is_image_mode = True
         
-        image_mode = conf.get("onigiri_overview_bg_image_theme_mode", "single")
+        image_mode = conf.get("kaizen_overview_bg_image_theme_mode", "single")
         if image_mode == "separate":
-            light_img_file = conf.get("onigiri_overview_bg_image_light", "")
-            dark_img_file = conf.get("onigiri_overview_bg_image_dark", "")
+            light_img_file = conf.get("kaizen_overview_bg_image_light", "")
+            dark_img_file = conf.get("kaizen_overview_bg_image_dark", "")
         else:
-            light_img_file = conf.get("onigiri_overview_bg_image", "")
+            light_img_file = conf.get("kaizen_overview_bg_image", "")
             dark_img_file = light_img_file
 
     if not is_image_mode:
@@ -2157,7 +2157,7 @@ def generate_overview_background_css(addon_path):
 
 def generate_toolbar_background_css(addon_path):
 	"""Generates background CSS for the top and bottom toolbars based on user settings."""
-	toolbar_mode = mw.col.conf.get("onigiri_toolbar_bg_mode", "main")
+	toolbar_mode = mw.col.conf.get("kaizen_toolbar_bg_mode", "main")
 
 	if toolbar_mode == "main":
 		# Use main background settings
@@ -2171,10 +2171,10 @@ def generate_toolbar_background_css(addon_path):
 	else:
 		# Use toolbar-specific settings
 		mode = toolbar_mode
-		light = mw.col.conf.get("onigiri_toolbar_bg_color_light", "#FFFFFF")
-		dark = mw.col.conf.get("onigiri_toolbar_bg_color_dark", "#2C2C2C")
-		image = mw.col.conf.get("onigiri_toolbar_bg_image", "")
-		blur = mw.col.conf.get("onigiri_toolbar_bg_blur", 0)
+		light = mw.col.conf.get("kaizen_toolbar_bg_color_light", "#FFFFFF")
+		dark = mw.col.conf.get("kaizen_toolbar_bg_color_dark", "#2C2C2C")
+		image = mw.col.conf.get("kaizen_toolbar_bg_image", "")
+		blur = mw.col.conf.get("kaizen_toolbar_bg_blur", 0)
 		opacity = 100 # Opacity not supported for toolbar custom bg yet
 		image_path = f"user_files/toolbar_bg/{image}" if image else ""
 
@@ -2541,7 +2541,7 @@ def generate_reviewer_bottom_bar_background_css(addon_path: str) -> str:
     """Generates CSS for the reviewer's bottom bar background."""
     conf = config.get_config()
     # FIX: Read from conf, not mw.col.conf
-    bar_mode = conf.get("onigiri_reviewer_bottom_bar_bg_mode", "match_reviewer_bg")
+    bar_mode = conf.get("kaizen_reviewer_bottom_bar_bg_mode", "match_reviewer_bg")
 
     bg_position = "center bottom"
 
@@ -2582,25 +2582,25 @@ def generate_reviewer_bottom_bar_background_css(addon_path: str) -> str:
     # Helper to get reviewer settings
     def get_reviewer_bg_settings():
         # Reviewer settings are in conf
-        rev_mode = conf.get("onigiri_reviewer_bg_mode", "main")
+        rev_mode = conf.get("kaizen_reviewer_bg_mode", "main")
         
         if rev_mode == "main":
             return get_main_bg_settings()
             
-        light_c = conf.get("onigiri_reviewer_bg_light_color", "#FFFFFF")
-        dark_c = conf.get("onigiri_reviewer_bg_dark_color", "#2C2C2C")
+        light_c = conf.get("kaizen_reviewer_bg_light_color", "#FFFFFF")
+        dark_c = conf.get("kaizen_reviewer_bg_dark_color", "#2C2C2C")
         
-        img_mode = conf.get("onigiri_reviewer_bg_image_mode", "single")
+        img_mode = conf.get("kaizen_reviewer_bg_image_mode", "single")
         if img_mode == "separate":
-            l_img = conf.get("onigiri_reviewer_bg_image_light", "")
-            d_img = conf.get("onigiri_reviewer_bg_image_dark", "")
+            l_img = conf.get("kaizen_reviewer_bg_image_light", "")
+            d_img = conf.get("kaizen_reviewer_bg_image_dark", "")
         else:
-            l_img = conf.get("onigiri_reviewer_bg_image", "") # Fallback or same key? Settings saves to 'image' and 'image_light'/'image_dark'
+            l_img = conf.get("kaizen_reviewer_bg_image", "") # Fallback or same key? Settings saves to 'image' and 'image_light'/'image_dark'
             # Let's check settings.py saving logic. 
             # It saves to 'onigiri_reviewer_bg_image' for single, and 'onigiri_reviewer_bg_image_light'/'dark' for separate.
             # But let's be safe and check specific keys.
             if not l_img:
-                 l_img = conf.get("onigiri_reviewer_bg_image_light", "")
+                 l_img = conf.get("kaizen_reviewer_bg_image_light", "")
             d_img = l_img
 
         # Reviewer images are in user_files/reviewer_bg/
@@ -2626,8 +2626,8 @@ def generate_reviewer_bottom_bar_background_css(addon_path: str) -> str:
         mode, light_color, dark_color, light_img, dark_img = get_main_bg_settings()
         
         # Use bottom bar specific blur and opacity settings for "Match Main"
-        blur_val = conf.get("onigiri_reviewer_bottom_bar_match_main_blur", 5)
-        opacity_val = conf.get("onigiri_reviewer_bottom_bar_match_main_opacity", 90)
+        blur_val = conf.get("kaizen_reviewer_bottom_bar_match_main_blur", 5)
+        opacity_val = conf.get("kaizen_reviewer_bottom_bar_match_main_opacity", 90)
 
         css += _generate_outer_background_css(mode, light_color, dark_color, light_img, dark_img, blur_val, opacity_val, addon_path, bg_position)
 
@@ -2636,8 +2636,8 @@ def generate_reviewer_bottom_bar_background_css(addon_path: str) -> str:
         mode, light_color, dark_color, light_img, dark_img = get_reviewer_bg_settings()
         
         # Use bottom bar specific blur and opacity settings for "Match Reviewer"
-        blur_val = conf.get("onigiri_reviewer_bottom_bar_match_reviewer_bg_blur", 5)
-        opacity_val = conf.get("onigiri_reviewer_bottom_bar_match_reviewer_bg_opacity", 90)
+        blur_val = conf.get("kaizen_reviewer_bottom_bar_match_reviewer_bg_blur", 5)
+        opacity_val = conf.get("kaizen_reviewer_bottom_bar_match_reviewer_bg_opacity", 90)
 
         css += _generate_outer_background_css(mode, light_color, dark_color, light_img, dark_img, blur_val, opacity_val, addon_path, bg_position)
 
@@ -2645,14 +2645,14 @@ def generate_reviewer_bottom_bar_background_css(addon_path: str) -> str:
         mode = bar_mode # "color" or "image_color" (mapped from radio buttons)
         
         # FIX: Read from conf, not mw.col.conf
-        light_color = conf.get("onigiri_reviewer_bottom_bar_bg_light_color", "#FFFFFF")
-        dark_color = conf.get("onigiri_reviewer_bottom_bar_bg_dark_color", "#2C2C2C")
+        light_color = conf.get("kaizen_reviewer_bottom_bar_bg_light_color", "#FFFFFF")
+        dark_color = conf.get("kaizen_reviewer_bottom_bar_bg_dark_color", "#2C2C2C")
         
-        img_filename = conf.get("onigiri_reviewer_bottom_bar_bg_image", "")
+        img_filename = conf.get("kaizen_reviewer_bottom_bar_bg_image", "")
         img = f"user_files/reviewer_bar_bg/{img_filename}" if img_filename else ""
         
-        blur_val = conf.get("onigiri_reviewer_bottom_bar_bg_blur", 0)
-        opacity_val = conf.get("onigiri_reviewer_bottom_bar_bg_opacity", 100)
+        blur_val = conf.get("kaizen_reviewer_bottom_bar_bg_blur", 0)
+        opacity_val = conf.get("kaizen_reviewer_bottom_bar_bg_opacity", 100)
 
         # Generate CSS for #outer with ::before pseudo-element for background
         css += _generate_outer_background_css(mode, light_color, dark_color, img, img, blur_val, opacity_val, addon_path, bg_position)
@@ -2834,7 +2834,7 @@ def generate_icon_css(addon_package, conf):
             css_rules.append(f"{selector} {{ mask-image: {url}; -webkit-mask-image: {url}; }}")
 
     # --- Custom Deck Icons ---
-    custom_deck_icons = mw.col.conf.get("onigiri_custom_deck_icons", {})
+    custom_deck_icons = mw.col.conf.get("kaizen_custom_deck_icons", {})
     for did, data in custom_deck_icons.items():
         icon_file = data.get("icon")
         color = data.get("color")
@@ -3043,14 +3043,14 @@ def generate_conditional_css(conf):
 
 def generate_font_css(addon_package):
     """Generates @font-face rules and CSS variables for selected fonts."""
-    main_font_key = mw.col.conf.get("onigiri_font_main", "system")
-    subtle_font_key = mw.col.conf.get("onigiri_font_subtle", "system")
-    small_title_font_key = mw.col.conf.get("onigiri_font_small_title", "system")
+    main_font_key = mw.col.conf.get("kaizen_font_main", "system")
+    subtle_font_key = mw.col.conf.get("kaizen_font_subtle", "system")
+    small_title_font_key = mw.col.conf.get("kaizen_font_small_title", "system")
     
     # --- NEW: Font Sizes ---
-    main_font_size = mw.col.conf.get("onigiri_font_size_main", 14)
-    subtle_font_size = mw.col.conf.get("onigiri_font_size_subtle", 20)
-    small_title_font_size = mw.col.conf.get("onigiri_font_size_small_title", 15)
+    main_font_size = mw.col.conf.get("kaizen_font_size_main", 14)
+    subtle_font_size = mw.col.conf.get("kaizen_font_size_subtle", 20)
+    small_title_font_size = mw.col.conf.get("kaizen_font_size_small_title", 15)
     # -----------------------
     
     # <<< MODIFIED: Use get_all_fonts to include user-added fonts >>>
@@ -3183,8 +3183,8 @@ def generate_dynamic_css(conf):
 	# ADDED to generate the font-specific CSS
 	font_css_block = generate_font_css(addon_package)
 
-	effect_mode = mw.col.conf.get("onigiri_canvas_inset_effect_mode", "none")
-	effect_intensity = mw.col.conf.get("onigiri_canvas_inset_effect_intensity", 50)
+	effect_mode = mw.col.conf.get("kaizen_canvas_inset_effect_mode", "none")
+	effect_intensity = mw.col.conf.get("kaizen_canvas_inset_effect_intensity", 50)
 
 	def _apply_canvas_inset_effect(colors: dict):
 		"""Applies opacity or glassmorphism effect to --canvas-inset color."""
@@ -3516,7 +3516,7 @@ def on_reviewer_did_answer_card(reviewer, card, ease):
 
 
 
-def _onigiri_render_deck_node(self, node, ctx) -> str:
+def _kaizen_render_deck_node(self, node, ctx) -> str:
     """
     A patched version of DeckBrowser._render_deck_node that creates the
     HTML structure Onigiri's CSS and JS expect (e.g., td.collapse-cell).
@@ -3530,14 +3530,14 @@ def _onigiri_render_deck_node(self, node, ctx) -> str:
         prefix = "-"
         state_class = "state-open"
 
-    conf = getattr(ctx, "onigiri_conf", None)
+    conf = getattr(ctx, "kaizen_conf", None)
     if conf is None:
         conf = config.get_config()
-        setattr(ctx, "onigiri_conf", conf)
+        setattr(ctx, "kaizen_conf", conf)
 
     # --- ADD THIS BLOCK ---
     # --- Onigiri Favorites ---
-    favorites = mw.col.conf.get("onigiri_favorite_decks", [])
+    favorites = mw.col.conf.get("kaizen_favorite_decks", [])
     did_str = str(node.deck_id)
     is_favorite = did_str in favorites
     fav_class = "is-favorite" if is_favorite else ""
@@ -3807,18 +3807,18 @@ def generate_reviewer_buttons_css(conf):
         return "<style>" + "\\n".join(css) + "</style>"
     
     # Global Settings
-    border_color_light = conf.get("onigiri_reviewer_btn_border_color_light", "#DBDBDB")
-    border_color_dark = conf.get("onigiri_reviewer_btn_border_color_dark", "#444444")
+    border_color_light = conf.get("kaizen_reviewer_btn_border_color_light", "#DBDBDB")
+    border_color_dark = conf.get("kaizen_reviewer_btn_border_color_dark", "#444444")
     
     # New Settings
-    custom_enabled = conf.get("onigiri_reviewer_btn_custom_enabled", True)
-    radius = conf.get("onigiri_reviewer_btn_radius", 12)
-    padding = conf.get("onigiri_reviewer_btn_padding", 5)
-    btn_height = conf.get("onigiri_reviewer_btn_height", 40)
-    bar_height = conf.get("onigiri_reviewer_bar_height", 60)
+    custom_enabled = conf.get("kaizen_reviewer_btn_custom_enabled", True)
+    radius = conf.get("kaizen_reviewer_btn_radius", 12)
+    padding = conf.get("kaizen_reviewer_btn_padding", 5)
+    btn_height = conf.get("kaizen_reviewer_btn_height", 40)
+    bar_height = conf.get("kaizen_reviewer_bar_height", 60)
     
-    interval_color_light = conf.get("onigiri_reviewer_stattxt_color_light", "#666666")
-    interval_color_dark = conf.get("onigiri_reviewer_stattxt_color_dark", "#aaaaaa")
+    interval_color_light = conf.get("kaizen_reviewer_stattxt_color_light", "#666666")
+    interval_color_dark = conf.get("kaizen_reviewer_stattxt_color_dark", "#aaaaaa")
 
     if custom_enabled:
         # Base button style (Applied to all buttons: Show Answer, Edit, More, and Answer Buttons)
@@ -3902,33 +3902,33 @@ def generate_reviewer_buttons_css(conf):
         
         /* Other Buttons (Show Answer, Edit, More, etc.) - Explicit Colors with hover effects */
         #outer button:not([onclick*="ease"]):not([data-cmd*="ease"]) {{
-            background: {conf.get("onigiri_reviewer_other_btn_bg_light", "#f0f0f0")} !important;
-            background-color: {conf.get("onigiri_reviewer_other_btn_bg_light", "#f0f0f0")} !important;
+            background: {conf.get("kaizen_reviewer_other_btn_bg_light", "#f0f0f0")} !important;
+            background-color: {conf.get("kaizen_reviewer_other_btn_bg_light", "#f0f0f0")} !important;
             background-image: none !important;
-            color: {conf.get("onigiri_reviewer_other_btn_text_light", "#2c2c2c")} !important;
+            color: {conf.get("kaizen_reviewer_other_btn_text_light", "#2c2c2c")} !important;
         }}
         
         #outer button:not([onclick*="ease"]):not([data-cmd*="ease"]):hover {{
-            background: {conf.get("onigiri_reviewer_other_btn_hover_bg_light", "#2c2c2c")} !important;
-            background-color: {conf.get("onigiri_reviewer_other_btn_hover_bg_light", "#2c2c2c")} !important;
+            background: {conf.get("kaizen_reviewer_other_btn_hover_bg_light", "#2c2c2c")} !important;
+            background-color: {conf.get("kaizen_reviewer_other_btn_hover_bg_light", "#2c2c2c")} !important;
             background-image: none !important;
-            color: {conf.get("onigiri_reviewer_other_btn_hover_text_light", "#f0f0f0")} !important;
+            color: {conf.get("kaizen_reviewer_other_btn_hover_text_light", "#f0f0f0")} !important;
             transform: translateY(-2px) !important;
             box-shadow: none !important;
         }}
         
         .nightMode #outer button:not([onclick*="ease"]):not([data-cmd*="ease"]) {{
-            background: {conf.get("onigiri_reviewer_other_btn_bg_dark", "#3a3a3a")} !important;
-            background-color: {conf.get("onigiri_reviewer_other_btn_bg_dark", "#3a3a3a")} !important;
+            background: {conf.get("kaizen_reviewer_other_btn_bg_dark", "#3a3a3a")} !important;
+            background-color: {conf.get("kaizen_reviewer_other_btn_bg_dark", "#3a3a3a")} !important;
             background-image: none !important;
-            color: {conf.get("onigiri_reviewer_other_btn_text_dark", "#e0e0e0")} !important;
+            color: {conf.get("kaizen_reviewer_other_btn_text_dark", "#e0e0e0")} !important;
         }}
         
         .nightMode #outer button:not([onclick*="ease"]):not([data-cmd*="ease"]):hover {{
-            background: {conf.get("onigiri_reviewer_other_btn_hover_bg_dark", "#e0e0e0")} !important;
-            background-color: {conf.get("onigiri_reviewer_other_btn_hover_bg_dark", "#e0e0e0")} !important;
+            background: {conf.get("kaizen_reviewer_other_btn_hover_bg_dark", "#e0e0e0")} !important;
+            background-color: {conf.get("kaizen_reviewer_other_btn_hover_bg_dark", "#e0e0e0")} !important;
             background-image: none !important;
-            color: {conf.get("onigiri_reviewer_other_btn_hover_text_dark", "#3a3a3a")} !important;
+            color: {conf.get("kaizen_reviewer_other_btn_hover_text_dark", "#3a3a3a")} !important;
             transform: translateY(-2px) !important;
             box-shadow: none !important;
         }}
@@ -3998,10 +3998,10 @@ def generate_reviewer_buttons_css(conf):
         for ease, key in buttons.items():
             def_bg_l, def_txt_l, def_bg_d, def_txt_d = defaults[key]
             
-            bg_light = conf.get(f"onigiri_reviewer_btn_{key}_bg_light", def_bg_l)
-            text_light = conf.get(f"onigiri_reviewer_btn_{key}_text_light", def_txt_l)
-            bg_dark = conf.get(f"onigiri_reviewer_btn_{key}_bg_dark", def_bg_d)
-            text_dark = conf.get(f"onigiri_reviewer_btn_{key}_text_dark", def_txt_d)
+            bg_light = conf.get(f"kaizen_reviewer_btn_{key}_bg_light", def_bg_l)
+            text_light = conf.get(f"kaizen_reviewer_btn_{key}_text_light", def_txt_l)
+            bg_dark = conf.get(f"kaizen_reviewer_btn_{key}_bg_dark", def_bg_d)
+            text_dark = conf.get(f"kaizen_reviewer_btn_{key}_text_dark", def_txt_d)
             
             css.append(f"""
             #outer button[data-onigiri-ease="{ease}"],

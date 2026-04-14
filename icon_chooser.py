@@ -21,7 +21,7 @@ class IconChooserDialog(QDialog):
         os.makedirs(self.icons_dir, exist_ok=True)
         
         # Current Config
-        self.custom_icons = mw.col.conf.get("onigiri_custom_deck_icons", {})
+        self.custom_icons = mw.col.conf.get("kaizen_custom_deck_icons", {})
         self.current_setting = self.custom_icons.get(self.deck_id, {})
         self.current_color = self.current_setting.get("color", "#888888")
         self.current_icon = self.current_setting.get("icon", "")
@@ -84,7 +84,7 @@ class IconChooserDialog(QDialog):
         elif cmd == "reset":
             if self.deck_id in self.custom_icons:
                 del self.custom_icons[self.deck_id]
-                mw.col.conf["onigiri_custom_deck_icons"] = self.custom_icons
+                mw.col.conf["kaizen_custom_deck_icons"] = self.custom_icons
                 mw.col.setMod()
             self.accept()
             
@@ -109,9 +109,9 @@ class IconChooserDialog(QDialog):
                 "icon": data["icon"],
                 "color": data["color"]
             }
-            mw.col.conf["onigiri_custom_deck_icons"] = self.custom_icons
+            mw.col.conf["kaizen_custom_deck_icons"] = self.custom_icons
             mw.col.setMod()
-            mw.col.conf["onigiri_custom_deck_icons"] = self.custom_icons
+            mw.col.conf["kaizen_custom_deck_icons"] = self.custom_icons
             mw.col.setMod()
             self.accept()
             

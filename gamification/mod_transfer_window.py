@@ -352,7 +352,7 @@ def show_transfer_window(source_dids_json: str) -> None:
     web.eval("document.body.className = anki.theme;") # Apply dark/light theme
     web.show()
     # Store a reference on mw to prevent garbage collection
-    mw.onigiri_transfer_window = web
+    mw.kaizen_transfer_window = web
 
 def handle_onigiri_commands(handled, message, context):
     """

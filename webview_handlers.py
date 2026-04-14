@@ -46,7 +46,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
                 tooltip("Cannot favorite: Deck no longer exists.")
                 return (True, None)
             
-            favorites = mw.col.conf.get("onigiri_favorite_decks", [])
+            favorites = mw.col.conf.get("kaizen_favorite_decks", [])
             
             if deck_id in favorites:
                 favorites.remove(deck_id)
@@ -57,7 +57,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
                 favorites.append(deck_id)
             
             # Save the change to Anki's configuration
-            mw.col.conf["onigiri_favorite_decks"] = favorites
+            mw.col.conf["kaizen_favorite_decks"] = favorites
             mw.col.setMod() # This line is CRITICAL
             
             # Force a full refresh of the deck browser

@@ -395,7 +395,7 @@ class ProfileBarWidget(QWidget):
             source_image = QImage(pic_path)
         else:
             # Use default profile image
-            default_pic = os.path.join(os.path.dirname(__file__), "system_files", "profile_default", "onigiri-san.png")
+            default_pic = os.path.join(os.path.dirname(__file__), "system_files", "profile_default", "kaizen-default.png")
             source_image = QImage(default_pic)
             
         if not source_image.isNull():
@@ -434,7 +434,7 @@ class ProfileBarWidget(QWidget):
                 bg_image_path = self._bg_image_path
                 if not bg_image_path or not os.path.exists(bg_image_path):
                     # Use default background image
-                    bg_image_path = os.path.join(os.path.dirname(__file__), "system_files", "profile_default", "onigiri-bg.png")
+                    bg_image_path = os.path.join(os.path.dirname(__file__), "system_files", "profile_default", "kaizen-bg.png")
                 
                 if os.path.exists(bg_image_path):
                     image = QImage(bg_image_path)
@@ -2358,7 +2358,7 @@ class SettingsDialog(QDialog):
         dark_bg = mw.col.conf.get("modern_menu_bg_color_dark")
 
         # --- ADD THIS LINE ---
-        self.reviewer_bottom_bar_mode = self.current_config.get("onigiri_reviewer_bottom_bar_bg_mode", "match_reviewer_bg")
+        self.reviewer_bottom_bar_mode = self.current_config.get("kaizen_reviewer_bottom_bar_bg_mode", "match_reviewer_bg")
         # --- END OF ADDITION ---
 
         self.color_widgets = {"light": {}, "dark": {}}
@@ -2739,7 +2739,7 @@ class SettingsDialog(QDialog):
         else: # small_title
             default_size = 15
         # Check col.conf first
-        saved_size = mw.col.conf.get(f"onigiri_font_size_{config_key}", default_size)
+        saved_size = mw.col.conf.get(f"kaizen_font_size_{config_key}", default_size)
         size_spinbox.setValue(int(saved_size))
         
         # Save reference
@@ -2870,7 +2870,7 @@ class SettingsDialog(QDialog):
         # <<< MODIFICATION: The old "Add Yours" button code has been removed from here >>>
             
         # Set the checked state
-        saved_font = mw.col.conf.get(f"onigiri_font_{config_key}", "system")
+        saved_font = mw.col.conf.get(f"kaizen_font_{config_key}", "system")
         for card in font_cards:
             if card.font_key == saved_font:
                 card.setChecked(True)
@@ -2911,8 +2911,8 @@ class SettingsDialog(QDialog):
                     
                     # If the deleted font was selected, revert to system
                     for key in ["main", "subtle"]:
-                        if mw.col.conf.get(f"onigiri_font_{key}") == font_key:
-                            mw.col.conf[f"onigiri_font_{key}"] = "system"
+                        if mw.col.conf.get(f"kaizen_font_{key}") == font_key:
+                            mw.col.conf[f"kaizen_font_{key}"] = "system"
                     
                     showInfo(f"Font '{font_key}' deleted.")
                     self._populate_font_grid("main")
@@ -2950,24 +2950,24 @@ class SettingsDialog(QDialog):
     def _save_fonts_settings(self):
         for card in self.font_cards_main:
             if card.isChecked():
-                mw.col.conf["onigiri_font_main"] = card.font_key
+                mw.col.conf["kaizen_font_main"] = card.font_key
                 break
         for card in self.font_cards_subtle:
             if card.isChecked():
-                mw.col.conf["onigiri_font_subtle"] = card.font_key
+                mw.col.conf["kaizen_font_subtle"] = card.font_key
                 break
         for card in getattr(self, "font_cards_small_title", []):
             if card.isChecked():
-                mw.col.conf["onigiri_font_small_title"] = card.font_key
+                mw.col.conf["kaizen_font_small_title"] = card.font_key
                 break
         
         # Save Font Sizes
         if hasattr(self, "font_size_main"):
-            mw.col.conf["onigiri_font_size_main"] = self.font_size_main.value()
+            mw.col.conf["kaizen_font_size_main"] = self.font_size_main.value()
         if hasattr(self, "font_size_subtle"):
-            mw.col.conf["onigiri_font_size_subtle"] = self.font_size_subtle.value()
+            mw.col.conf["kaizen_font_size_subtle"] = self.font_size_subtle.value()
         if hasattr(self, "font_size_small_title"):
-            mw.col.conf["onigiri_font_size_small_title"] = self.font_size_small_title.value()
+            mw.col.conf["kaizen_font_size_small_title"] = self.font_size_small_title.value()
     def closeEvent(self, event):
         # --- SAVE WINDOW SIZE ---
         try:
@@ -4865,7 +4865,7 @@ class SettingsDialog(QDialog):
                 "archive": ["favorites", "restaurant_level"] # <-- "favorites" and "restaurant_level" moved here
             }
 
-            saved_layout = self.settings_dialog.current_config.get("onigiriWidgetLayout", DEFAULTS)
+            saved_layout = self.settings_dialog.current_config.get("kaizenWidgetLayout", DEFAULTS)
             
             # --- START: Robust config merging ---
             saved_grid_config = saved_layout.get("grid")
@@ -5103,7 +5103,7 @@ class SettingsDialog(QDialog):
         """
         
         # Default layout configuration for Onigiri widgets
-        _ONIGIRI_DEFAULTS = {
+        _KAIZEN_DEFAULTS = {
             "grid": {
                 "studied": {"pos": 0, "row": 1, "col": 1},
                 "time": {"pos": 1, "row": 1, "col": 1},
@@ -5159,7 +5159,7 @@ class SettingsDialog(QDialog):
             self.grid_zone = SettingsDialog.UnifiedGridDropZone(self, grid_group)
             
             # Apply initial row count and column count
-            current_cols = self.settings_dialog.current_config.get("onigiriWidgetLayout", {}).get("column_count", 4)
+            current_cols = self.settings_dialog.current_config.get("kaizenWidgetLayout", {}).get("column_count", 4)
             self.col_spin.blockSignals(True)
             self.col_spin.setValue(current_cols)
             self.col_spin.blockSignals(False)
@@ -5192,16 +5192,16 @@ class SettingsDialog(QDialog):
             onigiri_archive_group.setObjectName("LayoutGroup")
             
             # Wrap in ScrollArea
-            self.onigiri_scroll = QScrollArea()
-            self.onigiri_scroll.setWidgetResizable(True)
-            self.onigiri_scroll.setFixedHeight(200)
-            self.onigiri_scroll.setStyleSheet(scroll_style)
+            self.kaizen_scroll = QScrollArea()
+            self.kaizen_scroll.setWidgetResizable(True)
+            self.kaizen_scroll.setFixedHeight(200)
+            self.kaizen_scroll.setStyleSheet(scroll_style)
             
-            self.onigiri_archive_zone = SettingsDialog.OnigiriArchiveZone(onigiri_archive_group)
-            self.onigiri_scroll.setWidget(self.onigiri_archive_zone)
+            self.kaizen_archive_zone = SettingsDialog.OnigiriArchiveZone(onigiri_archive_group)
+            self.kaizen_scroll.setWidget(self.kaizen_archive_zone)
             
             onigiri_archive_layout = QVBoxLayout(onigiri_archive_group)
-            onigiri_archive_layout.addWidget(self.onigiri_scroll)
+            onigiri_archive_layout.addWidget(self.kaizen_scroll)
             archives_layout.addWidget(onigiri_archive_group)
 
             # Archived External Widgets
@@ -5290,10 +5290,10 @@ class SettingsDialog(QDialog):
 
             # --- Onigiri Widgets ---
             # --- Onigiri Widgets ---
-            saved_onigiri_layout = self.settings_dialog.current_config.get("onigiriWidgetLayout", self._ONIGIRI_DEFAULTS)
+            saved_kaizen_layout = self.settings_dialog.current_config.get("kaizenWidgetLayout", self._KAIZEN_DEFAULTS)
 
             # Load column count (sync with spinbox which was set in __init__)
-            saved_col_count = saved_onigiri_layout.get("column_count", 4)
+            saved_col_count = saved_kaizen_layout.get("column_count", 4)
             # Spinner already set in __init__, but good to ensure sync if config reloaded
             if self.col_spin.value() != saved_col_count:
                 self.col_spin.blockSignals(True)
@@ -5304,31 +5304,31 @@ class SettingsDialog(QDialog):
                 self.grid_zone.update_grid_dimensions(self.grid_zone.row_count, effective_cols)
             
             # Get grid and archive configs
-            saved_grid_config = saved_onigiri_layout.get("grid")
+            saved_grid_config = saved_kaizen_layout.get("grid")
             if isinstance(saved_grid_config, dict):
-                onigiri_grid_config = copy.deepcopy(saved_grid_config)
+                kaizen_grid_config = copy.deepcopy(saved_grid_config)
             else:
-                onigiri_grid_config = copy.deepcopy(self._ONIGIRI_DEFAULTS["grid"])
+                kaizen_grid_config = copy.deepcopy(self._KAIZEN_DEFAULTS["grid"])
             
-            onigiri_archive_config = saved_onigiri_layout.get("archive")
-            if not isinstance(onigiri_archive_config, (list, dict)):
-                onigiri_archive_config = self._ONIGIRI_DEFAULTS["archive"]
+            kaizen_archive_config = saved_kaizen_layout.get("archive")
+            if not isinstance(kaizen_archive_config, (list, dict)):
+                kaizen_archive_config = self._KAIZEN_DEFAULTS["archive"]
 
             # Get archived IDs
-            if isinstance(onigiri_archive_config, dict):
-                onigiri_archived_ids = set(onigiri_archive_config.keys())
+            if isinstance(kaizen_archive_config, dict):
+                onigiri_archived_ids = set(kaizen_archive_config.keys())
             else:
-                onigiri_archived_ids = set(onigiri_archive_config)
+                onigiri_archived_ids = set(kaizen_archive_config)
             
             # Remove archived items from grid config
             for widget_id in onigiri_archived_ids:
-                if widget_id in onigiri_grid_config:
-                    del onigiri_grid_config[widget_id]
+                if widget_id in kaizen_grid_config:
+                    del kaizen_grid_config[widget_id]
 
             # Add missing widgets to grid
-            for widget_id, default_pos in self._ONIGIRI_DEFAULTS["grid"].items():
-                if widget_id not in onigiri_grid_config and widget_id not in onigiri_archived_ids:
-                    onigiri_grid_config[widget_id] = default_pos
+            for widget_id, default_pos in self._KAIZEN_DEFAULTS["grid"].items():
+                if widget_id not in kaizen_grid_config and widget_id not in onigiri_archived_ids:
+                    kaizen_grid_config[widget_id] = default_pos
 
             placed_onigiri = set()
 
@@ -5342,11 +5342,11 @@ class SettingsDialog(QDialog):
                 self.all_onigiri_items[widget_id] = item
 
             # Update display names from saved config
-            all_saved_onigiri = onigiri_grid_config.copy()
-            if isinstance(onigiri_archive_config, dict):
-                all_saved_onigiri.update(onigiri_archive_config)
-            elif isinstance(onigiri_archive_config, list):
-                for widget_id in onigiri_archive_config:
+            all_saved_onigiri = kaizen_grid_config.copy()
+            if isinstance(kaizen_archive_config, dict):
+                all_saved_onigiri.update(kaizen_archive_config)
+            elif isinstance(kaizen_archive_config, list):
+                for widget_id in kaizen_archive_config:
                     all_saved_onigiri.setdefault(widget_id, {})
 
             for widget_id, item in self.all_onigiri_items.items():
@@ -5355,7 +5355,7 @@ class SettingsDialog(QDialog):
                         item.set_display_name(custom_name)
 
             # Place Onigiri items on unified grid
-            for widget_id, config in onigiri_grid_config.items():
+            for widget_id, config in kaizen_grid_config.items():
                 if item := self.all_onigiri_items.get(widget_id):
                     item.row_span = config.get("row", 1)
                     item.col_span = config.get("col", 1)
@@ -5364,21 +5364,21 @@ class SettingsDialog(QDialog):
 
             # Place Onigiri items in archive
             archive_ids = []
-            if isinstance(onigiri_archive_config, list):
-                archive_ids = onigiri_archive_config
-            elif isinstance(onigiri_archive_config, dict):
-                archive_ids = onigiri_archive_config.keys()
+            if isinstance(kaizen_archive_config, list):
+                archive_ids = kaizen_archive_config
+            elif isinstance(kaizen_archive_config, dict):
+                archive_ids = kaizen_archive_config.keys()
             
             for widget_id in archive_ids:
                 if item := self.all_onigiri_items.get(widget_id):
                     if widget_id not in placed_onigiri:
-                        self.onigiri_archive_zone.layout.insertWidget(self.onigiri_archive_zone.layout.count() - 1, item)
+                        self.kaizen_archive_zone.layout.insertWidget(self.kaizen_archive_zone.layout.count() - 1, item)
                         placed_onigiri.add(widget_id)
 
             # Place any unconfigured Onigiri items into archive
             for widget_id, item in self.all_onigiri_items.items():
                 if widget_id not in placed_onigiri:
-                    self.onigiri_archive_zone.layout.insertWidget(self.onigiri_archive_zone.layout.count() - 1, item)
+                    self.kaizen_archive_zone.layout.insertWidget(self.kaizen_archive_zone.layout.count() - 1, item)
 
             # --- External Widgets ---
             saved_external_layout = self.settings_dialog.current_config.get("externalWidgetLayout", {})
@@ -5447,7 +5447,7 @@ class SettingsDialog(QDialog):
                 if shelf.child_widget is item:
                     shelf.child_widget = None
                     shelf.show() # Make the shelf visible again
-            self.onigiri_archive_zone.layout.insertWidget(self.onigiri_archive_zone.layout.count() - 1, item)
+            self.kaizen_archive_zone.layout.insertWidget(self.kaizen_archive_zone.layout.count() - 1, item)
             # Reset properties and visibility
             item.setProperty("isOnGrid", False)
             item.grid_zone = None
@@ -5476,7 +5476,7 @@ class SettingsDialog(QDialog):
 
         def get_layout_config(self):
             """Returns separate configs for Onigiri and External layouts."""
-            onigiri_grid_config = {}
+            kaizen_grid_config = {}
             external_grid_config = {}
             processed_widgets = set()
 
@@ -5485,7 +5485,7 @@ class SettingsDialog(QDialog):
                 if widget and widget not in processed_widgets:
                     # Check if it's an Onigiri widget
                     if isinstance(widget, SettingsDialog.OnigiriDraggableItem):
-                        onigiri_grid_config[widget.widget_id] = {
+                        kaizen_grid_config[widget.widget_id] = {
                             "pos": pos, "row": widget.row_span, "col": widget.col_span,
                             "display_name": widget.display_name
                         }
@@ -5497,13 +5497,13 @@ class SettingsDialog(QDialog):
                         }
                     processed_widgets.add(widget)
 
-            onigiri_archive_config = self.onigiri_archive_zone.get_archive_config()
+            kaizen_archive_config = self.kaizen_archive_zone.get_archive_config()
             external_archive_config = self.external_archive_zone.get_archive_config()
             
             return {
                 "onigiri": {
-                    "grid": onigiri_grid_config, 
-                    "archive": onigiri_archive_config,
+                    "grid": kaizen_grid_config, 
+                    "archive": kaizen_archive_config,
                     "column_count": self.col_spin.value()
                 },
                 "external": {"grid": external_grid_config, "archive": external_archive_config}
@@ -5576,7 +5576,7 @@ class SettingsDialog(QDialog):
             placed_onigiri = set()
             
             # Place default items
-            for widget_id, config in self._ONIGIRI_DEFAULTS["grid"].items():
+            for widget_id, config in self._KAIZEN_DEFAULTS["grid"].items():
                 if item := self.all_onigiri_items.get(widget_id):
                     item.row_span = config.get("row", 1)
                     item.col_span = config.get("col", 1)
@@ -5592,16 +5592,16 @@ class SettingsDialog(QDialog):
             for widget_id, item in self.all_onigiri_items.items():
                 if widget_id not in placed_onigiri:
                     # Move to archive if not already there
-                    current_archive_items = self.onigiri_archive_zone.get_item_order()
+                    current_archive_items = self.kaizen_archive_zone.get_item_order()
                     # If it was on grid, it's now detached. If it was in archive, it might still be there.
                     # Safest is to remove from wherever it is and add to archive
-                    if item.parent() == self.onigiri_archive_zone:
+                    if item.parent() == self.kaizen_archive_zone:
                          # Already in archive zone, but maybe we want to reorder? 
                          # Let's just ensure properties are correct
                          pass
                     else:
                         # Add to archive layout
-                        self.onigiri_archive_zone.layout.insertWidget(self.onigiri_archive_zone.layout.count() - 1, item)
+                        self.kaizen_archive_zone.layout.insertWidget(self.kaizen_archive_zone.layout.count() - 1, item)
                     
                     item.setProperty("isOnGrid", False)
                     item.grid_zone = None
@@ -7287,7 +7287,7 @@ class SettingsDialog(QDialog):
         self.overview_bg_single_color_container = QWidget()
         single_color_layout = QVBoxLayout(self.overview_bg_single_color_container)
         self.overview_bg_single_color_row = self._create_color_picker_row(
-            "Background Color", conf.get("onigiri_overview_bg_light_color", "#FFFFFF"), "overview_bg_single"
+            "Background Color", conf.get("kaizen_overview_bg_light_color", "#FFFFFF"), "overview_bg_single"
         )
         single_color_layout.addLayout(self.overview_bg_single_color_row)
         
@@ -7295,10 +7295,10 @@ class SettingsDialog(QDialog):
         self.overview_bg_separate_colors_container = QWidget()
         separate_colors_layout = QVBoxLayout(self.overview_bg_separate_colors_container)
         self.overview_bg_light_color_row = self._create_color_picker_row(
-            "Background (Light Mode)", conf.get("onigiri_overview_bg_light_color", "#FFFFFF"), "overview_bg_light"
+            "Background (Light Mode)", conf.get("kaizen_overview_bg_light_color", "#FFFFFF"), "overview_bg_light"
         )
         self.overview_bg_dark_color_row = self._create_color_picker_row(
-            "Background (Dark Mode)", conf.get("onigiri_overview_bg_dark_color", "#2C2C2C"), "overview_bg_dark"
+            "Background (Dark Mode)", conf.get("kaizen_overview_bg_dark_color", "#2C2C2C"), "overview_bg_dark"
         )
         separate_colors_layout.addLayout(self.overview_bg_light_color_row)
         separate_colors_layout.addLayout(self.overview_bg_dark_color_row)
@@ -7316,7 +7316,7 @@ class SettingsDialog(QDialog):
         
         # Load saved theme mode or default to single
         # Load saved theme mode or default to single
-        overview_bg_color_theme_mode = conf.get("onigiri_overview_bg_color_theme_mode", "single")
+        overview_bg_color_theme_mode = conf.get("kaizen_overview_bg_color_theme_mode", "single")
         self.overview_bg_color_theme_mode_single.setChecked(overview_bg_color_theme_mode == "single")
         self.overview_bg_color_theme_mode_separate.setChecked(overview_bg_color_theme_mode == "separate")
         
@@ -7352,7 +7352,7 @@ class SettingsDialog(QDialog):
         
         # Load saved theme mode or default to single
         # Load saved theme mode or default to single
-        overview_bg_image_theme_mode = conf.get("onigiri_overview_bg_image_theme_mode", "single")
+        overview_bg_image_theme_mode = conf.get("kaizen_overview_bg_image_theme_mode", "single")
         self.overview_bg_image_theme_mode_single.setChecked(overview_bg_image_theme_mode == "single")
         self.overview_bg_image_theme_mode_separate.setChecked(overview_bg_image_theme_mode == "separate")
         
@@ -7371,7 +7371,7 @@ class SettingsDialog(QDialog):
         single_image_layout.setContentsMargins(0, 10, 0, 0)
         self.galleries["overview_bg_single"] = {}
         single_image_layout.addWidget(self._create_image_gallery_group(
-            "overview_bg_single", "user_files/main_bg", "onigiri_overview_bg_image", 
+            "overview_bg_single", "user_files/main_bg", "kaizen_overview_bg_image", 
             title="Background Image", is_sub_group=True
         ))
         
@@ -7381,12 +7381,12 @@ class SettingsDialog(QDialog):
         sep_layout.setContentsMargins(0, 10, 0, 0)
         self.galleries["overview_bg_light"] = {}
         sep_layout.addWidget(self._create_image_gallery_group(
-            "overview_bg_light", "user_files/main_bg", "onigiri_overview_bg_image_light", 
+            "overview_bg_light", "user_files/main_bg", "kaizen_overview_bg_image_light", 
             title="Light Mode Background", is_sub_group=True
         ))
         self.galleries["overview_bg_dark"] = {}
         sep_layout.addWidget(self._create_image_gallery_group(
-            "overview_bg_dark", "user_files/main_bg", "onigiri_overview_bg_image_dark", 
+            "overview_bg_dark", "user_files/main_bg", "kaizen_overview_bg_image_dark", 
             title="Dark Mode Background", is_sub_group=True
         ))
         
@@ -7413,14 +7413,14 @@ class SettingsDialog(QDialog):
         self.overview_bg_blur_spinbox.setMinimum(0)
         self.overview_bg_blur_spinbox.setMaximum(100)
         self.overview_bg_blur_spinbox.setSuffix(" %")
-        self.overview_bg_blur_spinbox.setValue(conf.get("onigiri_overview_bg_blur", 0))
+        self.overview_bg_blur_spinbox.setValue(conf.get("kaizen_overview_bg_blur", 0))
         
         self.overview_bg_opacity_label = QLabel("Opacity:")
         self.overview_bg_opacity_spinbox = QSpinBox()
         self.overview_bg_opacity_spinbox.setMinimum(0)
         self.overview_bg_opacity_spinbox.setMaximum(100)
         self.overview_bg_opacity_spinbox.setSuffix(" %")
-        self.overview_bg_opacity_spinbox.setValue(conf.get("onigiri_overview_bg_opacity", 100))
+        self.overview_bg_opacity_spinbox.setValue(conf.get("kaizen_overview_bg_opacity", 100))
         
         effects_layout.addWidget(self.overview_bg_blur_label)
         effects_layout.addWidget(self.overview_bg_blur_spinbox)
@@ -7507,7 +7507,7 @@ class SettingsDialog(QDialog):
         overview_bg_button_group.addButton(self.overview_bg_image_color_radio)
         
         conf = config.get_config()
-        overview_bg_mode = conf.get("onigiri_overview_bg_mode", "main")
+        overview_bg_mode = conf.get("kaizen_overview_bg_mode", "main")
         self.overview_bg_main_radio.setChecked(overview_bg_mode == "main")
         self.overview_bg_color_radio.setChecked(overview_bg_mode == "color")
         self.overview_bg_image_color_radio.setChecked(overview_bg_mode == "image_color")
@@ -7528,14 +7528,14 @@ class SettingsDialog(QDialog):
         self.overview_bg_main_blur_spinbox.setMinimum(0)
         self.overview_bg_main_blur_spinbox.setMaximum(100)
         self.overview_bg_main_blur_spinbox.setSuffix(" %")
-        self.overview_bg_main_blur_spinbox.setValue(conf.get("onigiri_overview_bg_main_blur", 0))
+        self.overview_bg_main_blur_spinbox.setValue(conf.get("kaizen_overview_bg_main_blur", 0))
         
         main_opacity_label = QLabel("Background Opacity:")
         self.overview_bg_main_opacity_spinbox = QSpinBox()
         self.overview_bg_main_opacity_spinbox.setMinimum(0)
         self.overview_bg_main_opacity_spinbox.setMaximum(100)
         self.overview_bg_main_opacity_spinbox.setSuffix(" %")
-        self.overview_bg_main_opacity_spinbox.setValue(conf.get("onigiri_overview_bg_main_opacity", 100))
+        self.overview_bg_main_opacity_spinbox.setValue(conf.get("kaizen_overview_bg_main_opacity", 100))
         
         main_effects_layout.addWidget(main_blur_label)
         main_effects_layout.addWidget(self.overview_bg_main_blur_spinbox)
@@ -7581,7 +7581,7 @@ class SettingsDialog(QDialog):
         self.overview_mini_radio = QRadioButton("Mini Overview")
         self.overview_mini_radio.setToolTip("A compact overview, like the one in your provided image.")
         
-        current_style = mw.col.conf.get("onigiri_overview_style", "pro")
+        current_style = mw.col.conf.get("kaizen_overview_style", "pro")
         if current_style == "mini":
             self.overview_mini_radio.setChecked(True)
         else:
@@ -7678,7 +7678,7 @@ class SettingsDialog(QDialog):
         sidebar_main_layout = QVBoxLayout(self.sidebar_main_options_group)
         sidebar_main_layout.setContentsMargins(15, 10, 0, 0)
         
-        effect_mode = mw.col.conf.get("onigiri_sidebar_main_bg_effect_mode", "opaque")
+        effect_mode = mw.col.conf.get("kaizen_sidebar_main_bg_effect_mode", "opaque")
         effect_mode_layout = QHBoxLayout()
         self.sidebar_effect_overlay_radio = QRadioButton("Color Overlay")
         self.sidebar_effect_glass_radio = QRadioButton("Glassmorphism")
@@ -7699,7 +7699,7 @@ class SettingsDialog(QDialog):
         self.sidebar_overlay_intensity_spinbox.setMinimum(0)
         self.sidebar_overlay_intensity_spinbox.setMaximum(100)
         self.sidebar_overlay_intensity_spinbox.setSuffix(" %")
-        self.sidebar_overlay_intensity_spinbox.setValue(mw.col.conf.get("onigiri_sidebar_opaque_tint_intensity", 30))
+        self.sidebar_overlay_intensity_spinbox.setValue(mw.col.conf.get("kaizen_sidebar_opaque_tint_intensity", 30))
         intensity_layout.addWidget(intensity_label)
         intensity_layout.addWidget(self.sidebar_overlay_intensity_spinbox)
         intensity_layout.addStretch()
@@ -7707,8 +7707,8 @@ class SettingsDialog(QDialog):
 
         overlay_options_layout.addLayout(intensity_layout)
         
-        self.sidebar_overlay_light_color_row = self._create_color_picker_row("Overlay Color (Light Mode)", mw.col.conf.get("onigiri_sidebar_opaque_tint_color_light", "#FFFFFF"), "overlay_light_color")
-        self.sidebar_overlay_dark_color_row = self._create_color_picker_row("Overlay Color (Dark Mode)", mw.col.conf.get("onigiri_sidebar_opaque_tint_color_dark", "#2C2C2C"), "overlay_dark_color")
+        self.sidebar_overlay_light_color_row = self._create_color_picker_row("Overlay Color (Light Mode)", mw.col.conf.get("kaizen_sidebar_opaque_tint_color_light", "#FFFFFF"), "overlay_light_color")
+        self.sidebar_overlay_dark_color_row = self._create_color_picker_row("Overlay Color (Dark Mode)", mw.col.conf.get("kaizen_sidebar_opaque_tint_color_dark", "#2C2C2C"), "overlay_dark_color")
         overlay_options_layout.addLayout(self.sidebar_overlay_light_color_row)
         overlay_options_layout.addLayout(self.sidebar_overlay_dark_color_row)
         sidebar_main_layout.addWidget(self.sidebar_overlay_options_group)
@@ -7721,7 +7721,7 @@ class SettingsDialog(QDialog):
         self.sidebar_effect_intensity_spinbox.setMinimum(0)
         self.sidebar_effect_intensity_spinbox.setMaximum(100)
         self.sidebar_effect_intensity_spinbox.setSuffix(" %")
-        self.sidebar_effect_intensity_spinbox.setValue(mw.col.conf.get("onigiri_sidebar_main_bg_effect_intensity", 50))
+        self.sidebar_effect_intensity_spinbox.setValue(mw.col.conf.get("kaizen_sidebar_main_bg_effect_intensity", 50))
         glass_intensity_layout.addWidget(glass_intensity_label)
         glass_intensity_layout.addWidget(self.sidebar_effect_intensity_spinbox)
         glass_intensity_layout.addStretch()
@@ -8204,29 +8204,29 @@ class SettingsDialog(QDialog):
         # --- END OF REBUILT SECTION ---
 
         page_bg_section = SectionGroup("Profile Page Background", self)
-        page_bg_mode = mw.col.conf.get("onigiri_profile_page_bg_mode", "color")
+        page_bg_mode = mw.col.conf.get("kaizen_profile_page_bg_mode", "color")
         page_mode_layout = QHBoxLayout()
         self.profile_page_bg_color_radio = QRadioButton("Solid Color"); self.profile_page_bg_gradient_radio = QRadioButton("Gradient")
         self.profile_page_bg_color_radio.setChecked(page_bg_mode == "color"); self.profile_page_bg_gradient_radio.setChecked(page_bg_mode == "gradient")
         page_mode_layout.addWidget(self.profile_page_bg_color_radio); page_mode_layout.addWidget(self.profile_page_bg_gradient_radio); page_mode_layout.addStretch(); page_bg_section.add_layout(page_mode_layout)
 
         self.profile_page_color_group = QWidget(); page_color_layout = QVBoxLayout(self.profile_page_color_group); page_color_layout.setContentsMargins(0, 10, 0, 0)
-        self.profile_page_light_color_row = self._create_color_picker_row("Light Mode Color", mw.col.conf.get("onigiri_profile_page_bg_light_color1", "#F5F5F5"), "profile_page_light_color1"); page_color_layout.addLayout(self.profile_page_light_color_row)
-        self.profile_page_dark_color_row = self._create_color_picker_row("Dark Mode Color", mw.col.conf.get("onigiri_profile_page_bg_dark_color1", "#2c2c2c"), "profile_page_dark_color1"); page_color_layout.addLayout(self.profile_page_dark_color_row); page_bg_section.add_widget(self.profile_page_color_group)
+        self.profile_page_light_color_row = self._create_color_picker_row("Light Mode Color", mw.col.conf.get("kaizen_profile_page_bg_light_color1", "#F5F5F5"), "profile_page_light_color1"); page_color_layout.addLayout(self.profile_page_light_color_row)
+        self.profile_page_dark_color_row = self._create_color_picker_row("Dark Mode Color", mw.col.conf.get("kaizen_profile_page_bg_dark_color1", "#2c2c2c"), "profile_page_dark_color1"); page_color_layout.addLayout(self.profile_page_dark_color_row); page_bg_section.add_widget(self.profile_page_color_group)
 
         self.profile_page_gradient_group = QWidget(); page_gradient_layout = QVBoxLayout(self.profile_page_gradient_group); page_gradient_layout.setContentsMargins(0, 10, 0, 0)
-        self.profile_page_light_gradient1_row = self._create_color_picker_row("Light Mode From", mw.col.conf.get("onigiri_profile_page_bg_light_color1", "#FFFFFF"), "profile_page_light_gradient1"); page_gradient_layout.addLayout(self.profile_page_light_gradient1_row)
-        self.profile_page_light_gradient2_row = self._create_color_picker_row("Light Mode To", mw.col.conf.get("onigiri_profile_page_bg_light_color2", "#E0E0E0"), "profile_page_light_gradient2"); page_gradient_layout.addLayout(self.profile_page_light_gradient2_row)
-        self.profile_page_dark_gradient1_row = self._create_color_picker_row("Dark Mode From", mw.col.conf.get("onigiri_profile_page_bg_dark_color1", "#424242"), "profile_page_dark_gradient1"); page_gradient_layout.addLayout(self.profile_page_dark_gradient1_row)
-        self.profile_page_dark_gradient2_row = self._create_color_picker_row("Dark Mode To", mw.col.conf.get("onigiri_profile_page_bg_dark_color2", "#212121"), "profile_page_dark_gradient2"); page_gradient_layout.addLayout(self.profile_page_dark_gradient2_row); page_bg_section.add_widget(self.profile_page_gradient_group)
+        self.profile_page_light_gradient1_row = self._create_color_picker_row("Light Mode From", mw.col.conf.get("kaizen_profile_page_bg_light_color1", "#FFFFFF"), "profile_page_light_gradient1"); page_gradient_layout.addLayout(self.profile_page_light_gradient1_row)
+        self.profile_page_light_gradient2_row = self._create_color_picker_row("Light Mode To", mw.col.conf.get("kaizen_profile_page_bg_light_color2", "#E0E0E0"), "profile_page_light_gradient2"); page_gradient_layout.addLayout(self.profile_page_light_gradient2_row)
+        self.profile_page_dark_gradient1_row = self._create_color_picker_row("Dark Mode From", mw.col.conf.get("kaizen_profile_page_bg_dark_color1", "#424242"), "profile_page_dark_gradient1"); page_gradient_layout.addLayout(self.profile_page_dark_gradient1_row)
+        self.profile_page_dark_gradient2_row = self._create_color_picker_row("Dark Mode To", mw.col.conf.get("kaizen_profile_page_bg_dark_color2", "#212121"), "profile_page_dark_gradient2"); page_gradient_layout.addLayout(self.profile_page_dark_gradient2_row); page_bg_section.add_widget(self.profile_page_gradient_group)
         
         self.profile_page_bg_color_radio.toggled.connect(self.toggle_profile_page_bg_options); self.toggle_profile_page_bg_options(); layout.addWidget(page_bg_section)
 
         visibility_section = SectionGroup("Profile Page Sections Visibility", self)
-        self.profile_show_theme_light_check = AnimatedToggleButton(accent_color=self.accent_color); self.profile_show_theme_light_check.setChecked(mw.col.conf.get("onigiri_profile_show_theme_light", True)); visibility_section.add_widget(self._create_toggle_row(self.profile_show_theme_light_check, "Show 'Theme Colors (Light)' Section"))
-        self.profile_show_theme_dark_check = AnimatedToggleButton(accent_color=self.accent_color); self.profile_show_theme_dark_check.setChecked(mw.col.conf.get("onigiri_profile_show_theme_dark", True)); visibility_section.add_widget(self._create_toggle_row(self.profile_show_theme_dark_check, "Show 'Theme Colors (Dark)' Section"))
-        self.profile_show_backgrounds_check = AnimatedToggleButton(accent_color=self.accent_color); self.profile_show_backgrounds_check.setChecked(mw.col.conf.get("onigiri_profile_show_backgrounds", True)); visibility_section.add_widget(self._create_toggle_row(self.profile_show_backgrounds_check, "Show 'Background Images' Section"))
-        self.profile_show_stats_check = AnimatedToggleButton(accent_color=self.accent_color); self.profile_show_stats_check.setChecked(mw.col.conf.get("onigiri_profile_show_stats", True)); visibility_section.add_widget(self._create_toggle_row(self.profile_show_stats_check, "Show 'Daily Stats' Section"))
+        self.profile_show_theme_light_check = AnimatedToggleButton(accent_color=self.accent_color); self.profile_show_theme_light_check.setChecked(mw.col.conf.get("kaizen_profile_show_theme_light", True)); visibility_section.add_widget(self._create_toggle_row(self.profile_show_theme_light_check, "Show 'Theme Colors (Light)' Section"))
+        self.profile_show_theme_dark_check = AnimatedToggleButton(accent_color=self.accent_color); self.profile_show_theme_dark_check.setChecked(mw.col.conf.get("kaizen_profile_show_theme_dark", True)); visibility_section.add_widget(self._create_toggle_row(self.profile_show_theme_dark_check, "Show 'Theme Colors (Dark)' Section"))
+        self.profile_show_backgrounds_check = AnimatedToggleButton(accent_color=self.accent_color); self.profile_show_backgrounds_check.setChecked(mw.col.conf.get("kaizen_profile_show_backgrounds", True)); visibility_section.add_widget(self._create_toggle_row(self.profile_show_backgrounds_check, "Show 'Background Images' Section"))
+        self.profile_show_stats_check = AnimatedToggleButton(accent_color=self.accent_color); self.profile_show_stats_check.setChecked(mw.col.conf.get("kaizen_profile_show_stats", True)); visibility_section.add_widget(self._create_toggle_row(self.profile_show_stats_check, "Show 'Daily Stats' Section"))
         
         # Restaurant Level visibility
         self.profile_show_restaurant_check = AnimatedToggleButton(accent_color=self.accent_color)
@@ -8295,7 +8295,7 @@ class SettingsDialog(QDialog):
         canvas_effect_layout.addLayout(intensity_layout)
 
         # Load saved settings for canvas effects
-        saved_mode = mw.col.conf.get("onigiri_canvas_inset_effect_mode", "none")
+        saved_mode = mw.col.conf.get("kaizen_canvas_inset_effect_mode", "none")
         if saved_mode == "opacity":
             self.canvas_effect_opacity_radio.setChecked(True)
         elif saved_mode == "glassmorphism":
@@ -8303,7 +8303,7 @@ class SettingsDialog(QDialog):
         else:
             self.canvas_effect_none_radio.setChecked(True)
 
-        saved_intensity = mw.col.conf.get("onigiri_canvas_inset_effect_intensity", 50)
+        saved_intensity = mw.col.conf.get("kaizen_canvas_inset_effect_intensity", 50)
         self.canvas_effect_intensity_spinbox.setValue(saved_intensity)
 
         # Connect signals
@@ -8375,24 +8375,24 @@ class SettingsDialog(QDialog):
         # Answer button colors (stored in config, not colors dict)
         answer_button_colors = {
             "light": {
-                "Again BG": "onigiri_reviewer_btn_again_bg_light",
-                "Again Text": "onigiri_reviewer_btn_again_text_light",
-                "Hard BG": "onigiri_reviewer_btn_hard_bg_light",
-                "Hard Text": "onigiri_reviewer_btn_hard_text_light",
-                "Good BG": "onigiri_reviewer_btn_good_bg_light",
-                "Good Text": "onigiri_reviewer_btn_good_text_light",
-                "Easy BG": "onigiri_reviewer_btn_easy_bg_light",
-                "Easy Text": "onigiri_reviewer_btn_easy_text_light",
+                "Again BG": "kaizen_reviewer_btn_again_bg_light",
+                "Again Text": "kaizen_reviewer_btn_again_text_light",
+                "Hard BG": "kaizen_reviewer_btn_hard_bg_light",
+                "Hard Text": "kaizen_reviewer_btn_hard_text_light",
+                "Good BG": "kaizen_reviewer_btn_good_bg_light",
+                "Good Text": "kaizen_reviewer_btn_good_text_light",
+                "Easy BG": "kaizen_reviewer_btn_easy_bg_light",
+                "Easy Text": "kaizen_reviewer_btn_easy_text_light",
             },
             "dark": {
-                "Again BG": "onigiri_reviewer_btn_again_bg_dark",
-                "Again Text": "onigiri_reviewer_btn_again_text_dark",
-                "Hard BG": "onigiri_reviewer_btn_hard_bg_dark",
-                "Hard Text": "onigiri_reviewer_btn_hard_text_dark",
-                "Good BG": "onigiri_reviewer_btn_good_bg_dark",
-                "Good Text": "onigiri_reviewer_btn_good_text_dark",
-                "Easy BG": "onigiri_reviewer_btn_easy_bg_dark",
-                "Easy Text": "onigiri_reviewer_btn_easy_text_dark",
+                "Again BG": "kaizen_reviewer_btn_again_bg_dark",
+                "Again Text": "kaizen_reviewer_btn_again_text_dark",
+                "Hard BG": "kaizen_reviewer_btn_hard_bg_dark",
+                "Hard Text": "kaizen_reviewer_btn_hard_text_dark",
+                "Good BG": "kaizen_reviewer_btn_good_bg_dark",
+                "Good Text": "kaizen_reviewer_btn_good_text_dark",
+                "Easy BG": "kaizen_reviewer_btn_easy_bg_dark",
+                "Easy Text": "kaizen_reviewer_btn_easy_text_dark",
             }
         }
         
@@ -9139,7 +9139,7 @@ class SettingsDialog(QDialog):
         
         enable_label = QLabel("Enable Custom Buttons:")
         self.reviewer_btn_custom_enable_toggle = AnimatedToggleButton(accent_color=self.accent_color)
-        self.reviewer_btn_custom_enable_toggle.setChecked(self.current_config.get("onigiri_reviewer_btn_custom_enabled", False))
+        self.reviewer_btn_custom_enable_toggle.setChecked(self.current_config.get("kaizen_reviewer_btn_custom_enabled", False))
         row1.addWidget(enable_label)
         row1.addWidget(self.reviewer_btn_custom_enable_toggle)
         row1.addSpacing(20)
@@ -9148,7 +9148,7 @@ class SettingsDialog(QDialog):
         self.reviewer_btn_radius_spin = QSpinBox()
         self.reviewer_btn_radius_spin.setRange(0, 50)
         self.reviewer_btn_radius_spin.setSuffix(" px")
-        self.reviewer_btn_radius_spin.setValue(self.current_config.get("onigiri_reviewer_btn_radius", 12))
+        self.reviewer_btn_radius_spin.setValue(self.current_config.get("kaizen_reviewer_btn_radius", 12))
         row1.addWidget(radius_label)
         row1.addWidget(self.reviewer_btn_radius_spin)
         row1.addStretch()
@@ -9161,7 +9161,7 @@ class SettingsDialog(QDialog):
         self.reviewer_btn_padding_spin = QSpinBox()
         self.reviewer_btn_padding_spin.setRange(0, 30)
         self.reviewer_btn_padding_spin.setSuffix(" px")
-        self.reviewer_btn_padding_spin.setValue(self.current_config.get("onigiri_reviewer_btn_padding", 5))
+        self.reviewer_btn_padding_spin.setValue(self.current_config.get("kaizen_reviewer_btn_padding", 5))
         row2.addWidget(padding_label)
         row2.addWidget(self.reviewer_btn_padding_spin)
         row2.addSpacing(20)
@@ -9170,7 +9170,7 @@ class SettingsDialog(QDialog):
         self.reviewer_btn_height_spin = QSpinBox()
         self.reviewer_btn_height_spin.setRange(20, 100)
         self.reviewer_btn_height_spin.setSuffix(" px")
-        self.reviewer_btn_height_spin.setValue(self.current_config.get("onigiri_reviewer_btn_height", 40))
+        self.reviewer_btn_height_spin.setValue(self.current_config.get("kaizen_reviewer_btn_height", 40))
         row2.addWidget(btn_height_label)
         row2.addWidget(self.reviewer_btn_height_spin)
         row2.addSpacing(20)
@@ -9179,7 +9179,7 @@ class SettingsDialog(QDialog):
         self.reviewer_bar_height_spin = QSpinBox()
         self.reviewer_bar_height_spin.setRange(30, 200)
         self.reviewer_bar_height_spin.setSuffix(" px")
-        self.reviewer_bar_height_spin.setValue(self.current_config.get("onigiri_reviewer_bar_height", 60))
+        self.reviewer_bar_height_spin.setValue(self.current_config.get("kaizen_reviewer_bar_height", 60))
         row2.addWidget(bar_height_label)
         row2.addWidget(self.reviewer_bar_height_spin)
         row2.addStretch()
@@ -9284,16 +9284,16 @@ class SettingsDialog(QDialog):
                 
                 # Determine keys and defaults based on mode
                 if mode_key == "light":
-                    bg_config_key = f"onigiri_reviewer_btn_{key}_bg_light" if key != "other" else "onigiri_reviewer_other_btn_bg_light"
-                    text_config_key = f"onigiri_reviewer_btn_{key}_text_light" if key != "other" else "onigiri_reviewer_other_btn_text_light"
+                    bg_config_key = f"kaizen_reviewer_btn_{key}_bg_light" if key != "other" else "kaizen_reviewer_other_btn_bg_light"
+                    text_config_key = f"kaizen_reviewer_btn_{key}_text_light" if key != "other" else "kaizen_reviewer_other_btn_text_light"
                     bg_default = l_bg
                     text_default = l_text
                     # Specific input names for connection later
                     bg_input_name = f"btn_{key}_bg_light" if key != "other" else "other_btn_bg_light"
                     text_input_name = f"btn_{key}_text_light" if key != "other" else "other_btn_text_light"
                 else: # dark
-                    bg_config_key = f"onigiri_reviewer_btn_{key}_bg_dark" if key != "other" else "onigiri_reviewer_other_btn_bg_dark"
-                    text_config_key = f"onigiri_reviewer_btn_{key}_text_dark" if key != "other" else "onigiri_reviewer_other_btn_text_dark"
+                    bg_config_key = f"kaizen_reviewer_btn_{key}_bg_dark" if key != "other" else "kaizen_reviewer_other_btn_bg_dark"
+                    text_config_key = f"kaizen_reviewer_btn_{key}_text_dark" if key != "other" else "kaizen_reviewer_other_btn_text_dark"
                     bg_default = d_bg
                     text_default = d_text
                     bg_input_name = f"btn_{key}_bg_dark" if key != "other" else "other_btn_bg_dark"
@@ -9319,13 +9319,13 @@ class SettingsDialog(QDialog):
                     g_layout.addWidget(hover_label)
                     
                     if mode_key == "light":
-                        h_bg_key = "onigiri_reviewer_other_btn_hover_bg_light"
-                        h_txt_key = "onigiri_reviewer_other_btn_hover_text_light"
+                        h_bg_key = "kaizen_reviewer_other_btn_hover_bg_light"
+                        h_txt_key = "kaizen_reviewer_other_btn_hover_text_light"
                         h_bg_def, h_txt_def = "#2c2c2c", "#f0f0f0"
                         h_bg_name, h_txt_name = "other_btn_hover_bg_light", "other_btn_hover_text_light"
                     else:
-                        h_bg_key = "onigiri_reviewer_other_btn_hover_bg_dark"
-                        h_txt_key = "onigiri_reviewer_other_btn_hover_text_dark"
+                        h_bg_key = "kaizen_reviewer_other_btn_hover_bg_dark"
+                        h_txt_key = "kaizen_reviewer_other_btn_hover_text_dark"
                         h_bg_def, h_txt_def = "#e0e0e0", "#3a3a3a"
                         h_bg_name, h_txt_name = "other_btn_hover_bg_dark", "other_btn_hover_text_dark"
                         
@@ -9346,11 +9346,11 @@ class SettingsDialog(QDialog):
             s_layout = QVBoxLayout(stattxt_group)
             if mode_key == "light":
                  stattxt_row = self._create_color_picker_row(
-                    "Color", self.current_config.get("onigiri_reviewer_stattxt_color_light", "#666666"), "stattxt_color_light"
+                    "Color", self.current_config.get("kaizen_reviewer_stattxt_color_light", "#666666"), "stattxt_color_light"
                  )
             else:
                  stattxt_row = self._create_color_picker_row(
-                    "Color", self.current_config.get("onigiri_reviewer_stattxt_color_dark", "#aaaaaa"), "stattxt_color_dark"
+                    "Color", self.current_config.get("kaizen_reviewer_stattxt_color_dark", "#aaaaaa"), "stattxt_color_dark"
                  )
             s_layout.addLayout(stattxt_row)
             settings_layout.addWidget(stattxt_group)
@@ -9552,7 +9552,7 @@ class SettingsDialog(QDialog):
         reviewer_bg_button_group.addButton(self.reviewer_bg_image_color_radio)
         
         conf = config.get_config()
-        reviewer_bg_mode = conf.get("onigiri_reviewer_bg_mode", "main")
+        reviewer_bg_mode = conf.get("kaizen_reviewer_bg_mode", "main")
         self.reviewer_bg_main_radio.setChecked(reviewer_bg_mode == "main")
         self.reviewer_bg_color_radio.setChecked(reviewer_bg_mode == "color")
         self.reviewer_bg_image_color_radio.setChecked(reviewer_bg_mode == "image_color")
@@ -9573,14 +9573,14 @@ class SettingsDialog(QDialog):
         self.reviewer_bg_main_blur_spinbox.setMinimum(0)
         self.reviewer_bg_main_blur_spinbox.setMaximum(100)
         self.reviewer_bg_main_blur_spinbox.setSuffix(" %")
-        self.reviewer_bg_main_blur_spinbox.setValue(conf.get("onigiri_reviewer_bg_main_blur", 0))
+        self.reviewer_bg_main_blur_spinbox.setValue(conf.get("kaizen_reviewer_bg_main_blur", 0))
         
         main_opacity_label = QLabel("Background Opacity:")
         self.reviewer_bg_main_opacity_spinbox = QSpinBox()
         self.reviewer_bg_main_opacity_spinbox.setMinimum(0)
         self.reviewer_bg_main_opacity_spinbox.setMaximum(100)
         self.reviewer_bg_main_opacity_spinbox.setSuffix(" %")
-        self.reviewer_bg_main_opacity_spinbox.setValue(conf.get("onigiri_reviewer_bg_main_opacity", 100))
+        self.reviewer_bg_main_opacity_spinbox.setValue(conf.get("kaizen_reviewer_bg_main_opacity", 100))
         
         main_effects_layout.addWidget(main_blur_label)
         main_effects_layout.addWidget(self.reviewer_bg_main_blur_spinbox)
@@ -9649,13 +9649,13 @@ class SettingsDialog(QDialog):
         self.reviewer_bar_match_main_blur_spinbox = QSpinBox()
         self.reviewer_bar_match_main_blur_spinbox.setMinimum(0); self.reviewer_bar_match_main_blur_spinbox.setMaximum(100)
         self.reviewer_bar_match_main_blur_spinbox.setSuffix(" %")
-        self.reviewer_bar_match_main_blur_spinbox.setValue(self.current_config.get("onigiri_reviewer_bottom_bar_match_main_blur", 5))
+        self.reviewer_bar_match_main_blur_spinbox.setValue(self.current_config.get("kaizen_reviewer_bottom_bar_match_main_blur", 5))
 
         opacity_label = QLabel("Bar Opacity:")
         self.reviewer_bar_match_main_opacity_spinbox = QSpinBox()
         self.reviewer_bar_match_main_opacity_spinbox.setMinimum(0); self.reviewer_bar_match_main_opacity_spinbox.setMaximum(100)
         self.reviewer_bar_match_main_opacity_spinbox.setSuffix(" %")
-        self.reviewer_bar_match_main_opacity_spinbox.setValue(self.current_config.get("onigiri_reviewer_bottom_bar_match_main_opacity", 90))
+        self.reviewer_bar_match_main_opacity_spinbox.setValue(self.current_config.get("kaizen_reviewer_bottom_bar_match_main_opacity", 90))
 
         match_effects_layout.addWidget(blur_label)
         match_effects_layout.addWidget(self.reviewer_bar_match_main_blur_spinbox)
@@ -9675,13 +9675,13 @@ class SettingsDialog(QDialog):
         self.reviewer_bar_match_reviewer_bg_blur_spinbox = QSpinBox()
         self.reviewer_bar_match_reviewer_bg_blur_spinbox.setMinimum(0); self.reviewer_bar_match_reviewer_bg_blur_spinbox.setMaximum(100)
         self.reviewer_bar_match_reviewer_bg_blur_spinbox.setSuffix(" %")
-        self.reviewer_bar_match_reviewer_bg_blur_spinbox.setValue(self.current_config.get("onigiri_reviewer_bottom_bar_match_reviewer_bg_blur", 5))
+        self.reviewer_bar_match_reviewer_bg_blur_spinbox.setValue(self.current_config.get("kaizen_reviewer_bottom_bar_match_reviewer_bg_blur", 5))
 
         opacity_label_2 = QLabel("Bar Opacity:")
         self.reviewer_bar_match_reviewer_bg_opacity_spinbox = QSpinBox()
         self.reviewer_bar_match_reviewer_bg_opacity_spinbox.setMinimum(0); self.reviewer_bar_match_reviewer_bg_opacity_spinbox.setMaximum(100)
         self.reviewer_bar_match_reviewer_bg_opacity_spinbox.setSuffix(" %")
-        self.reviewer_bar_match_reviewer_bg_opacity_spinbox.setValue(self.current_config.get("onigiri_reviewer_bottom_bar_match_reviewer_bg_opacity", 90))
+        self.reviewer_bar_match_reviewer_bg_opacity_spinbox.setValue(self.current_config.get("kaizen_reviewer_bottom_bar_match_reviewer_bg_opacity", 90))
 
         match_reviewer_bg_effects_layout.addWidget(blur_label_2)
         match_reviewer_bg_effects_layout.addWidget(self.reviewer_bar_match_reviewer_bg_blur_spinbox)
@@ -9742,10 +9742,10 @@ class SettingsDialog(QDialog):
         color_layout.setContentsMargins(0, 0, 0, 0)
 
         self.reviewer_bar_light_color_row = self._create_color_picker_row(
-            "Color (Light Mode)", mw.col.conf.get("onigiri_reviewer_bottom_bar_bg_light_color", "#EEEEEE"), "reviewer_bar_light"
+            "Color (Light Mode)", mw.col.conf.get("kaizen_reviewer_bottom_bar_bg_light_color", "#EEEEEE"), "reviewer_bar_light"
         )
         self.reviewer_bar_dark_color_row = self._create_color_picker_row(
-            "Color (Dark Mode)", mw.col.conf.get("onigiri_reviewer_bottom_bar_bg_dark_color", "#3C3C3C"), "reviewer_bar_dark"
+            "Color (Dark Mode)", mw.col.conf.get("kaizen_reviewer_bottom_bar_bg_dark_color", "#3C3C3C"), "reviewer_bar_dark"
         )
         color_layout.addLayout(self.reviewer_bar_light_color_row)
         color_layout.addLayout(self.reviewer_bar_dark_color_row)
@@ -9753,7 +9753,7 @@ class SettingsDialog(QDialog):
 
         self.galleries["reviewer_bar_bg"] = {}
         self.reviewer_bar_image_group = self._create_image_gallery_group(
-            "reviewer_bar_bg", "user_files/reviewer_bar_bg", "onigiri_reviewer_bottom_bar_bg_image", is_sub_group=True
+            "reviewer_bar_bg", "user_files/reviewer_bar_bg", "kaizen_reviewer_bottom_bar_bg_image", is_sub_group=True
         )
         layout.addWidget(self.reviewer_bar_image_group)
 
@@ -9764,13 +9764,13 @@ class SettingsDialog(QDialog):
         self.reviewer_bar_blur_spinbox = QSpinBox()
         self.reviewer_bar_blur_spinbox.setMinimum(0); self.reviewer_bar_blur_spinbox.setMaximum(100)
         self.reviewer_bar_blur_spinbox.setSuffix(" %")
-        self.reviewer_bar_blur_spinbox.setValue(mw.col.conf.get("onigiri_reviewer_bottom_bar_bg_blur", 0))
+        self.reviewer_bar_blur_spinbox.setValue(mw.col.conf.get("kaizen_reviewer_bottom_bar_bg_blur", 0))
 
         self.reviewer_bar_opacity_label = QLabel("Opacity:")
         self.reviewer_bar_opacity_spinbox = QSpinBox()
         self.reviewer_bar_opacity_spinbox.setMinimum(0); self.reviewer_bar_opacity_spinbox.setMaximum(100)
         self.reviewer_bar_opacity_spinbox.setSuffix(" %")
-        self.reviewer_bar_opacity_spinbox.setValue(mw.col.conf.get("onigiri_reviewer_bottom_bar_bg_opacity", 100))
+        self.reviewer_bar_opacity_spinbox.setValue(mw.col.conf.get("kaizen_reviewer_bottom_bar_bg_opacity", 100))
 
         effects_layout.addWidget(self.reviewer_bar_blur_label)
         effects_layout.addWidget(self.reviewer_bar_blur_spinbox)
@@ -9808,7 +9808,7 @@ class SettingsDialog(QDialog):
         ]
         
         self.notification_pos_buttons = {}
-        current_pos = self.current_config.get("onigiri_reviewer_notification_position", "top-right")
+        current_pos = self.current_config.get("kaizen_reviewer_notification_position", "top-right")
         
         for pos_id, label, row, col in positions:
             btn = QPushButton(label)
@@ -9899,7 +9899,7 @@ class SettingsDialog(QDialog):
 
     def _update_notification_position(self, pos_id):
         # Update config
-        self.current_config["onigiri_reviewer_notification_position"] = pos_id
+        self.current_config["kaizen_reviewer_notification_position"] = pos_id
         
         # Update buttons state (ensure exclusive check)
         for pid, btn in self.notification_pos_buttons.items():
@@ -9953,7 +9953,7 @@ class SettingsDialog(QDialog):
         self.reviewer_bg_single_color_container = QWidget()
         single_color_layout = QVBoxLayout(self.reviewer_bg_single_color_container)
         self.reviewer_bg_single_color_row = self._create_color_picker_row(
-            "Background Color", conf.get("onigiri_reviewer_bg_light_color", "#FFFFFF"), "reviewer_bg_single"
+            "Background Color", conf.get("kaizen_reviewer_bg_light_color", "#FFFFFF"), "reviewer_bg_single"
         )
         single_color_layout.addLayout(self.reviewer_bg_single_color_row)
         
@@ -9961,10 +9961,10 @@ class SettingsDialog(QDialog):
         self.reviewer_bg_separate_colors_container = QWidget()
         separate_colors_layout = QVBoxLayout(self.reviewer_bg_separate_colors_container)
         self.reviewer_bg_light_color_row = self._create_color_picker_row(
-            "Background (Light Mode)", conf.get("onigiri_reviewer_bg_light_color", "#FFFFFF"), "reviewer_bg_light"
+            "Background (Light Mode)", conf.get("kaizen_reviewer_bg_light_color", "#FFFFFF"), "reviewer_bg_light"
         )
         self.reviewer_bg_dark_color_row = self._create_color_picker_row(
-            "Background (Dark Mode)", conf.get("onigiri_reviewer_bg_dark_color", "#2C2C2C"), "reviewer_bg_dark"
+            "Background (Dark Mode)", conf.get("kaizen_reviewer_bg_dark_color", "#2C2C2C"), "reviewer_bg_dark"
         )
         separate_colors_layout.addLayout(self.reviewer_bg_light_color_row)
         separate_colors_layout.addLayout(self.reviewer_bg_dark_color_row)
@@ -9981,7 +9981,7 @@ class SettingsDialog(QDialog):
         self.reviewer_bg_color_theme_mode_group.addButton(self.reviewer_bg_color_theme_mode_separate)
         
         # Load saved theme mode or default to single
-        reviewer_bg_color_theme_mode = mw.col.conf.get("onigiri_reviewer_bg_color_theme_mode", "single")
+        reviewer_bg_color_theme_mode = mw.col.conf.get("kaizen_reviewer_bg_color_theme_mode", "single")
         self.reviewer_bg_color_theme_mode_single.setChecked(reviewer_bg_color_theme_mode == "single")
         self.reviewer_bg_color_theme_mode_separate.setChecked(reviewer_bg_color_theme_mode == "separate")
         
@@ -10016,7 +10016,7 @@ class SettingsDialog(QDialog):
         self.reviewer_bg_image_theme_mode_group.addButton(self.reviewer_bg_image_theme_mode_separate)
         
         # Load saved theme mode or default to single
-        reviewer_bg_image_theme_mode = mw.col.conf.get("onigiri_reviewer_bg_image_theme_mode", "single")
+        reviewer_bg_image_theme_mode = mw.col.conf.get("kaizen_reviewer_bg_image_theme_mode", "single")
         self.reviewer_bg_image_theme_mode_single.setChecked(reviewer_bg_image_theme_mode == "single")
         self.reviewer_bg_image_theme_mode_separate.setChecked(reviewer_bg_image_theme_mode == "separate")
         
@@ -10035,7 +10035,7 @@ class SettingsDialog(QDialog):
         single_image_layout.setContentsMargins(0, 10, 0, 0)
         self.galleries["reviewer_bg_single"] = {}
         single_image_layout.addWidget(self._create_image_gallery_group(
-            "reviewer_bg_single", "user_files/reviewer_bg", "onigiri_reviewer_bg_image", 
+            "reviewer_bg_single", "user_files/reviewer_bg", "kaizen_reviewer_bg_image", 
             title="Background Image", is_sub_group=True
         ))
         
@@ -10045,12 +10045,12 @@ class SettingsDialog(QDialog):
         sep_layout.setContentsMargins(0, 10, 0, 0)
         self.galleries["reviewer_bg_light"] = {}
         sep_layout.addWidget(self._create_image_gallery_group(
-            "reviewer_bg_light", "user_files/reviewer_bg", "onigiri_reviewer_bg_image_light", 
+            "reviewer_bg_light", "user_files/reviewer_bg", "kaizen_reviewer_bg_image_light", 
             title="Light Mode Background", is_sub_group=True
         ))
         self.galleries["reviewer_bg_dark"] = {}
         sep_layout.addWidget(self._create_image_gallery_group(
-            "reviewer_bg_dark", "user_files/reviewer_bg", "onigiri_reviewer_bg_image_dark", 
+            "reviewer_bg_dark", "user_files/reviewer_bg", "kaizen_reviewer_bg_image_dark", 
             title="Dark Mode Background", is_sub_group=True
         ))
         
@@ -10077,14 +10077,14 @@ class SettingsDialog(QDialog):
         self.reviewer_bg_blur_spinbox.setMinimum(0)
         self.reviewer_bg_blur_spinbox.setMaximum(100)
         self.reviewer_bg_blur_spinbox.setSuffix(" %")
-        self.reviewer_bg_blur_spinbox.setValue(conf.get("onigiri_reviewer_bg_blur", 0))
+        self.reviewer_bg_blur_spinbox.setValue(conf.get("kaizen_reviewer_bg_blur", 0))
         
         self.reviewer_bg_opacity_label = QLabel("Opacity:")
         self.reviewer_bg_opacity_spinbox = QSpinBox()
         self.reviewer_bg_opacity_spinbox.setMinimum(0)
         self.reviewer_bg_opacity_spinbox.setMaximum(100)
         self.reviewer_bg_opacity_spinbox.setSuffix(" %")
-        self.reviewer_bg_opacity_spinbox.setValue(conf.get("onigiri_reviewer_bg_opacity", 100))
+        self.reviewer_bg_opacity_spinbox.setValue(conf.get("kaizen_reviewer_bg_opacity", 100))
         
         effects_layout.addWidget(self.reviewer_bg_blur_label)
         effects_layout.addWidget(self.reviewer_bg_blur_spinbox)
@@ -10281,7 +10281,7 @@ class SettingsDialog(QDialog):
             layout.addWidget(QLabel("Selected File:")); layout.addWidget(path_input)
 
         # Determine which config source to use based on the config key pattern
-        if config_key and config_key.startswith("onigiri_reviewer_bg_image"):
+        if config_key and config_key.startswith("kaizen_reviewer_bg_image"):
             # Reviewer background images are stored in the addon config
             selected_image = self.current_config.get(config_key, "")
         elif config_key:
@@ -10758,7 +10758,7 @@ class SettingsDialog(QDialog):
         initial_color = QColor(line_edit.text())
         
         # Load favorites from global config
-        favorites = mw.col.conf.get("onigiri_favorites", [])
+        favorites = mw.col.conf.get("kaizen_favorites", [])
         if not isinstance(favorites, list):
             favorites = []
             
@@ -10789,7 +10789,7 @@ class SettingsDialog(QDialog):
         picker.exec()
         
         # Save updated favorites to global config
-        mw.col.conf["onigiri_favorites"] = picker.favorite_colors
+        mw.col.conf["kaizen_favorites"] = picker.favorite_colors
         # We don't need to explicitly save mw.col.conf as Anki handles it, 
         # but if we wanted to be sure we could call mw.col.setMod() if available.
         # For settings like this, modifying the dict is usually sufficient in recent Anki versions 
@@ -10887,12 +10887,12 @@ class SettingsDialog(QDialog):
         self.reviewer_bg_main_radio.setChecked(True)
         
         # Reset main background blur and opacity
-        self.reviewer_bg_main_blur_spinbox.setValue(DEFAULTS["onigiri_reviewer_bg_main_blur"])
-        self.reviewer_bg_main_opacity_spinbox.setValue(DEFAULTS["onigiri_reviewer_bg_main_opacity"])
+        self.reviewer_bg_main_blur_spinbox.setValue(DEFAULTS["kaizen_reviewer_bg_main_blur"])
+        self.reviewer_bg_main_opacity_spinbox.setValue(DEFAULTS["kaizen_reviewer_bg_main_opacity"])
         
         # Reset colors to defaults
-        self.reviewer_bg_light_color_input.setText(DEFAULTS["onigiri_reviewer_bg_light_color"])
-        self.reviewer_bg_dark_color_input.setText(DEFAULTS["onigiri_reviewer_bg_dark_color"])
+        self.reviewer_bg_light_color_input.setText(DEFAULTS["kaizen_reviewer_bg_light_color"])
+        self.reviewer_bg_dark_color_input.setText(DEFAULTS["kaizen_reviewer_bg_dark_color"])
         
         # Clear all reviewer background images
         for key in ['reviewer_bg_light', 'reviewer_bg_dark']:
@@ -10903,8 +10903,8 @@ class SettingsDialog(QDialog):
                 self._refresh_gallery(key)
         
         # Reset blur and opacity for custom mode
-        self.reviewer_bg_blur_spinbox.setValue(DEFAULTS["onigiri_reviewer_bg_blur"])
-        self.reviewer_bg_opacity_spinbox.setValue(DEFAULTS["onigiri_reviewer_bg_opacity"])
+        self.reviewer_bg_blur_spinbox.setValue(DEFAULTS["kaizen_reviewer_bg_blur"])
+        self.reviewer_bg_opacity_spinbox.setValue(DEFAULTS["kaizen_reviewer_bg_opacity"])
         
         QMessageBox.information(self, "Reviewer Background Reset", "The reviewer background settings have been reset to default values.\nPress 'Save' to apply the changes.")
 
@@ -10914,16 +10914,16 @@ class SettingsDialog(QDialog):
         self.reviewer_bar_match_reviewer_bg_radio.setChecked(True)
         
         # Reset match main settings
-        self.reviewer_bar_match_main_blur_spinbox.setValue(DEFAULTS["onigiri_reviewer_bottom_bar_match_main_blur"])
-        self.reviewer_bar_match_main_opacity_spinbox.setValue(DEFAULTS["onigiri_reviewer_bottom_bar_match_main_opacity"])
+        self.reviewer_bar_match_main_blur_spinbox.setValue(DEFAULTS["kaizen_reviewer_bottom_bar_match_main_blur"])
+        self.reviewer_bar_match_main_opacity_spinbox.setValue(DEFAULTS["kaizen_reviewer_bottom_bar_match_main_opacity"])
 
         # Reset match reviewer bg settings
-        self.reviewer_bar_match_reviewer_bg_blur_spinbox.setValue(DEFAULTS["onigiri_reviewer_bottom_bar_match_reviewer_bg_blur"])
-        self.reviewer_bar_match_reviewer_bg_opacity_spinbox.setValue(DEFAULTS["onigiri_reviewer_bottom_bar_match_reviewer_bg_opacity"])
+        self.reviewer_bar_match_reviewer_bg_blur_spinbox.setValue(DEFAULTS["kaizen_reviewer_bottom_bar_match_reviewer_bg_blur"])
+        self.reviewer_bar_match_reviewer_bg_opacity_spinbox.setValue(DEFAULTS["kaizen_reviewer_bottom_bar_match_reviewer_bg_opacity"])
         
         # Reset custom colors
-        self.reviewer_bar_light_color_input.setText(DEFAULTS["onigiri_reviewer_bottom_bar_bg_light_color"])
-        self.reviewer_bar_dark_color_input.setText(DEFAULTS["onigiri_reviewer_bottom_bar_bg_dark_color"])
+        self.reviewer_bar_light_color_input.setText(DEFAULTS["kaizen_reviewer_bottom_bar_bg_light_color"])
+        self.reviewer_bar_dark_color_input.setText(DEFAULTS["kaizen_reviewer_bottom_bar_bg_dark_color"])
         
         # Clear bottom bar image
         if 'reviewer_bar_bg' in self.galleries:
@@ -10933,8 +10933,8 @@ class SettingsDialog(QDialog):
             self._refresh_gallery('reviewer_bar_bg')
         
         # Reset blur and opacity
-        self.reviewer_bar_blur_spinbox.setValue(DEFAULTS["onigiri_reviewer_bottom_bar_bg_blur"])
-        self.reviewer_bar_opacity_spinbox.setValue(DEFAULTS["onigiri_reviewer_bottom_bar_bg_opacity"])
+        self.reviewer_bar_blur_spinbox.setValue(DEFAULTS["kaizen_reviewer_bottom_bar_bg_blur"])
+        self.reviewer_bar_opacity_spinbox.setValue(DEFAULTS["kaizen_reviewer_bottom_bar_bg_opacity"])
         
         QMessageBox.information(self, "Bottom Bar Reset", "The bottom bar background settings have been reset to default values.\nPress 'Save' to apply the changes.")
 
@@ -11405,13 +11405,13 @@ class SettingsDialog(QDialog):
         if "font_config" in assets:
             for type_key, font_key in assets["font_config"].items():
                 if type_key in ["main", "subtle"]:
-                    mw.col.conf[f"onigiri_font_{type_key}"] = font_key
+                    mw.col.conf[f"kaizen_font_{type_key}"] = font_key
 
         # 1c. Apply Fonts
         if "font_config" in assets:
             for type_key, font_key in assets["font_config"].items():
                 if type_key in ["main", "subtle"]:
-                    mw.col.conf[f"onigiri_font_{type_key}"] = font_key
+                    mw.col.conf[f"kaizen_font_{type_key}"] = font_key
 
         # 1d. Apply Reviewer Settings
         if "reviewer_settings" in theme_data:
@@ -11712,7 +11712,7 @@ class SettingsDialog(QDialog):
         # Fonts
         # Check active fonts in config
         for font_type in ["main", "subtle"]:
-            font_key = mw.col.conf.get(f"onigiri_font_{font_type}")
+            font_key = mw.col.conf.get(f"kaizen_font_{font_type}")
             if font_key:
                 # Save the configuration selection
                 theme_data["assets"]["font_config"][font_type] = font_key
@@ -11734,16 +11734,16 @@ class SettingsDialog(QDialog):
             "modern_menu_background_image": "main_bg",
             "modern_menu_background_image_light": "main_bg",
             "modern_menu_background_image_dark": "main_bg",
-            "onigiri_overview_bg_image": "main_bg",
-            "onigiri_overview_bg_image_light": "main_bg",
-            "onigiri_overview_bg_image_dark": "main_bg",
+            "kaizen_overview_bg_image": "main_bg",
+            "kaizen_overview_bg_image_light": "main_bg",
+            "kaizen_overview_bg_image_dark": "main_bg",
             "modern_menu_profile_bg_image": "profile_bg",
             "modern_menu_profile_picture": "profile",
             "modern_menu_sidebar_bg_image": "sidebar_bg",
-            "onigiri_reviewer_bg_image": "reviewer_bg", 
-            "onigiri_reviewer_bg_image_light": "reviewer_bg",
-            "onigiri_reviewer_bg_image_dark": "reviewer_bg",
-            "onigiri_reviewer_bottom_bar_bg_image": "reviewer_bar_bg",
+            "kaizen_reviewer_bg_image": "reviewer_bg", 
+            "kaizen_reviewer_bg_image_light": "reviewer_bg",
+            "kaizen_reviewer_bg_image_dark": "reviewer_bg",
+            "kaizen_reviewer_bottom_bar_bg_image": "reviewer_bar_bg",
         }
         
         active_images = {}
@@ -11969,60 +11969,60 @@ class SettingsDialog(QDialog):
     def _save_overviews_settings(self):
         # --- NEW: Save the selected overview style ---
         if self.overview_mini_radio.isChecked():
-            mw.col.conf["onigiri_overview_style"] = "mini"
+            mw.col.conf["kaizen_overview_style"] = "mini"
         else:
-            mw.col.conf["onigiri_overview_style"] = "pro"
+            mw.col.conf["kaizen_overview_style"] = "pro"
         # --- END NEW ---
         
         # --- Overviewer Background ---
         if self.overview_bg_main_radio.isChecked():
-            self.current_config["onigiri_overview_bg_mode"] = "main"
+            self.current_config["kaizen_overview_bg_mode"] = "main"
         elif self.overview_bg_color_radio.isChecked():
-            self.current_config["onigiri_overview_bg_mode"] = "color"
+            self.current_config["kaizen_overview_bg_mode"] = "color"
         elif self.overview_bg_image_color_radio.isChecked():
-            self.current_config["onigiri_overview_bg_mode"] = "image_color"
+            self.current_config["kaizen_overview_bg_mode"] = "image_color"
         
         # Save theme mode for colors and images
         color_theme_mode = "single" if hasattr(self, 'overview_bg_color_theme_mode_single') and self.overview_bg_color_theme_mode_single.isChecked() else "separate"
         image_theme_mode = "single" if hasattr(self, 'overview_bg_image_theme_mode_single') and self.overview_bg_image_theme_mode_single.isChecked() else "separate"
         
-        self.current_config["onigiri_overview_bg_color_theme_mode"] = color_theme_mode
-        self.current_config["onigiri_overview_bg_image_theme_mode"] = image_theme_mode
+        self.current_config["kaizen_overview_bg_color_theme_mode"] = color_theme_mode
+        self.current_config["kaizen_overview_bg_image_theme_mode"] = image_theme_mode
         
         # Main background blur and opacity
-        self.current_config["onigiri_overview_bg_main_blur"] = self.overview_bg_main_blur_spinbox.value()
-        self.current_config["onigiri_overview_bg_main_opacity"] = self.overview_bg_main_opacity_spinbox.value()
+        self.current_config["kaizen_overview_bg_main_blur"] = self.overview_bg_main_blur_spinbox.value()
+        self.current_config["kaizen_overview_bg_main_opacity"] = self.overview_bg_main_opacity_spinbox.value()
         
         # Save colors based on theme mode
         if color_theme_mode == "single" and hasattr(self, 'overview_bg_single_color_row'):
             # In single mode, use the single color for both themes
             single_color = self.overview_bg_single_color_row.itemAt(1).widget().text()
-            self.current_config["onigiri_overview_bg_light_color"] = single_color
-            self.current_config["onigiri_overview_bg_dark_color"] = single_color
+            self.current_config["kaizen_overview_bg_light_color"] = single_color
+            self.current_config["kaizen_overview_bg_dark_color"] = single_color
         else:
             # In separate mode, use the individual colors
             if hasattr(self, 'overview_bg_light_color_row'):
-                self.current_config["onigiri_overview_bg_light_color"] = self.overview_bg_light_color_row.itemAt(1).widget().text()
+                self.current_config["kaizen_overview_bg_light_color"] = self.overview_bg_light_color_row.itemAt(1).widget().text()
             if hasattr(self, 'overview_bg_dark_color_row'):
-                self.current_config["onigiri_overview_bg_dark_color"] = self.overview_bg_dark_color_row.itemAt(1).widget().text()
+                self.current_config["kaizen_overview_bg_dark_color"] = self.overview_bg_dark_color_row.itemAt(1).widget().text()
         
         # Save blur and opacity
-        self.current_config["onigiri_overview_bg_blur"] = self.overview_bg_blur_spinbox.value()
-        self.current_config["onigiri_overview_bg_opacity"] = self.overview_bg_opacity_spinbox.value()
+        self.current_config["kaizen_overview_bg_blur"] = self.overview_bg_blur_spinbox.value()
+        self.current_config["kaizen_overview_bg_opacity"] = self.overview_bg_opacity_spinbox.value()
         
         # Save image selections based on theme mode
         if image_theme_mode == "single" and 'overview_bg_single' in self.galleries:
             # In single mode, use the single image for both themes
             single_image = self.galleries['overview_bg_single'].get('selected', '')
-            self.current_config["onigiri_overview_bg_image"] = single_image
-            self.current_config["onigiri_overview_bg_image_light"] = single_image
-            self.current_config["onigiri_overview_bg_image_dark"] = single_image
+            self.current_config["kaizen_overview_bg_image"] = single_image
+            self.current_config["kaizen_overview_bg_image_light"] = single_image
+            self.current_config["kaizen_overview_bg_image_dark"] = single_image
         else:
             # In separate mode, use the individual images
             if 'overview_bg_light' in self.galleries:
-                self.current_config["onigiri_overview_bg_image_light"] = self.galleries['overview_bg_light'].get('selected', '')
+                self.current_config["kaizen_overview_bg_image_light"] = self.galleries['overview_bg_light'].get('selected', '')
             if 'overview_bg_dark' in self.galleries:
-                self.current_config["onigiri_overview_bg_image_dark"] = self.galleries['overview_bg_dark'].get('selected', '')
+                self.current_config["kaizen_overview_bg_image_dark"] = self.galleries['overview_bg_dark'].get('selected', '')
 
         self.current_config["showCongratsProfileBar"] = self.show_congrats_profile_bar_checkbox.isChecked()
         self.current_config["congratsMessage"] = self.congrats_message_input.text()
@@ -12100,14 +12100,14 @@ class SettingsDialog(QDialog):
         else: mw.col.conf["modern_menu_sidebar_bg_mode"] = "main"
         
         if self.sidebar_effect_glass_radio.isChecked():
-            mw.col.conf["onigiri_sidebar_main_bg_effect_mode"] = "glassmorphism"
+            mw.col.conf["kaizen_sidebar_main_bg_effect_mode"] = "glassmorphism"
         else:
-            mw.col.conf["onigiri_sidebar_main_bg_effect_mode"] = "opaque"
+            mw.col.conf["kaizen_sidebar_main_bg_effect_mode"] = "opaque"
         
-        mw.col.conf["onigiri_sidebar_main_bg_effect_intensity"] = self.sidebar_effect_intensity_spinbox.value()
-        mw.col.conf["onigiri_sidebar_opaque_tint_intensity"] = self.sidebar_overlay_intensity_spinbox.value()
-        mw.col.conf["onigiri_sidebar_opaque_tint_color_light"] = self.overlay_light_color_color_input.text()
-        mw.col.conf["onigiri_sidebar_opaque_tint_color_dark"] = self.overlay_dark_color_color_input.text()
+        mw.col.conf["kaizen_sidebar_main_bg_effect_intensity"] = self.sidebar_effect_intensity_spinbox.value()
+        mw.col.conf["kaizen_sidebar_opaque_tint_intensity"] = self.sidebar_overlay_intensity_spinbox.value()
+        mw.col.conf["kaizen_sidebar_opaque_tint_color_light"] = self.overlay_light_color_color_input.text()
+        mw.col.conf["kaizen_sidebar_opaque_tint_color_dark"] = self.overlay_dark_color_color_input.text()
 
         if self.sidebar_bg_type_accent_radio.isChecked():
             mw.col.conf["modern_menu_sidebar_bg_type"] = "accent"
@@ -12236,7 +12236,7 @@ class SettingsDialog(QDialog):
         """Saves the layout from the unified layout editor."""
         if hasattr(self, 'unified_layout_editor'):
             layout_config = self.unified_layout_editor.get_layout_config()
-            self.current_config['onigiriWidgetLayout'] = layout_config['onigiri']
+            self.current_config['kaizenWidgetLayout'] = layout_config['kaizen']
             self.current_config['externalWidgetLayout'] = layout_config['external']
             # Save the row count setting
             self.current_config['unifiedGridRows'] = self.unified_layout_editor.row_spin.value()
@@ -12264,19 +12264,19 @@ class SettingsDialog(QDialog):
         
         mw.col.conf["modern_menu_profile_bg_color_light"] = self.profile_bg_light_color_input.text()
         mw.col.conf["modern_menu_profile_bg_color_dark"] = self.profile_bg_dark_color_input.text()
-        mw.col.conf["onigiri_profile_show_theme_light"] = self.profile_show_theme_light_check.isChecked()
-        mw.col.conf["onigiri_profile_show_theme_dark"] = self.profile_show_theme_dark_check.isChecked()
-        mw.col.conf["onigiri_profile_show_backgrounds"] = self.profile_show_backgrounds_check.isChecked()
-        mw.col.conf["onigiri_profile_show_stats"] = self.profile_show_stats_check.isChecked()
+        mw.col.conf["kaizen_profile_show_theme_light"] = self.profile_show_theme_light_check.isChecked()
+        mw.col.conf["kaizen_profile_show_theme_dark"] = self.profile_show_theme_dark_check.isChecked()
+        mw.col.conf["kaizen_profile_show_backgrounds"] = self.profile_show_backgrounds_check.isChecked()
+        mw.col.conf["kaizen_profile_show_stats"] = self.profile_show_stats_check.isChecked()
         if self.profile_page_bg_gradient_radio.isChecked():
-            mw.col.conf["onigiri_profile_page_bg_mode"] = "gradient"
-            mw.col.conf["onigiri_profile_page_bg_light_color1"] = self.profile_page_light_gradient1_color_input.text()
-            mw.col.conf["onigiri_profile_page_bg_light_color2"] = self.profile_page_light_gradient2_color_input.text()
-            mw.col.conf["onigiri_profile_page_bg_dark_color1"] = self.profile_page_dark_gradient1_color_input.text()
-            mw.col.conf["onigiri_profile_page_bg_dark_color2"] = self.profile_page_dark_gradient2_color_input.text()
-            mw.col.conf["onigiri_profile_page_bg_mode"] = "color"
-            mw.col.conf["onigiri_profile_page_bg_light_color1"] = self.profile_page_light_color1_color_input.text()
-            mw.col.conf["onigiri_profile_page_bg_dark_color1"] = self.profile_page_dark_color1_color_input.text()
+            mw.col.conf["kaizen_profile_page_bg_mode"] = "gradient"
+            mw.col.conf["kaizen_profile_page_bg_light_color1"] = self.profile_page_light_gradient1_color_input.text()
+            mw.col.conf["kaizen_profile_page_bg_light_color2"] = self.profile_page_light_gradient2_color_input.text()
+            mw.col.conf["kaizen_profile_page_bg_dark_color1"] = self.profile_page_dark_gradient1_color_input.text()
+            mw.col.conf["kaizen_profile_page_bg_dark_color2"] = self.profile_page_dark_gradient2_color_input.text()
+            mw.col.conf["kaizen_profile_page_bg_mode"] = "color"
+            mw.col.conf["kaizen_profile_page_bg_light_color1"] = self.profile_page_light_color1_color_input.text()
+            mw.col.conf["kaizen_profile_page_bg_dark_color1"] = self.profile_page_dark_color1_color_input.text()
             
         # Save Restaurant Level visibility
         restaurant_level.manager.set_profile_page_visibility(self.profile_show_restaurant_check.isChecked())
@@ -12507,103 +12507,103 @@ class SettingsDialog(QDialog):
         elif self.canvas_effect_glass_radio.isChecked():
             effect_mode = "glassmorphism"
         
-        mw.col.conf["onigiri_canvas_inset_effect_mode"] = effect_mode
-        mw.col.conf["onigiri_canvas_inset_effect_intensity"] = self.canvas_effect_intensity_spinbox.value()
+        mw.col.conf["kaizen_canvas_inset_effect_mode"] = effect_mode
+        mw.col.conf["kaizen_canvas_inset_effect_intensity"] = self.canvas_effect_intensity_spinbox.value()
         # --- END: Save Boxes Color Effect Settings ---
 
 
 
     def _save_reviewer_settings(self):
         # Save Answer Buttons Settings
-        self.current_config["onigiri_reviewer_btn_custom_enabled"] = self.reviewer_btn_custom_enable_toggle.isChecked()
-        self.current_config["onigiri_reviewer_btn_radius"] = self.reviewer_btn_radius_spin.value()
-        self.current_config["onigiri_reviewer_btn_padding"] = self.reviewer_btn_padding_spin.value()
-        self.current_config["onigiri_reviewer_btn_height"] = self.reviewer_btn_height_spin.value()
-        self.current_config["onigiri_reviewer_bar_height"] = self.reviewer_bar_height_spin.value()
-        self.current_config["onigiri_reviewer_stattxt_color_light"] = getattr(self, "stattxt_color_light_color_input").text()
-        self.current_config["onigiri_reviewer_stattxt_color_dark"] = getattr(self, "stattxt_color_dark_color_input").text()
+        self.current_config["kaizen_reviewer_btn_custom_enabled"] = self.reviewer_btn_custom_enable_toggle.isChecked()
+        self.current_config["kaizen_reviewer_btn_radius"] = self.reviewer_btn_radius_spin.value()
+        self.current_config["kaizen_reviewer_btn_padding"] = self.reviewer_btn_padding_spin.value()
+        self.current_config["kaizen_reviewer_btn_height"] = self.reviewer_btn_height_spin.value()
+        self.current_config["kaizen_reviewer_bar_height"] = self.reviewer_bar_height_spin.value()
+        self.current_config["kaizen_reviewer_stattxt_color_light"] = getattr(self, "stattxt_color_light_color_input").text()
+        self.current_config["kaizen_reviewer_stattxt_color_dark"] = getattr(self, "stattxt_color_dark_color_input").text()
         
         # Save Other Buttons
-        self.current_config["onigiri_reviewer_other_btn_bg_light"] = getattr(self, "other_btn_bg_light_color_input").text()
-        self.current_config["onigiri_reviewer_other_btn_text_light"] = getattr(self, "other_btn_text_light_color_input").text()
-        self.current_config["onigiri_reviewer_other_btn_bg_dark"] = getattr(self, "other_btn_bg_dark_color_input").text()
-        self.current_config["onigiri_reviewer_other_btn_text_dark"] = getattr(self, "other_btn_text_dark_color_input").text()
-        self.current_config["onigiri_reviewer_other_btn_hover_bg_light"] = getattr(self, "other_btn_hover_bg_light_color_input").text()
-        self.current_config["onigiri_reviewer_other_btn_hover_text_light"] = getattr(self, "other_btn_hover_text_light_color_input").text()
-        self.current_config["onigiri_reviewer_other_btn_hover_bg_dark"] = getattr(self, "other_btn_hover_bg_dark_color_input").text()
-        self.current_config["onigiri_reviewer_other_btn_hover_text_dark"] = getattr(self, "other_btn_hover_text_dark_color_input").text()
+        self.current_config["kaizen_reviewer_other_btn_bg_light"] = getattr(self, "other_btn_bg_light_color_input").text()
+        self.current_config["kaizen_reviewer_other_btn_text_light"] = getattr(self, "other_btn_text_light_color_input").text()
+        self.current_config["kaizen_reviewer_other_btn_bg_dark"] = getattr(self, "other_btn_bg_dark_color_input").text()
+        self.current_config["kaizen_reviewer_other_btn_text_dark"] = getattr(self, "other_btn_text_dark_color_input").text()
+        self.current_config["kaizen_reviewer_other_btn_hover_bg_light"] = getattr(self, "other_btn_hover_bg_light_color_input").text()
+        self.current_config["kaizen_reviewer_other_btn_hover_text_light"] = getattr(self, "other_btn_hover_text_light_color_input").text()
+        self.current_config["kaizen_reviewer_other_btn_hover_bg_dark"] = getattr(self, "other_btn_hover_bg_dark_color_input").text()
+        self.current_config["kaizen_reviewer_other_btn_hover_text_dark"] = getattr(self, "other_btn_hover_text_dark_color_input").text()
         
         for key in ["again", "hard", "good", "easy"]:
-            self.current_config[f"onigiri_reviewer_btn_{key}_bg_light"] = getattr(self, f"btn_{key}_bg_light_color_input").text()
-            self.current_config[f"onigiri_reviewer_btn_{key}_bg_dark"] = getattr(self, f"btn_{key}_bg_dark_color_input").text()
-            self.current_config[f"onigiri_reviewer_btn_{key}_text_light"] = getattr(self, f"btn_{key}_text_light_color_input").text()
-            self.current_config[f"onigiri_reviewer_btn_{key}_text_dark"] = getattr(self, f"btn_{key}_text_dark_color_input").text()
+            self.current_config[f"kaizen_reviewer_btn_{key}_bg_light"] = getattr(self, f"btn_{key}_bg_light_color_input").text()
+            self.current_config[f"kaizen_reviewer_btn_{key}_bg_dark"] = getattr(self, f"btn_{key}_bg_dark_color_input").text()
+            self.current_config[f"kaizen_reviewer_btn_{key}_text_light"] = getattr(self, f"btn_{key}_text_light_color_input").text()
+            self.current_config[f"kaizen_reviewer_btn_{key}_text_dark"] = getattr(self, f"btn_{key}_text_dark_color_input").text()
 
         # --- Reviewer Background ---
         if self.reviewer_bg_main_radio.isChecked():
-            self.current_config["onigiri_reviewer_bg_mode"] = "main"
+            self.current_config["kaizen_reviewer_bg_mode"] = "main"
         elif self.reviewer_bg_color_radio.isChecked():
-            self.current_config["onigiri_reviewer_bg_mode"] = "color"
+            self.current_config["kaizen_reviewer_bg_mode"] = "color"
         elif self.reviewer_bg_image_color_radio.isChecked():
-            self.current_config["onigiri_reviewer_bg_mode"] = "image_color"
+            self.current_config["kaizen_reviewer_bg_mode"] = "image_color"
         
         # Save theme mode for colors and images
         color_theme_mode = "single" if hasattr(self, 'reviewer_bg_color_theme_mode_single') and self.reviewer_bg_color_theme_mode_single.isChecked() else "separate"
         image_theme_mode = "single" if hasattr(self, 'reviewer_bg_image_theme_mode_single') and self.reviewer_bg_image_theme_mode_single.isChecked() else "separate"
         
-        mw.col.conf["onigiri_reviewer_bg_color_theme_mode"] = color_theme_mode
-        mw.col.conf["onigiri_reviewer_bg_image_theme_mode"] = image_theme_mode
+        mw.col.conf["kaizen_reviewer_bg_color_theme_mode"] = color_theme_mode
+        mw.col.conf["kaizen_reviewer_bg_image_theme_mode"] = image_theme_mode
         
         # Also save to addon config so patcher.py can read it
-        self.current_config["onigiri_reviewer_bg_image_mode"] = image_theme_mode
+        self.current_config["kaizen_reviewer_bg_image_mode"] = image_theme_mode
         
         # Main background blur and opacity
-        self.current_config["onigiri_reviewer_bg_main_blur"] = self.reviewer_bg_main_blur_spinbox.value()
-        self.current_config["onigiri_reviewer_bg_main_opacity"] = self.reviewer_bg_main_opacity_spinbox.value()
+        self.current_config["kaizen_reviewer_bg_main_blur"] = self.reviewer_bg_main_blur_spinbox.value()
+        self.current_config["kaizen_reviewer_bg_main_opacity"] = self.reviewer_bg_main_opacity_spinbox.value()
         
         # Save colors based on theme mode
         if color_theme_mode == "single" and hasattr(self, 'reviewer_bg_single_color_row'):
             # In single mode, use the single color for both themes
             single_color = self.reviewer_bg_single_color_row.itemAt(1).widget().text()
-            self.current_config["onigiri_reviewer_bg_light_color"] = single_color
-            self.current_config["onigiri_reviewer_bg_dark_color"] = single_color
+            self.current_config["kaizen_reviewer_bg_light_color"] = single_color
+            self.current_config["kaizen_reviewer_bg_dark_color"] = single_color
         else:
             # In separate mode, use the individual colors
             if hasattr(self, 'reviewer_bg_light_color_row'):
-                self.current_config["onigiri_reviewer_bg_light_color"] = self.reviewer_bg_light_color_row.itemAt(1).widget().text()
+                self.current_config["kaizen_reviewer_bg_light_color"] = self.reviewer_bg_light_color_row.itemAt(1).widget().text()
             if hasattr(self, 'reviewer_bg_dark_color_row'):
-                self.current_config["onigiri_reviewer_bg_dark_color"] = self.reviewer_bg_dark_color_row.itemAt(1).widget().text()
+                self.current_config["kaizen_reviewer_bg_dark_color"] = self.reviewer_bg_dark_color_row.itemAt(1).widget().text()
         
         # Save blur and opacity
-        self.current_config["onigiri_reviewer_bg_blur"] = self.reviewer_bg_blur_spinbox.value()
-        self.current_config["onigiri_reviewer_bg_opacity"] = self.reviewer_bg_opacity_spinbox.value()
+        self.current_config["kaizen_reviewer_bg_blur"] = self.reviewer_bg_blur_spinbox.value()
+        self.current_config["kaizen_reviewer_bg_opacity"] = self.reviewer_bg_opacity_spinbox.value()
         
         # Save image selections based on theme mode
         if image_theme_mode == "single" and 'reviewer_bg_single' in self.galleries:
             # In single mode, use the single image for both themes
             single_image = self.galleries['reviewer_bg_single'].get('selected', '')
-            self.current_config["onigiri_reviewer_bg_image"] = single_image
-            self.current_config["onigiri_reviewer_bg_image_light"] = single_image
-            self.current_config["onigiri_reviewer_bg_image_dark"] = single_image
+            self.current_config["kaizen_reviewer_bg_image"] = single_image
+            self.current_config["kaizen_reviewer_bg_image_light"] = single_image
+            self.current_config["kaizen_reviewer_bg_image_dark"] = single_image
         else:
             # In separate mode, use the individual images
             if 'reviewer_bg_light' in self.galleries:
-                self.current_config["onigiri_reviewer_bg_image_light"] = self.galleries['reviewer_bg_light'].get('selected', '')
+                self.current_config["kaizen_reviewer_bg_image_light"] = self.galleries['reviewer_bg_light'].get('selected', '')
             if 'reviewer_bg_dark' in self.galleries:
-                self.current_config["onigiri_reviewer_bg_image_dark"] = self.galleries['reviewer_bg_dark'].get('selected', '')
+                self.current_config["kaizen_reviewer_bg_image_dark"] = self.galleries['reviewer_bg_dark'].get('selected', '')
         
         # --- Bottom Bar ---
-        self.current_config["onigiri_reviewer_bottom_bar_bg_mode"] = self.reviewer_bottom_bar_mode
-        self.current_config["onigiri_reviewer_bottom_bar_match_main_blur"] = self.reviewer_bar_match_main_blur_spinbox.value()
-        self.current_config["onigiri_reviewer_bottom_bar_match_main_opacity"] = self.reviewer_bar_match_main_opacity_spinbox.value()
-        self.current_config["onigiri_reviewer_bottom_bar_match_reviewer_bg_blur"] = self.reviewer_bar_match_reviewer_bg_blur_spinbox.value()
-        self.current_config["onigiri_reviewer_bottom_bar_match_reviewer_bg_opacity"] = self.reviewer_bar_match_reviewer_bg_opacity_spinbox.value()
-        self.current_config["onigiri_reviewer_bottom_bar_bg_light_color"] = self.reviewer_bar_light_color_input.text()
-        self.current_config["onigiri_reviewer_bottom_bar_bg_dark_color"] = self.reviewer_bar_dark_color_input.text()
-        self.current_config["onigiri_reviewer_bottom_bar_bg_blur"] = self.reviewer_bar_blur_spinbox.value()
-        self.current_config["onigiri_reviewer_bottom_bar_bg_opacity"] = self.reviewer_bar_opacity_spinbox.value()
+        self.current_config["kaizen_reviewer_bottom_bar_bg_mode"] = self.reviewer_bottom_bar_mode
+        self.current_config["kaizen_reviewer_bottom_bar_match_main_blur"] = self.reviewer_bar_match_main_blur_spinbox.value()
+        self.current_config["kaizen_reviewer_bottom_bar_match_main_opacity"] = self.reviewer_bar_match_main_opacity_spinbox.value()
+        self.current_config["kaizen_reviewer_bottom_bar_match_reviewer_bg_blur"] = self.reviewer_bar_match_reviewer_bg_blur_spinbox.value()
+        self.current_config["kaizen_reviewer_bottom_bar_match_reviewer_bg_opacity"] = self.reviewer_bar_match_reviewer_bg_opacity_spinbox.value()
+        self.current_config["kaizen_reviewer_bottom_bar_bg_light_color"] = self.reviewer_bar_light_color_input.text()
+        self.current_config["kaizen_reviewer_bottom_bar_bg_dark_color"] = self.reviewer_bar_dark_color_input.text()
+        self.current_config["kaizen_reviewer_bottom_bar_bg_blur"] = self.reviewer_bar_blur_spinbox.value()
+        self.current_config["kaizen_reviewer_bottom_bar_bg_opacity"] = self.reviewer_bar_opacity_spinbox.value()
         if 'reviewer_bar_bg' in self.galleries:
-            self.current_config["onigiri_reviewer_bottom_bar_bg_image"] = self.galleries['reviewer_bar_bg']['selected']
+            self.current_config["kaizen_reviewer_bottom_bar_bg_image"] = self.galleries['reviewer_bar_bg']['selected']
 
     def _save_sidebar_layout_settings(self):
         """Saves the sidebar button layout from the editor."""

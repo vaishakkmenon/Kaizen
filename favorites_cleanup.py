@@ -23,7 +23,7 @@ def cleanup_favorites():
         print("Error: No collection loaded")
         return (0, [])
     
-    favorites = mw.col.conf.get("onigiri_favorite_decks", [])
+    favorites = mw.col.conf.get("kaizen_favorite_decks", [])
     if not favorites:
         print("No favorites to clean up")
         return (0, [])
@@ -55,7 +55,7 @@ def cleanup_favorites():
             print(f"  ✗ ID {deck_id}: INVALID (no name or null)")
     
     if removed_decks:
-        mw.col.conf["onigiri_favorite_decks"] = valid_favorites
+        mw.col.conf["kaizen_favorite_decks"] = valid_favorites
         mw.col.setMod()
         print(f"\n✓ Removed {len(removed_decks)} deleted/invalid deck(s) from favorites")
         print(f"Remaining favorites: {len(valid_favorites)}")
@@ -80,7 +80,7 @@ def list_favorites():
         print("Error: No collection loaded")
         return []
     
-    favorites = mw.col.conf.get("onigiri_favorite_decks", [])
+    favorites = mw.col.conf.get("kaizen_favorite_decks", [])
     
     if not favorites:
         print("No favorite decks")
@@ -121,11 +121,11 @@ def remove_favorite(deck_id):
         return False
     
     deck_id = str(deck_id)  # Ensure it's a string
-    favorites = mw.col.conf.get("onigiri_favorite_decks", [])
+    favorites = mw.col.conf.get("kaizen_favorite_decks", [])
     
     if deck_id in favorites:
         favorites.remove(deck_id)
-        mw.col.conf["onigiri_favorite_decks"] = favorites
+        mw.col.conf["kaizen_favorite_decks"] = favorites
         mw.col.setMod()
         print(f"✓ Removed deck {deck_id} from favorites")
         print(f"Remaining favorites: {favorites}")
@@ -150,11 +150,11 @@ def clear_all_favorites():
         print("Error: No collection loaded")
         return 0
     
-    favorites = mw.col.conf.get("onigiri_favorite_decks", [])
+    favorites = mw.col.conf.get("kaizen_favorite_decks", [])
     count = len(favorites)
     
     if count > 0:
-        mw.col.conf["onigiri_favorite_decks"] = []
+        mw.col.conf["kaizen_favorite_decks"] = []
         mw.col.setMod()
         print(f"✓ Cleared {count} favorite deck(s)")
     else:
