@@ -245,8 +245,8 @@ window.KaizenEngine = {
 
     /** Applies open/closed state classes to a collapse icon. */
     classifyCollapseIcon: function(el) {
-        if (el.dataset.onigiriClassified) return;
-        el.dataset.onigiriClassified = 'true';
+        if (el.dataset.kaizenClassified) return;
+        el.dataset.kaizenClassified = 'true';
         el.classList.remove('state-open', 'state-closed');
         
         if (el.textContent.trim() === '-') {

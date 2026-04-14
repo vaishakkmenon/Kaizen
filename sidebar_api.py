@@ -176,7 +176,7 @@ def render_sidebar_entry(entry_id: str) -> str:
                     f"mask: url('{data_uri}') no-repeat center / contain; "
                     f"-webkit-mask: url('{data_uri}') no-repeat center / contain;\""
                 )
-                data_attr = " data-onigiri-icon=\"1\""
+                data_attr = " data-kaizen-icon=\"1\""
             else:
                 # SVG mask: inline SVG is turned into a data URI and used as a CSS mask.
                 data_uri = "data:image/svg+xml," + urllib.parse.quote(icon_svg)
@@ -188,7 +188,7 @@ def render_sidebar_entry(entry_id: str) -> str:
                     f"mask: url('{data_uri}') no-repeat center / contain; "
                     f"-webkit-mask: url('{data_uri}') no-repeat center / contain;\""
                 )
-                data_attr = " data-onigiri-icon=\"1\""
+                data_attr = " data-kaizen-icon=\"1\""
 
     return (
         f"<div class=\"menu-item {safe_class}\"{data_attr} onclick='pycmd({js_cmd})'>"

@@ -240,7 +240,7 @@ def _get_kaizen_retention_html() -> str:
 def _get_kaizen_heatmap_html() -> str:
     skeleton_cells = "".join(["<div class='skeleton-cell'></div>" for _ in range(371)])
     return f"""
-    <div id='onigiri-heatmap-container'>
+    <div id='kaizen-heatmap-container'>
         <div class="heatmap-header-skeleton"><div class="header-left-skeleton"><div class="skeleton-title"></div><div class="skeleton-nav"></div></div><div class="header-right-skeleton"><div class="skeleton-streak"></div><div class="skeleton-filters"></div></div></div>
         <div class="heatmap-grid-skeleton">{skeleton_cells}</div>
     </div>"""
@@ -255,7 +255,7 @@ def _get_kaizen_favorites_html() -> str:
         favorite_dids = mw.col.conf.get("kaizen_favorite_decks", [])
         if not favorite_dids:
             return """
-            <div class="onigiri-favorites-widget">
+            <div class="kaizen-favorites-widget">
                 <h3>Favorites</h3>
                 <div class="favorites-placeholder">
                     No favorite decks selected.
@@ -319,7 +319,7 @@ def _get_kaizen_favorites_html() -> str:
         # If no valid favorites remain after cleanup, show placeholder
         if not links_html:
             return """
-            <div class="onigiri-favorites-widget">
+            <div class="kaizen-favorites-widget">
                 <h3>Favorites</h3>
                 <div class="favorites-placeholder">
                     No favorite decks selected.
@@ -330,7 +330,7 @@ def _get_kaizen_favorites_html() -> str:
             """
         
         return f"""
-        <div class="onigiri-favorites-widget">
+        <div class="kaizen-favorites-widget">
             <h3>Favorites</h3>
             <div class="favorites-list">
                 {''.join(links_html)}
@@ -341,7 +341,7 @@ def _get_kaizen_favorites_html() -> str:
         print(f"Onigiri: Error building favorites widget: {e}")
         import traceback
         traceback.print_exc()
-        return "<div class='onigiri-favorites-widget'>Error loading favorites.</div>"
+        return "<div class='kaizen-favorites-widget'>Error loading favorites.</div>"
 # --- END OF NEW FUNCTION ---
 
 def _get_kaizen_restaurant_level_html() -> str:
@@ -356,7 +356,7 @@ def _get_kaizen_restaurant_level_html() -> str:
     rl_payload = restaurant_level.manager.get_progress_payload()
     if not rl_payload.get("enabled"):
         return """
-        <div class="onigiri-restaurant-level-widget disabled">
+        <div class="kaizen-restaurant-level-widget disabled">
             <div class="restaurant-info">
                 <h3>Restaurant Level</h3>
                 <p>Feature Disabled</p>
@@ -453,8 +453,8 @@ def _get_kaizen_restaurant_level_html() -> str:
         ds_html = "<div class='daily-special-section'><p class='ds-label'>No Daily Special Active</p></div>"
 
     return f"""
-    <div class="onigiri-restaurant-level-widget {snow_class}" style="--theme-bg: {bg_style_value}; --theme-color: {bar_color}">
-        <div class="restaurant-image-container" onclick="this.closest('.onigiri-restaurant-level-widget').classList.toggle('expanded-view'); event.stopPropagation();" style="cursor: pointer;">
+    <div class="kaizen-restaurant-level-widget {snow_class}" style="--theme-bg: {bg_style_value}; --theme-color: {bar_color}">
+        <div class="restaurant-image-container" onclick="this.closest('.kaizen-restaurant-level-widget').classList.toggle('expanded-view'); event.stopPropagation();" style="cursor: pointer;">
             <img src="{image_path}" class="restaurant-image">
             {snowflakes_html}
         </div>
@@ -538,7 +538,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
                 row = pos // col_count + 1
                 col = pos % col_count + 1
                 style = f"grid-area: {row} / {col} / span {row_span} / span {col_span};"
-                kaizen_grid_html += f'<div class="onigiri-widget-container" style="{style}">{widget_generators[widget_id]()}</div>'
+                kaizen_grid_html += f'<div class="kaizen-widget-container" style="{style}">{widget_generators[widget_id]()}</div>'
 
     # --- Part 2: Build External Add-on Widgets (into the same unified grid) ---
     external_hooks = patcher._get_external_hooks()
@@ -571,7 +571,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
 
     # --- Part 3: Assemble the Final Stats Block ---
     stats_title = mw.col.conf.get("modern_menu_statsTitle", config.DEFAULTS["statsTitle"])
-    title_html = f'<h1 class="onigiri-widget-title">{stats_title}</h1>' if stats_title else ""
+    title_html = f'<h1 class="kaizen-widget-title">{stats_title}</h1>' if stats_title else ""
 
     # Combine both Onigiri and External widgets into a single unified grid
     unified_grid_html = kaizen_grid_html + external_widgets_html
@@ -603,7 +603,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
         }}
         
         /* Make the container expand to fill the grid area (rows/cols) */
-        .onigiri-widget-container, .external-widget-container {{
+        .kaizen-widget-container, .external-widget-container {{
             width: 100%;
             height: 100%;
             display: flex;
@@ -613,7 +613,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
         }}
 
         /* Force the inner content (cards, heatmap, favorites) to fill the container */
-        .stat-card, #onigiri-heatmap-container, .onigiri-favorites-widget {{
+        .stat-card, #kaizen-heatmap-container, .kaizen-favorites-widget {{
             flex: 1;
             width: 100%;
             height: 100%;
@@ -621,7 +621,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
         }}
 
         /* Restaurant Level Widget Styles */
-        .onigiri-restaurant-level-widget {{
+        .kaizen-restaurant-level-widget {{
             display: flex;
             flex-direction: row;
             background: var(--canvas-inset, #f5f5f5);
@@ -634,12 +634,12 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
             position: relative;
         }}
         
-        .onigiri-restaurant-level-widget.expanded-view {{
+        .kaizen-restaurant-level-widget.expanded-view {{
             background: var(--theme-bg) !important;
             border-color: transparent;
         }}
         
-        .night .onigiri-restaurant-level-widget {{
+        .night .kaizen-restaurant-level-widget {{
             background: var(--canvas-inset, #2c2c2c);
             border-color: var(--border, #444);
         }}
@@ -685,7 +685,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
             max-width: {1600 if col_count > 4 else 900}px !important;
         }}
 
-        .onigiri-restaurant-level-widget.expanded-view .restaurant-image-container {{
+        .kaizen-restaurant-level-widget.expanded-view .restaurant-image-container {{
             position: absolute;
             top: 0;
             left: 0;
@@ -708,11 +708,11 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
             transition: transform 0.3s ease;
         }}
         
-        .onigiri-restaurant-level-widget:hover .restaurant-image {{
+        .kaizen-restaurant-level-widget:hover .restaurant-image {{
             transform: scale(1.05);
         }}
         
-        .onigiri-restaurant-level-widget.expanded-view .restaurant-image {{
+        .kaizen-restaurant-level-widget.expanded-view .restaurant-image {{
             transform: scale(1.0);
             filter: drop-shadow(0 8px 12px rgba(0,0,0,0.2));
         }}
@@ -727,7 +727,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
             transition: opacity 0.2s ease;
         }}
         
-        .onigiri-restaurant-level-widget.expanded-view .restaurant-info {{
+        .kaizen-restaurant-level-widget.expanded-view .restaurant-info {{
             display: none;
             opacity: 0;
         }}
@@ -822,7 +822,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
         }}
         
         /* Snow Animation for Santa's Coffee Theme */
-        .onigiri-restaurant-level-widget.with-snow .restaurant-image-container {{
+        .kaizen-restaurant-level-widget.with-snow .restaurant-image-container {{
             overflow: visible;
         }}
         
@@ -856,7 +856,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
         }}
         
         /* Make snowflakes visible in expanded view too */
-        .onigiri-restaurant-level-widget.expanded-view.with-snow .snowflake {{
+        .kaizen-restaurant-level-widget.expanded-view.with-snow .snowflake {{
             display: block;
         }}
         
@@ -912,7 +912,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
         }}
         
         /* Style for expanded view - reduce button visibility */
-        .onigiri-restaurant-level-widget.expanded-view .rl-widget-nav-buttons {{
+        .kaizen-restaurant-level-widget.expanded-view .rl-widget-nav-buttons {{
             opacity: 0.5;
         }}
     </style>

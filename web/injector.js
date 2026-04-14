@@ -406,8 +406,8 @@
     function setupResizeHandle() {
         const handle = document.querySelector('.resize-handle');
         const sidebarEl = document.querySelector('.sidebar-left');
-        if (!handle || !sidebarEl || handle.dataset.onigiriSetup) return;
-        handle.dataset.onigiriSetup = 'true';
+        if (!handle || !sidebarEl || handle.dataset.kaizenSetup) return;
+        handle.dataset.kaizenSetup = 'true';
 
         const indicator = document.createElement('div');
         indicator.className = 'resize-handle-indicator';
@@ -539,7 +539,7 @@
         document.removeEventListener('mouseup', handlers.documentMouseup);
 
         // Remove the setup flag to allow re-setup
-        delete handle.dataset.onigiriSetup;
+        delete handle.dataset.kaizenSetup;
 
         // Re-setup the resize handle
         setupResizeHandle();

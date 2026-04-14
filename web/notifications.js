@@ -3,7 +3,7 @@
         return;
     }
 
-    const STACK_ID = "onigiri-notification-stack";
+    const STACK_ID = "kaizen-notification-stack";
     const CARD_VISIBLE_CLASS = "is-visible";
     const DEFAULT_DURATION = 5200;
     const MOCHI_ICON_IMAGE = "/_addons/1011095603/system_files/gamification_images/mochi_messenger.png";
@@ -48,7 +48,7 @@
         if (!stack) {
             stack = document.createElement("div");
             stack.id = STACK_ID;
-            stack.className = "onigiri-notification-stack";
+            stack.className = "kaizen-notification-stack";
             document.body.appendChild(stack);
         }
         return stack;
@@ -69,7 +69,7 @@
     function renderNotification(data) {
         const stack = ensureStack();
         const card = document.createElement('article');
-        card.className = 'onigiri-notification-card';
+        card.className = 'kaizen-notification-card';
         if (data.variant) {
             card.dataset.variant = data.variant;
         } else if (data.id === 'mochi_message') {
@@ -84,7 +84,7 @@
         }
 
         const icon = document.createElement('div');
-        icon.className = 'onigiri-notification-icon';
+        icon.className = 'kaizen-notification-icon';
 
         let iconImageSrc = null;
         if (Object.prototype.hasOwnProperty.call(data, 'iconImage')) {
@@ -105,14 +105,14 @@
         }
 
         const content = document.createElement('div');
-        content.className = 'onigiri-notification-content';
+        content.className = 'kaizen-notification-content';
 
         const title = document.createElement("p");
-        title.className = "onigiri-notification-title";
+        title.className = "kaizen-notification-title";
         title.textContent = data.name || "Achievement unlocked";
 
         const description = document.createElement("p");
-        description.className = "onigiri-notification-description";
+        description.className = "kaizen-notification-description";
         description.textContent = data.description || "";
 
         content.appendChild(title);

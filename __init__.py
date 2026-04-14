@@ -39,13 +39,13 @@ def generate_notification_position_css(conf):
     """Generates CSS for notification positioning logic."""
     pos = conf.get("kaizen_reviewer_notification_position", "top-right")
     
-    css = ".onigiri-notification-stack { "
+    css = ".kaizen-notification-stack { "
     
     # Defaults (resetting properties that might conflict)
     css += "top: auto; bottom: auto; left: auto; right: auto; transform: none; "
     
     # Base top offset calculation: Header Offset + 20px padding
-    top_offset = "calc(var(--onigiri-reviewer-header-offset, 0px) + 5px)"
+    top_offset = "calc(var(--kaizen-reviewer-header-offset, 0px) + 5px)"
     
     if pos == "top-left":
         css += f"top: {top_offset}; left: 20px; align-items: flex-start; flex-direction: column; "
@@ -114,9 +114,9 @@ def inject_menu_files(web_content, context):
         js_injector = f"""
         <script>
             document.addEventListener('DOMContentLoaded', function() {{
-                if (!document.getElementById('onigiri-background-div')) {{
+                if (!document.getElementById('kaizen-background-div')) {{
                     const bgDiv = document.createElement('div');
-                    bgDiv.id = 'onigiri-background-div';
+                    bgDiv.id = 'kaizen-background-div';
                     document.body.prepend(bgDiv);
                 }}
 
@@ -125,10 +125,10 @@ def inject_menu_files(web_content, context):
                     if (!topBarHtml.trim()) {{
                         return null;
                     }}
-                    let headerEl = document.getElementById('onigiri-reviewer-header');
+                    let headerEl = document.getElementById('kaizen-reviewer-header');
                     if (!headerEl) {{
                         document.body.insertAdjacentHTML('afterbegin', topBarHtml);
-                        headerEl = document.getElementById('onigiri-reviewer-header');
+                        headerEl = document.getElementById('kaizen-reviewer-header');
                     }}
                     return headerEl;
                 }};
@@ -139,7 +139,7 @@ def inject_menu_files(web_content, context):
                 }}
 
                 const updateHeaderOffset = () => {{
-                    const header = document.getElementById('onigiri-reviewer-header');
+                    const header = document.getElementById('kaizen-reviewer-header');
                     if (!header) {{
                         return;
                     }}
@@ -147,7 +147,7 @@ def inject_menu_files(web_content, context):
                     const marginTop = parseFloat(styles.marginTop) || 0;
                     const marginBottom = parseFloat(styles.marginBottom) || 0;
                     const offset = header.offsetHeight + marginTop + marginBottom;
-                    document.body.style.setProperty('--onigiri-reviewer-header-offset', `${{Math.ceil(offset)}}px`);
+                    document.body.style.setProperty('--kaizen-reviewer-header-offset', `${{Math.ceil(offset)}}px`);
                 }};
 
                 updateHeaderOffset();
@@ -378,7 +378,7 @@ def on_deck_browser_did_render(deck_browser: DeckBrowser):
     if "heatmap" in grid_layout:
         try:
             heatmap_data, heatmap_config = heatmap.get_heatmap_and_config()
-            js = f"KaizenHeatmap.render('onigiri-heatmap-container', {json.dumps(heatmap_data)}, {json.dumps(heatmap_config)});"
+            js = f"KaizenHeatmap.render('kaizen-heatmap-container', {json.dumps(heatmap_data)}, {json.dumps(heatmap_config)});"
             deck_browser.web.eval(js)
         except Exception as e:
             pass

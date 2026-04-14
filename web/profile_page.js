@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- NEW, SIMPLER EXPORT FUNCTION ---
     function exportFullPage() {
         // Target our new top-level container
-        const elementToCapture = document.querySelector('.onigiri-profile-page');
+        const elementToCapture = document.querySelector('.kaizen-profile-page');
         if (!elementToCapture) return;
 
         const options = {

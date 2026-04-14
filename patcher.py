@@ -525,12 +525,12 @@ def generate_profile_page_background_css():
         dark1 = mw.col.conf.get("kaizen_profile_page_bg_dark_color1", "#424242")
         dark2 = mw.col.conf.get("kaizen_profile_page_bg_dark_color2", "#212121")
         return f"""
-        <style id="onigiri-profile-page-bg">
-            .onigiri-profile-page {{
+        <style id="kaizen-profile-page-bg">
+            .kaizen-profile-page {{
                 background-image: linear-gradient(to bottom, {light1}, {light2});
                 background-attachment: fixed;
             }}
-            .night-mode .onigiri-profile-page {{
+            .night-mode .kaizen-profile-page {{
                 background-image: linear-gradient(to bottom, {dark1}, {dark2});
             }}
         </style>
@@ -540,9 +540,9 @@ def generate_profile_page_background_css():
         light_color = mw.col.conf.get("kaizen_profile_page_bg_light_color1", "#F5F5F5")
         dark_color = mw.col.conf.get("kaizen_profile_page_bg_dark_color1", "#2c2c2c")
         return f"""
-        <style id="onigiri-profile-page-bg">
-            .onigiri-profile-page {{ background-color: {light_color} !important; }}
-            .night-mode .onigiri-profile-page {{ background-color: {dark_color} !important; }}
+        <style id="kaizen-profile-page-bg">
+            .kaizen-profile-page {{ background-color: {light_color} !important; }}
+            .night-mode .kaizen-profile-page {{ background-color: {dark_color} !important; }}
         </style>
         """
 
@@ -926,7 +926,7 @@ def _generate_profile_html_body():
     """
     
     return f"""
-    <div class="onigiri-profile-page">
+    <div class="kaizen-profile-page">
         {banner_html}
 
         <div class="profile-controls">
@@ -1319,13 +1319,13 @@ def patch_overview():
 	header_html = ""
 	if show_toolbar_replacements and not flow_mode:
 		header_html = """
-    <div id="onigiri-overview-header" class="overview-header">
-        <div class="onigiri-reviewer-header-buttons">
-            <a href="#" onclick="pycmd('decks'); return false;" class="onigiri-reviewer-button">Decks</a>
-            <a href="#" onclick="pycmd('add'); return false;" class="onigiri-reviewer-button">Add</a>
-            <a href="#" onclick="pycmd('browse'); return false;" class="onigiri-reviewer-button">Browse</a>
-            <a href="#" onclick="pycmd('stats'); return false;" class="onigiri-reviewer-button">Stats</a>
-            <a href="#" onclick="pycmd('sync'); return false;" class="onigiri-reviewer-button">Sync</a>
+    <div id="kaizen-overview-header" class="overview-header">
+        <div class="kaizen-reviewer-header-buttons">
+            <a href="#" onclick="pycmd('decks'); return false;" class="kaizen-reviewer-button">Decks</a>
+            <a href="#" onclick="pycmd('add'); return false;" class="kaizen-reviewer-button">Add</a>
+            <a href="#" onclick="pycmd('browse'); return false;" class="kaizen-reviewer-button">Browse</a>
+            <a href="#" onclick="pycmd('stats'); return false;" class="kaizen-reviewer-button">Stats</a>
+            <a href="#" onclick="pycmd('sync'); return false;" class="kaizen-reviewer-button">Sync</a>
         </div>
     </div>
 """
@@ -1341,9 +1341,9 @@ def patch_overview():
             titleElement.textContent = shortTitle;
         }
         
-        if (!document.getElementById('onigiri-background-div')) {
+        if (!document.getElementById('kaizen-background-div')) {
             const bgDiv = document.createElement('div');
-            bgDiv.id = 'onigiri-background-div';
+            bgDiv.id = 'kaizen-background-div';
             document.body.prepend(bgDiv);
         } 
 
@@ -1355,7 +1355,7 @@ def patch_overview():
         
         // Collect all external content (anything not Onigiri)
         const container = document.querySelector('.overview-center-container');
-        const onigiriHeader = document.getElementById('onigiri-overview-header');
+        const onigiriHeader = document.getElementById('kaizen-overview-header');
         const onigiriTitle = document.querySelector('.overview-title');
         const onigiriContainer = document.querySelector('.overview-container');
         const revealBtn = document.getElementById('onigiri-reveal-btn');
@@ -1369,7 +1369,7 @@ def patch_overview():
                     child !== onigiriTitle && 
                     child !== onigiriContainer && 
                     child !== revealBtn && 
-                    child.id !== 'onigiri-overview-header' &&
+                    child.id !== 'kaizen-overview-header' &&
                     child.id !== 'onigiri-reveal-btn' &&
                     !child.classList.contains('overview-header') &&
                     !child.classList.contains('overview-title') &&
@@ -1399,7 +1399,7 @@ def patch_overview():
                     };
                     
                     if (hasVisibleContent(child)) {
-                        child.classList.add('onigiri-external-overview-addon');
+                        child.classList.add('kaizen-external-overview-addon');
                         allExternalElements.push(child);
                         child.style.display = 'none'; // Hide initially
                     }
@@ -1495,12 +1495,12 @@ def patch_congrats_page():
         if show_toolbar_replacements and not flow_mode:
             header_html = """
             <div class="overview-header">
-                <div class="onigiri-reviewer-header-buttons">
-                    <a href="#" onclick="pycmd('decks'); return false;" class="onigiri-reviewer-button">Decks</a>
-                    <a href="#" onclick="pycmd('add'); return false;" class="onigiri-reviewer-button">Add</a>
-                    <a href="#" onclick="pycmd('browse'); return false;" class="onigiri-reviewer-button">Browse</a>
-                    <a href="#" onclick="pycmd('stats'); return false;" class="onigiri-reviewer-button">Stats</a>
-                    <a href="#" onclick="pycmd('sync'); return false;" class="onigiri-reviewer-button">Sync</a>
+                <div class="kaizen-reviewer-header-buttons">
+                    <a href="#" onclick="pycmd('decks'); return false;" class="kaizen-reviewer-button">Decks</a>
+                    <a href="#" onclick="pycmd('add'); return false;" class="kaizen-reviewer-button">Add</a>
+                    <a href="#" onclick="pycmd('browse'); return false;" class="kaizen-reviewer-button">Browse</a>
+                    <a href="#" onclick="pycmd('stats'); return false;" class="kaizen-reviewer-button">Stats</a>
+                    <a href="#" onclick="pycmd('sync'); return false;" class="kaizen-reviewer-button">Sync</a>
                 </div>
             </div>
             """
@@ -1590,9 +1590,9 @@ def patch_congrats_page():
         )
         # Manually run JS to create the background div after the page is loaded.
         self.web.eval("""
-            if (!document.getElementById('onigiri-background-div')) {
+            if (!document.getElementById('kaizen-background-div')) {
                 const bgDiv = document.createElement('div');
-                bgDiv.id = 'onigiri-background-div';
+                bgDiv.id = 'kaizen-background-div';
                 document.body.prepend(bgDiv);
             }
         """)
@@ -1917,7 +1917,7 @@ def generate_reviewer_background_css(addon_path):
         opacity_val = conf.get("kaizen_reviewer_bg_main_opacity", 100)
         
         if mode not in ["image", "image_color"]:
-            return f"""<style id="onigiri-reviewer-background-style">
+            return f"""<style id="kaizen-reviewer-background-style">
                 body {{ background-color: {light_color} !important; }}
                 .night-mode body {{ background-color: {dark_color} !important; }}
             
@@ -1954,7 +1954,7 @@ def generate_reviewer_background_css(addon_path):
         # Solid color only
         light_color = conf.get("kaizen_reviewer_bg_light_color", "#FFFFFF")
         dark_color = conf.get("kaizen_reviewer_bg_dark_color", "#2C2C2C")
-        return f"""<style id="onigiri-reviewer-background-style">
+        return f"""<style id="kaizen-reviewer-background-style">
             body {{ background-color: {light_color} !important; }}
             .night-mode body {{ background-color: {dark_color} !important; }}
             
@@ -1994,7 +1994,7 @@ def generate_reviewer_background_css(addon_path):
     opacity_float = opacity_val / 100.0
 
     return f"""
-    <style id="onigiri-reviewer-background-style">
+    <style id="kaizen-reviewer-background-style">
         /* Use body::before pseudo-element for instant background rendering - no JavaScript delay */
         body {{
             position: relative;
@@ -2145,7 +2145,7 @@ def generate_overview_background_css(addon_path):
         }}
         
         /* Keep JavaScript-created div styling for backwards compatibility */
-        #onigiri-background-div {{
+        #kaizen-background-div {{
             display: none !important;
         }}
         
@@ -2243,33 +2243,33 @@ def generate_reviewer_top_bar_html_and_css():
 
     # Build the HTML with the restaurant chip if enabled
     header_buttons = """
-    <div class="onigiri-reviewer-header-buttons">
-        <a href="#" onclick="pycmd('decks'); return false;" class="onigiri-reviewer-button">Decks</a>
-        <a href="#" onclick="pycmd('add'); return false;" class="onigiri-reviewer-button">Add</a>
-        <a href="#" onclick="pycmd('browse'); return false;" class="onigiri-reviewer-button">Browse</a>
-        <a href="#" onclick="pycmd('stats'); return false;" class="onigiri-reviewer-button">Stats</a>
-        <a href="#" onclick="pycmd('sync'); return false;" class="onigiri-reviewer-button">Sync</a>
+    <div class="kaizen-reviewer-header-buttons">
+        <a href="#" onclick="pycmd('decks'); return false;" class="kaizen-reviewer-button">Decks</a>
+        <a href="#" onclick="pycmd('add'); return false;" class="kaizen-reviewer-button">Add</a>
+        <a href="#" onclick="pycmd('browse'); return false;" class="kaizen-reviewer-button">Browse</a>
+        <a href="#" onclick="pycmd('stats'); return false;" class="kaizen-reviewer-button">Stats</a>
+        <a href="#" onclick="pycmd('sync'); return false;" class="kaizen-reviewer-button">Sync</a>
         {}
     </div>
     """.format(restaurant_chip_html if show_restaurant_chip else "")
     
     html = f"""
-    <div id="onigiri-reviewer-header" class="header">
+    <div id="kaizen-reviewer-header" class="header">
         {header_buttons}
     </div>
     """
 
     css = """
-    <style id="onigiri-reviewer-top-bar-structure">
+    <style id="kaizen-reviewer-top-bar-structure">
         :root {
-            --onigiri-reviewer-header-offset: 65px;
+            --kaizen-reviewer-header-offset: 65px;
         }
         
         html {
-            scroll-padding-top: var(--onigiri-reviewer-header-offset);
+            scroll-padding-top: var(--kaizen-reviewer-header-offset);
         }
 
-        #onigiri-reviewer-header, .overview-header {
+        #kaizen-reviewer-header, .overview-header {
             position: fixed;
             top: 0;
             left: 0;
@@ -2303,15 +2303,15 @@ def generate_reviewer_top_bar_html_and_css():
         
 
         
-        .onigiri-reviewer-header-buttons {
+        .kaizen-reviewer-header-buttons {
             display: flex;
             gap: 10px;
         }
 
         /* Target A tags specifically to override card template global a {} styles */
-        #onigiri-reviewer-header a.onigiri-reviewer-button,
-        #onigiri-overview-header a.onigiri-reviewer-button,
-        .overview-header a.onigiri-reviewer-button {
+        #kaizen-reviewer-header a.kaizen-reviewer-button,
+        #kaizen-overview-header a.kaizen-reviewer-button,
+        .overview-header a.kaizen-reviewer-button {
             color: var(--fg) !important;
             background: rgba(247, 247, 247) !important;
             padding: 5px 12px !important;
@@ -2326,17 +2326,17 @@ def generate_reviewer_top_bar_html_and_css():
             line-height: normal !important;
         }
 
-        .night_mode #onigiri-reviewer-header a.onigiri-reviewer-button,
-        .night_mode #onigiri-overview-header a.onigiri-reviewer-button,
-        .night_mode .overview-header a.onigiri-reviewer-button {
+        .night_mode #kaizen-reviewer-header a.kaizen-reviewer-button,
+        .night_mode #kaizen-overview-header a.kaizen-reviewer-button,
+        .night_mode .overview-header a.kaizen-reviewer-button {
             color: var(--fg) !important;
             background: rgba(42, 42, 42) !important;
             border: 1px solid rgba(128, 128, 128, 0.2) !important;
         }
 
-        #onigiri-reviewer-header a.onigiri-reviewer-button:hover,
-        #onigiri-overview-header a.onigiri-reviewer-button:hover,
-        .overview-header a.onigiri-reviewer-button:hover {
+        #kaizen-reviewer-header a.kaizen-reviewer-button:hover,
+        #kaizen-overview-header a.kaizen-reviewer-button:hover,
+        .overview-header a.kaizen-reviewer-button:hover {
             background: rgba(128, 128, 128, 0.25) !important;
             color: var(--fg) !important;
         }
@@ -2429,8 +2429,8 @@ def generate_reviewer_top_bar_html_and_css():
 
         /* Create space for the header and ensure proper stacking */
         body.card, body {
-            --onigiri-reviewer-header-offset: 65px;
-            padding-top: var(--onigiri-reviewer-header-offset) !important;
+            --kaizen-reviewer-header-offset: 65px;
+            padding-top: var(--kaizen-reviewer-header-offset) !important;
 
         }
         
@@ -2448,8 +2448,8 @@ def generate_reviewer_top_bar_html_and_css():
             g = int(theme_color[3:5], 16)
             b = int(theme_color[5:7], 16)
             css += f"""
-    <style id="onigiri-reviewer-theme-colors">
-        .onigiri-reviewer-header-buttons .level-progress-bar {{
+    <style id="kaizen-reviewer-theme-colors">
+        .kaizen-reviewer-header-buttons .level-progress-bar {{
             background: {theme_color} !important;
             box-shadow: 0 0 10px rgba({r}, {g}, {b}, 0.3) !important;
         }}
@@ -2466,7 +2466,7 @@ def _generate_outer_background_css(mode, light_color, dark_color, light_img_path
     opacity_float = opacity_val / 100.0
     
     # Base styling for #outer
-    base_css = "<style id='onigiri-reviewer-bottom-bar-bg-style'>"
+    base_css = "<style id='kaizen-reviewer-bottom-bar-bg-style'>"
     base_css += "#outer { position: relative; border: none !important; border-top: none !important; outline: none !important; overflow: hidden; box-sizing: border-box; }"
     
     if mode == "color":
@@ -3120,13 +3120,13 @@ def generate_font_css(addon_package):
         }}
         
         /* Titles (Subtle) - e.g. Today's Stats */
-        .onigiri-widget-title {{
+        .kaizen-widget-title {{
             font-family: var(--font-subtle), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
             font-size: var(--font-size-subtle) !important;
         }}
 
         /* Small Titles - Sidebar Headers and Widget Titles */
-        .sidebar-left h2, .stat-card h3, .onigiri-widget-container h3 {{
+        .sidebar-left h2, .stat-card h3, .kaizen-widget-container h3 {{
             font-family: var(--font-small-title), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
             font-size: var(--font-size-small-title) !important;
         }}
@@ -3323,7 +3323,7 @@ def generate_dynamic_css(conf):
 		# Map intensity (0-100) to blur radius (0-20px)
 		blur_px = (effect_intensity / 100.0) * 20
 		# --- FIX: Added heatmap container IDs to the selectors ---
-		glass_selectors = ".stats-container, .congrats-card, .stat-card, #onigiri-heatmap-container, #onigiri-profile-heatmap-container"
+		glass_selectors = ".stats-container, .congrats-card, .stat-card, #kaizen-heatmap-container, #onigiri-profile-heatmap-container"
 		glass_style_block = f"""
         <style id="onigiri-glass-effect">
         {glass_selectors} {{
@@ -3346,10 +3346,10 @@ def generate_dynamic_css(conf):
     [class*="onigiri-"],
     .modern-menu,
     .modern-menu *:not(.card, .card *),
-    .onigiri-profile-page,
-    .onigiri-profile-page *:not(.card, .card *),
-    .onigiri-restaurant,
-    .onigiri-restaurant *:not(.card, .card *) {{
+    .kaizen-profile-page,
+    .kaizen-profile-page *:not(.card, .card *),
+    .kaizen-restaurant,
+    .kaizen-restaurant *:not(.card, .card *) {{
         {onigiri_ui_light}
     }}
     
@@ -3357,10 +3357,10 @@ def generate_dynamic_css(conf):
     .night-mode [class*="onigiri-"],
     .night-mode .modern-menu,
     .night-mode .modern-menu *:not(.card, .card *),
-    .night-mode .onigiri-profile-page,
-    .night-mode .onigiri-profile-page *:not(.card, .card *),
-    .night-mode .onigiri-restaurant,
-    .night-mode .onigiri-restaurant *:not(.card, .card *) {{
+    .night-mode .kaizen-profile-page,
+    .night-mode .kaizen-profile-page *:not(.card, .card *),
+    .night-mode .kaizen-restaurant,
+    .night-mode .kaizen-restaurant *:not(.card, .card *) {{
         {onigiri_ui_dark}
     }}
     </style>
@@ -4004,7 +4004,7 @@ def generate_reviewer_buttons_css(conf):
             text_dark = conf.get(f"kaizen_reviewer_btn_{key}_text_dark", def_txt_d)
             
             css.append(f"""
-            #outer button[data-onigiri-ease="{ease}"],
+            #outer button[data-kaizen-ease="{ease}"],
             #outer button[onclick*="ease{ease}"], 
             #outer button[data-cmd="ease{ease}"], 
             #outer #ease{ease} {{
@@ -4013,7 +4013,7 @@ def generate_reviewer_buttons_css(conf):
                 background-image: none !important;
                 color: {text_light} !important;
             }}
-            #outer button[data-onigiri-ease="{ease}"]:hover,
+            #outer button[data-kaizen-ease="{ease}"]:hover,
             #outer button[onclick*="ease{ease}"]:hover, 
             #outer button[data-cmd="ease{ease}"]:hover, 
             #outer #ease{ease}:hover {{
@@ -4024,7 +4024,7 @@ def generate_reviewer_buttons_css(conf):
                 cursor: pointer !important;
             }}
 
-            .nightMode #outer button[data-onigiri-ease="{ease}"],
+            .nightMode #outer button[data-kaizen-ease="{ease}"],
             .nightMode #outer button[onclick*="ease{ease}"], 
             .nightMode #outer button[data-cmd="ease{ease}"], 
             .nightMode #outer #ease{ease} {{
@@ -4033,7 +4033,7 @@ def generate_reviewer_buttons_css(conf):
                 background-image: none !important;
                 color: {text_dark} !important;
             }}
-            .nightMode #outer button[data-onigiri-ease="{ease}"]:hover,
+            .nightMode #outer button[data-kaizen-ease="{ease}"]:hover,
             .nightMode #outer button[onclick*="ease{ease}"]:hover, 
             .nightMode #outer button[data-cmd="ease{ease}"]:hover, 
             .nightMode #outer #ease{ease}:hover {{
@@ -4052,7 +4052,7 @@ def generate_reviewer_buttons_css(conf):
                 const buttons = document.querySelectorAll('#outer button, button');
                 buttons.forEach(btn => {
                     // Check if already processed
-                    if (btn.hasAttribute('data-onigiri-ease')) return;
+                    if (btn.hasAttribute('data-kaizen-ease')) return;
 
                     const onclick = btn.getAttribute('onclick') || '';
                     const cmd = btn.getAttribute('data-cmd') || '';
@@ -4076,7 +4076,7 @@ def generate_reviewer_buttons_css(conf):
                     }
 
                     if (ease) {
-                        btn.setAttribute('data-onigiri-ease', ease);
+                        btn.setAttribute('data-kaizen-ease', ease);
                     } else {
                         btn.classList.add('onigiri-other-btn');
                     }

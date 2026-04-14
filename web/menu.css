@@ -1218,7 +1218,7 @@ body.deck-edit-mode .deck-transfer-btn.has-selection .icon {
 }
 
 /* --- Sync Animation --- */
-@keyframes onigiri-sync-pulse {
+@keyframes kaizen-sync-pulse {
 
     0%,
     100% {
@@ -1236,7 +1236,7 @@ body.deck-edit-mode .deck-transfer-btn.has-selection .icon {
 .action-sync.is-syncing .sync-status-indicator {
     display: block;
     /* Ensure it's visible */
-    animation: onigiri-sync-pulse 1.3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: kaizen-sync-pulse 1.3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     background-color: var(--accent-color);
     /* Ensure it has the accent color */
 }
@@ -1252,7 +1252,7 @@ body.deck-edit-mode .deck-transfer-btn.has-selection .icon {
 /* Add these new styles at the end of the file */
 
 /* --- Onigiri Favorites Widget --- */
-.onigiri-favorites-widget {
+.kaizen-favorites-widget {
     background-color: var(--canvas-inset);
     border: 1px solid var(--border);
     border-radius: 15px;
@@ -1266,7 +1266,7 @@ body.deck-edit-mode .deck-transfer-btn.has-selection .icon {
     /* Add scrollbar when content exceeds max height */
 }
 
-.onigiri-favorites-widget h3 {
+.kaizen-favorites-widget h3 {
     margin: 0 0 12px 0;
     font-size: 14px;
     text-transform: uppercase;
@@ -1394,7 +1394,7 @@ body.deck-edit-mode .deck-transfer-btn.has-selection .icon {
 }
 
 /* Use inline SVG icons when provided */
-.menu-item[data-onigiri-icon] .icon::before {
+.menu-item[data-kaizen-icon] .icon::before {
     content: none !important;
     display: none !important;
 }

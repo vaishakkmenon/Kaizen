@@ -2,7 +2,7 @@
     Onigiri Heatmap Stylesheet
 */
 
-#onigiri-heatmap-container,
+#kaizen-heatmap-container,
 #onigiri-profile-heatmap-container {
     padding-top: 5px;
     padding-bottom: 15px;
@@ -19,7 +19,7 @@
 }
 
 /* --- Header Styles (Fixed Height & Single Line) --- */
-.onigiri-heatmap-header {
+.kaizen-heatmap-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,8 +33,8 @@
 }
 
 
-.onigiri-heatmap-header .header-left,
-.onigiri-heatmap-header .header-right {
+.kaizen-heatmap-header .header-left,
+.kaizen-heatmap-header .header-right {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -384,7 +384,7 @@
     }
 }
 
-#onigiri-heatmap-container:hover .heatmap-day-cell.today .day-shape,
+#kaizen-heatmap-container:hover .heatmap-day-cell.today .day-shape,
 #onigiri-profile-heatmap-container:hover .heatmap-day-cell.today .day-shape {
     animation: glow 3s ease-in-out;
 }

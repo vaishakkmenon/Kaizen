@@ -307,7 +307,7 @@ window.KaizenHeatmap = window.KaizenHeatmap || {};
             }
 
             container.innerHTML = `
-                <div class="onigiri-heatmap-header">
+                <div class="kaizen-heatmap-header">
                     <div class="header-left">
                         <h3>Activity</h3>
                         <div class="heatmap-nav">${navHTML}</div>

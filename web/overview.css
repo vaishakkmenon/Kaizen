@@ -18,7 +18,7 @@ body {
 }
 
 /* Ensure external overview add-ons can expand normally */
-.overview-center-container .onigiri-external-overview-addon {
+.overview-center-container .kaizen-external-overview-addon {
     align-self: stretch;
     width: 100%;
     max-width: 100%;
