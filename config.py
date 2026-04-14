@@ -171,7 +171,7 @@ DEFAULTS = {
     "kaizen_overview_bg_main_opacity": 100,
     "kaizen_overview_bg_light_color": "#f2f2f2",
     # The following lines appear to be UI setup code and cannot be directly inserted into a dictionary.
-    # Assuming the intent was to add a default for 'onigiri_reviewer_btn_custom_enabled' if not already present.
+    # Assuming the intent was to add a default for 'kaizen_reviewer_btn_custom_enabled' if not already present.
     # The other lines are likely from a different context (e.g., a settings dialog setup).
     "kaizen_reviewer_btn_border_size": 0,
     "kaizen_reviewer_btn_custom_enabled": True, # Global toggle (Default OFF)

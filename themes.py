@@ -1,5 +1,5 @@
 #
-# Onigiri Theme Definitions
+# Kaizen Theme Definitions
 #
 
 # --- Helper to define a theme structure ---

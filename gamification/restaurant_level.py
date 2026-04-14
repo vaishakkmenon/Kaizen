@@ -1173,7 +1173,7 @@ class RestaurantLevelManager:
             return result
             
         except Exception as e:
-            print(f"Onigiri: Error getting daily special data: {e}")
+            print(f"Kaizen: Error getting daily special data: {e}")
             return None
 
     def _update_gamification_data(self, updates: Dict[str, Any]) -> None:
@@ -1203,7 +1203,7 @@ class RestaurantLevelManager:
 
         conf, restaurant_conf = self._config_bundle()
         if not restaurant_conf.get("enabled", False):
-            print("Onigiri: Restaurant Level disabled in config, not awarding XP.")
+            print("Kaizen: Restaurant Level disabled in config, not awarding XP.")
             return []
 
         # Read current state from gamification.json (source of truth for XP/level)

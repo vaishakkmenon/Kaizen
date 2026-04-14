@@ -356,7 +356,7 @@ def show_transfer_window(source_dids_json: str) -> None:
 
 def handle_onigiri_commands(handled, message, context):
     """
-    Route custom Onigiri commands to their respective handlers.
+    Route custom Kaizen commands to their respective handlers.
     """
     if message.startswith("kaizen_show_transfer_window:"):
         try:

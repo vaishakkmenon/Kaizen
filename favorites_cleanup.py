@@ -1,5 +1,5 @@
 """
-Onigiri Favorites Cleanup Utility
+Kaizen Favorites Cleanup Utility
 
 This module provides utility functions for managing and cleaning up favorite decks.
 Users can import and run these functions from Anki's debug console if needed.

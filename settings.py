@@ -227,7 +227,7 @@ class ThumbnailWorker(QObject):
                 if not final_pixmap.isNull():
                     self.thumbnail_ready.emit(self.key, index, final_pixmap, filename)
             except Exception as e:
-                print(f"Onigiri ThumbnailWorker Error for '{filename}': {e}")
+                print(f"Kaizen ThumbnailWorker Error for '{filename}': {e}")
         self.finished.emit()
 
     def cancel(self):
@@ -3710,7 +3710,7 @@ class SettingsDialog(QDialog):
         def is_item_allowed(self, item):
             """
             Determines if a dragged item is allowed to be dropped in this zone.
-            Default implementation allows DraggableItem but rejects OnigiriDraggableItem
+            Default implementation allows DraggableItem but rejects KaizenDraggableItem
             (matching the behavior for generic/external zones).
             """
             if isinstance(item, SettingsDialog.OnigiriDraggableItem):
@@ -4236,7 +4236,7 @@ class SettingsDialog(QDialog):
                 self.style().polish(self)
 
     # =================================================================
-    # START: Onigiri Widget Layout Editor
+    # START: Kaizen Widget Layout Editor
     # =================================================================
 
     class OnigiriDraggableItem(DraggableItem):
@@ -4299,13 +4299,13 @@ class SettingsDialog(QDialog):
             custom_menu.show()
     
     class UnifiedGridDropZone(GridDropZone):
-        """A unified grid that accepts both Onigiri and External widgets."""
+        """A unified grid that accepts both Kaizen and External widgets."""
         def __init__(self, main_editor, parent=None):
             super().__init__(main_editor, parent)
             # Row count is controlled by the parent GridDropZone (default 6)
 
         def is_item_allowed(self, item):
-            # Accept both Onigiri and External draggable items
+            # Accept both Kaizen and External draggable items
             return isinstance(item, (SettingsDialog.OnigiriDraggableItem, SettingsDialog.DraggableItem))
     
     class OnigiriGridDropZone(GridDropZone):
@@ -4640,7 +4640,7 @@ class SettingsDialog(QDialog):
             visible_layout.addWidget(self.visible_zone)
             main_layout.addWidget(visible_group, stretch=1)
 
-            # --- Archived Onigiri Items Zone ---
+            # --- Archived Kaizen Items Zone ---
             archived_group = QGroupBox("Archived Onigiri Items")
             archived_group.setObjectName("LayoutGroup")
             archived_layout = QVBoxLayout(archived_group)
@@ -5081,8 +5081,8 @@ class SettingsDialog(QDialog):
             """Retrieves the current layout from the grid and archive zones."""
             grid_config = self.grid_zone.get_layout_config()
             archive_config = self.archive_zone.get_archive_config()
-            # We are saving both onigiri and external layout into legacy structure for compatibility
-            # But the 'column_count' specifically goes into 'onigiriWidgetLayout' usually.
+            # We are saving both kaizen and external layout into legacy structure for compatibility
+            # But the 'column_count' specifically goes into 'kaizenWidgetLayout' usually.
             # However, this method returns a dict that the dialog uses to construct the full config.
             # We need to make sure the dialog knows how to unpack this or we just update the specific keys here.
             
@@ -5098,11 +5098,11 @@ class SettingsDialog(QDialog):
 
     class UnifiedLayoutEditor(QWidget):
         """
-        A unified layout editor that combines both Onigiri widgets and External add-on widgets
+        A unified layout editor that combines both Kaizen widgets and External add-on widgets
         in a single grid, with separate archive zones for each type.
         """
-        
-        # Default layout configuration for Onigiri widgets
+
+        # Default layout configuration for Kaizen widgets
         _KAIZEN_DEFAULTS = {
             "grid": {
                 "studied": {"pos": 0, "row": 1, "col": 1},
@@ -5114,7 +5114,7 @@ class SettingsDialog(QDialog):
             "archive": ["favorites", "restaurant_level"]
         }
 
-        # Default display names for Onigiri widgets
+        # Default display names for Kaizen widgets
         _WIDGET_DEFINITIONS = {
             "studied": "Studied Card", "time": "Time Card", 
             "pace": "Pace Card", "retention": "Retention Card", "heatmap": "Heatmap",
@@ -5187,7 +5187,7 @@ class SettingsDialog(QDialog):
                 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
             """
 
-            # Archived Onigiri Widgets
+            # Archived Kaizen Widgets
             onigiri_archive_group = QGroupBox("Archived Onigiri Widgets")
             onigiri_archive_group.setObjectName("LayoutGroup")
             
@@ -5288,8 +5288,8 @@ class SettingsDialog(QDialog):
                 button_bg, border, fg = "#f0f0f0", "#e0e0e0", "#212121"
             style_colors = {"button_bg": button_bg, "border": border, "fg": fg}
 
-            # --- Onigiri Widgets ---
-            # --- Onigiri Widgets ---
+            # --- Kaizen Widgets ---
+            # --- Kaizen Widgets ---
             saved_kaizen_layout = self.settings_dialog.current_config.get("kaizenWidgetLayout", self._KAIZEN_DEFAULTS)
 
             # Load column count (sync with spinbox which was set in __init__)
@@ -5332,7 +5332,7 @@ class SettingsDialog(QDialog):
 
             placed_onigiri = set()
 
-            # Create all Onigiri items
+            # Create all Kaizen items
             for widget_id, text in self._WIDGET_DEFINITIONS.items():
                 item = SettingsDialog.OnigiriDraggableItem(text, widget_id, style_colors)
                 item.archive_requested.connect(self._archive_onigiri_item)
@@ -5354,7 +5354,7 @@ class SettingsDialog(QDialog):
                     if custom_name := saved_item_config.get("display_name"):
                         item.set_display_name(custom_name)
 
-            # Place Onigiri items on unified grid
+            # Place Kaizen items on unified grid
             for widget_id, config in kaizen_grid_config.items():
                 if item := self.all_onigiri_items.get(widget_id):
                     item.row_span = config.get("row", 1)
@@ -5362,7 +5362,7 @@ class SettingsDialog(QDialog):
                     if self.grid_zone.place_item(item, config.get("pos", 0), silent=True):
                         placed_onigiri.add(widget_id)
 
-            # Place Onigiri items in archive
+            # Place Kaizen items in archive
             archive_ids = []
             if isinstance(kaizen_archive_config, list):
                 archive_ids = kaizen_archive_config
@@ -5375,7 +5375,7 @@ class SettingsDialog(QDialog):
                         self.kaizen_archive_zone.layout.insertWidget(self.kaizen_archive_zone.layout.count() - 1, item)
                         placed_onigiri.add(widget_id)
 
-            # Place any unconfigured Onigiri items into archive
+            # Place any unconfigured Kaizen items into archive
             for widget_id, item in self.all_onigiri_items.items():
                 if widget_id not in placed_onigiri:
                     self.kaizen_archive_zone.layout.insertWidget(self.kaizen_archive_zone.layout.count() - 1, item)
@@ -5442,7 +5442,7 @@ class SettingsDialog(QDialog):
                     self.external_archive_zone.layout.insertWidget(self.external_archive_zone.layout.count() - 1, item)
 
         def _archive_onigiri_item(self, item):
-            """Moves an Onigiri item from the grid to the Onigiri archive zone."""
+            """Moves a Kaizen item from the grid to the Kaizen archive zone."""
             for shelf in self.grid_zone.shelves.values():
                 if shelf.child_widget is item:
                     shelf.child_widget = None
@@ -5475,7 +5475,7 @@ class SettingsDialog(QDialog):
             item.show()
 
         def get_layout_config(self):
-            """Returns separate configs for Onigiri and External layouts."""
+            """Returns separate configs for Kaizen and External layouts."""
             kaizen_grid_config = {}
             external_grid_config = {}
             processed_widgets = set()
@@ -5483,7 +5483,7 @@ class SettingsDialog(QDialog):
             for pos, shelf in self.grid_zone.shelves.items():
                 widget = shelf.child_widget
                 if widget and widget not in processed_widgets:
-                    # Check if it's an Onigiri widget
+                    # Check if it's a Kaizen widget
                     if isinstance(widget, SettingsDialog.OnigiriDraggableItem):
                         kaizen_grid_config[widget.widget_id] = {
                             "pos": pos, "row": widget.row_span, "col": widget.col_span,
@@ -5513,7 +5513,7 @@ class SettingsDialog(QDialog):
             """Resets all widget display names to their defaults."""
             changes_made = False
             
-            # Reset Onigiri widgets
+            # Reset Kaizen widgets
             for widget_id, default_name in self._WIDGET_DEFINITIONS.items():
                 if item := self.all_onigiri_items.get(widget_id):
                     # Check if name is different to avoid unnecessary updates? 
@@ -5538,7 +5538,7 @@ class SettingsDialog(QDialog):
             """
             Resets everything to default:
             - Grid height = 6 rows
-            - Onigiri widgets in default positions
+            - Kaizen widgets in default positions
             - All external widgets archived
             """
             # 1. Reset Row Count
@@ -5572,7 +5572,7 @@ class SettingsDialog(QDialog):
             # Re-create shelves structure for 6 rows
             self.grid_zone.update_grid_dimensions(6, 4) # Reset to default 6x4
 
-            # 2. Reset Onigiri Widgets
+            # 2. Reset Kaizen Widgets
             placed_onigiri = set()
             
             # Place default items
@@ -5588,7 +5588,7 @@ class SettingsDialog(QDialog):
                     if self.grid_zone.place_item(item, config.get("pos", 0), silent=True):
                         placed_onigiri.add(widget_id)
             
-            # Archive remaining Onigiri widgets
+            # Archive remaining Kaizen widgets
             for widget_id, item in self.all_onigiri_items.items():
                 if widget_id not in placed_onigiri:
                     # Move to archive if not already there
@@ -6487,7 +6487,7 @@ class SettingsDialog(QDialog):
         return page
     
     def _update_gamification_toggles_state(self):
-        """Enable/disable and reset Onigiri Games toggles based on Gamification Mode"""
+        """Enable/disable and reset Kaizen Games toggles based on Gamification Mode"""
         is_gamification_enabled = self.gamification_mode_checkbox.isChecked()
         
         # Update warning message visibility
@@ -7142,7 +7142,7 @@ class SettingsDialog(QDialog):
             ])
         ]
 
-        # Flow mode - Includes everything from Focus + hides onigiri header
+        # Flow mode - Includes everything from Focus + hides kaizen header
         flow_items = [
             ("", [
                 "Everything in Focus",
@@ -8985,7 +8985,7 @@ class SettingsDialog(QDialog):
             painter.end()
             return QIcon(pixmap)
         except Exception as e:
-            print(f"Onigiri: Error rendering SVG icon at {path}: {e}")
+            print(f"Kaizen: Error rendering SVG icon at {path}: {e}")
             return None
     
     def _create_delete_icon(self) -> Union[QIcon, None]:
@@ -9019,7 +9019,7 @@ class SettingsDialog(QDialog):
             painter.end()
             return QIcon(pixmap)
         except Exception as e:
-            print(f"Onigiri: Error rendering SVG icon at {icon_path}: {e}")
+            print(f"Kaizen: Error rendering SVG icon at {icon_path}: {e}")
             return None
         
     def _on_shape_selected(self):
@@ -11374,7 +11374,7 @@ class SettingsDialog(QDialog):
                     if config_key.startswith("modern_menu_"):
                         mw.col.conf[config_key] = os.path.basename(path)
                         
-                    # Also explicit sync for onigiri_ keys if needed? 
+                    # Also explicit sync for kaizen_ keys if needed?
                     # usually self.current_config syncs back on save, but we are applying LIVE.
                     # _apply_theme usually updates widgets.
                     # We should probably update the radio buttons / widgets too?
@@ -11478,9 +11478,9 @@ class SettingsDialog(QDialog):
                         theme_name = os.path.splitext(filename)[0].replace("_", " ").title()
                         user_themes[theme_name] = theme_data
                     else:
-                        print(f"Onigiri: Invalid theme file format in {filename}")
+                        print(f"Kaizen: Invalid theme file format in {filename}")
                 except (json.JSONDecodeError, OSError) as e:
-                    print(f"Onigiri: Could not load theme file {filename}: {e}")
+                    print(f"Kaizen: Could not load theme file {filename}: {e}")
 
         return official_themes, user_themes
 
@@ -12683,7 +12683,7 @@ class SettingsDialog(QDialog):
 _settings_dialog = None
 
 def open_settings(initial_page_index=0):
-    """Opens the Onigiri settings dialog."""
+    """Opens the Kaizen settings dialog."""
     global _settings_dialog
     if _settings_dialog is not None:
         _settings_dialog.close()

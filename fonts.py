@@ -4,7 +4,7 @@ import os
 from aqt.qt import QFontDatabase
 
 """
-Defines the font configurations available in the Onigiri settings.
+Defines the font configurations available in the Kaizen settings.
 
 Each font is defined with:
 - name: The display name shown on the font card in the settings UI.

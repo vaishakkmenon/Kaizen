@@ -1,4 +1,4 @@
-// Onigiri Performance Engine
+// Kaizen Performance Engine
 
 window.KaizenEngine = {
     currentHoveredRow: null,

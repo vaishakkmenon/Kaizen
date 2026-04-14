@@ -63,7 +63,7 @@ class IconChooserDialog(QDialog):
         return data_list
 
     def _on_bridge_cmd(self, cmd):
-        print(f"[Onigiri IconChooser] Bridge CMD: {cmd}")
+        print(f"[Kaizen IconChooser] Bridge CMD: {cmd}")
         
         if cmd == "get_init_data":
             payload = {
@@ -89,13 +89,13 @@ class IconChooserDialog(QDialog):
             self.accept()
             
         elif cmd == "cancel":
-            print("[Onigiri IconChooser] Cancel requested. Closing dialog.")
+            print("[Kaizen IconChooser] Cancel requested. Closing dialog.")
             self.close()
             
         elif cmd.startswith("update_color:"):
             new_color = cmd.split(":", 1)[1]
             self.current_color = new_color
-            print(f"[Onigiri IconChooser] Color updated to: {new_color}")
+            print(f"[Kaizen IconChooser] Color updated to: {new_color}")
         
         elif cmd == "add_icon":
             self.add_icon_file()
@@ -121,7 +121,7 @@ class IconChooserDialog(QDialog):
             if os.path.exists(file_path):
                 try:
                     os.remove(file_path)
-                    print(f"[Onigiri IconChooser] Deleted: {filename}")
+                    print(f"[Kaizen IconChooser] Deleted: {filename}")
                     
                     # Refresh the icon list
                     payload = {
@@ -138,7 +138,7 @@ class IconChooserDialog(QDialog):
                     }
                     self.web.eval(f"updateData({json.dumps(payload)})")
                 except Exception as e:
-                    print(f"[Onigiri IconChooser] Delete error: {e}")
+                    print(f"[Kaizen IconChooser] Delete error: {e}")
 
     def add_icon_file(self):
         """Open file dialog to import SVG icon(s)."""
@@ -154,9 +154,9 @@ class IconChooserDialog(QDialog):
                 dest_path = os.path.join(self.icons_dir, filename)
                 try:
                     shutil.copy2(src_path, dest_path)
-                    print(f"[Onigiri IconChooser] Imported: {filename}")
+                    print(f"[Kaizen IconChooser] Imported: {filename}")
                 except Exception as e:
-                    print(f"[Onigiri IconChooser] Import error: {e}")
+                    print(f"[Kaizen IconChooser] Import error: {e}")
             # Refresh the icon list
             payload = {
                 "icons": self._get_icon_data_list(),
@@ -186,9 +186,9 @@ class IconChooserDialog(QDialog):
                 dest_path = os.path.join(self.icons_dir, filename)
                 try:
                     shutil.copy2(src_path, dest_path)
-                    print(f"[Onigiri IconChooser] Imported: {filename}")
+                    print(f"[Kaizen IconChooser] Imported: {filename}")
                 except Exception as e:
-                    print(f"[Onigiri IconChooser] Import error: {e}")
+                    print(f"[Kaizen IconChooser] Import error: {e}")
             # Refresh the icon list
             payload = {
                 "icons": self._get_icon_data_list(),
@@ -226,9 +226,9 @@ class IconChooserDialog(QDialog):
                 dest_path = os.path.join(self.icons_dir, filename)
                 try:
                     shutil.copy2(src_path, dest_path)
-                    print(f"[Onigiri IconChooser] Imported Image: {filename}")
+                    print(f"[Kaizen IconChooser] Imported Image: {filename}")
                 except Exception as e:
-                    print(f"[Onigiri IconChooser] Import Image error: {e}")
+                    print(f"[Kaizen IconChooser] Import Image error: {e}")
             # Refresh the icon list
             payload = {
                 "icons": self._get_icon_data_list(),

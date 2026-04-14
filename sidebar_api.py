@@ -1,9 +1,9 @@
 """
-Sidebar API (Onigiri)
+Sidebar API (Kaizen)
 
 Usage:
-    import Onigiri
-    Onigiri.register_sidebar_action(
+    import Kaizen
+    Kaizen.register_sidebar_action(
         entry_id="MyAddon.open_panel",
         label="My Panel",
         command="myaddon_open_panel",
@@ -65,7 +65,7 @@ def register_sidebar_action(
     icon_svg: str = "",
 ) -> SidebarEntry:
     """
-    Register a sidebar entry for the Onigiri deck browser sidebar.
+    Register a sidebar entry for the Kaizen deck browser sidebar.
 
     - entry_id must be globally unique (suggestion: "module.function" style).
     - label is shown in the sidebar layout editor.
@@ -209,7 +209,7 @@ def _ensure_layout_entry(entry: SidebarEntry) -> None:
         archived.append(entry.entry_id)
         config.write_config(conf)
     except Exception as exc:
-        print(f"Onigiri: Failed to persist sidebar entry {entry.entry_id}: {exc}")
+        print(f"Kaizen: Failed to persist sidebar entry {entry.entry_id}: {exc}")
 
 
 def _load_icon_override(entry_id: str) -> str:
@@ -555,7 +555,7 @@ def _capture_toolbar_links(links, _toolbar) -> None:
             _toolbar_entry_ids.add(entry_id)
             _toolbar_cmds.add(cmd)
     except Exception as exc:
-        print(f"Onigiri: Failed to capture toolbar links: {exc}")
+        print(f"Kaizen: Failed to capture toolbar links: {exc}")
         try:
             log_path = os.path.join(os.path.dirname(__file__), "sidebar_debug.log")
             with open(log_path, "a", encoding="utf-8") as f:
@@ -574,7 +574,7 @@ def _dispatch_toolbar_cmd(handled, message, context):
             handler()
             return (True, None)
     except Exception as exc:
-        print(f"Onigiri: Toolbar cmd failed ({message}): {exc}")
+        print(f"Kaizen: Toolbar cmd failed ({message}): {exc}")
         return (True, None)
     return handled
 
@@ -588,7 +588,7 @@ def _install_toolbar_bridge() -> None:
         gui_hooks.top_toolbar_did_init_links.append(_capture_toolbar_links)
         gui_hooks.webview_did_receive_js_message.append(_dispatch_toolbar_cmd)
     except Exception as exc:
-        print(f"Onigiri: Failed to install toolbar bridge: {exc}")
+        print(f"Kaizen: Failed to install toolbar bridge: {exc}")
 
 
 def ensure_capture_hook_is_last() -> None:
@@ -601,7 +601,7 @@ def ensure_capture_hook_is_last() -> None:
             gui_hooks.top_toolbar_did_init_links.remove(_capture_toolbar_links)
             gui_hooks.top_toolbar_did_init_links.append(_capture_toolbar_links)
     except Exception as exc:
-        print(f"Onigiri: Failed to reorder toolbar hook: {exc}")
+        print(f"Kaizen: Failed to reorder toolbar hook: {exc}")
 
 
 _install_toolbar_bridge()

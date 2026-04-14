@@ -1,4 +1,4 @@
-# Onigiri's dedicated Deck Browser Rendering Engine
+# Kaizen's dedicated Deck Browser Rendering Engine
 
 import html
 import json
@@ -278,19 +278,19 @@ def _get_kaizen_favorites_html() -> str:
             
             # Check if deck actually exists in the collection
             if did_str not in existing_deck_ids:
-                print(f"Onigiri: Skipping deleted deck ID {did_str}")
+                print(f"Kaizen: Skipping deleted deck ID {did_str}")
                 continue
             
             # Get the deck object
             deck = mw.col.decks.get(did)
             if not deck:
-                print(f"Onigiri: Skipping invalid deck ID {did_str}")
+                print(f"Kaizen: Skipping invalid deck ID {did_str}")
                 continue
             
             # Get the deck name
             deck_name = deck.get("name", "")
             if not deck_name:
-                print(f"Onigiri: Skipping deck with no name, ID {did_str}")
+                print(f"Kaizen: Skipping deck with no name, ID {did_str}")
                 continue
             
             # Deck is valid - add to valid list and create HTML
@@ -314,7 +314,7 @@ def _get_kaizen_favorites_html() -> str:
             mw.col.conf["kaizen_favorite_decks"] = valid_dids
             mw.col.setMod()
             removed_count = len(favorite_dids) - len(valid_dids)
-            print(f"Onigiri: Cleaned up {removed_count} deleted/ghost deck(s) from favorites")
+            print(f"Kaizen: Cleaned up {removed_count} deleted/ghost deck(s) from favorites")
         
         # If no valid favorites remain after cleanup, show placeholder
         if not links_html:
@@ -338,7 +338,7 @@ def _get_kaizen_favorites_html() -> str:
         </div>
         """
     except Exception as e:
-        print(f"Onigiri: Error building favorites widget: {e}")
+        print(f"Kaizen: Error building favorites widget: {e}")
         import traceback
         traceback.print_exc()
         return "<div class='kaizen-favorites-widget'>Error loading favorites.</div>"
@@ -480,7 +480,7 @@ def _get_kaizen_restaurant_level_html() -> str:
 def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     """
     A complete replacement for Anki's DeckBrowser._renderPage.
-    It builds the entire modern UI, including Onigiri and external widgets,
+    It builds the entire modern UI, including Kaizen and external widgets,
     into a stable CSS grid.
     """
     # Ensure hooks from other add-ons are captured just-in-time
@@ -488,7 +488,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     conf = config.get_config()
     addon_package = mw.addonManager.addonFromModule(__name__)
     
-    # --- Part 1: Build Onigiri Widgets Grid ---
+    # --- Part 1: Build Kaizen Widgets Grid ---
     kaizen_layout = conf.get("kaizenWidgetLayout", {}).get("grid", {})
     col_count = conf.get("kaizenWidgetLayout", {}).get("column_count", 4) # Default to 4
 
@@ -566,14 +566,14 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
                 row_span = widget_config.get("row_span", 1)
                 col_span = widget_config.get("column_span", 1)
                 style = f"grid-area: {row} / {col} / span {row_span} / span {col_span};"
-                # Add external widgets to the same grid as Onigiri widgets
+                # Add external widgets to the same grid as Kaizen widgets
                 external_widgets_html += f'<div class="external-widget-container" style="{style}">{hook_html}</div>'
 
     # --- Part 3: Assemble the Final Stats Block ---
     stats_title = mw.col.conf.get("modern_menu_statsTitle", config.DEFAULTS["statsTitle"])
     title_html = f'<h1 class="kaizen-widget-title">{stats_title}</h1>' if stats_title else ""
 
-    # Combine both Onigiri and External widgets into a single unified grid
+    # Combine both Kaizen and External widgets into a single unified grid
     unified_grid_html = kaizen_grid_html + external_widgets_html
 
     # [CHANGED] Updated CSS to force grid expansion and row height
@@ -930,7 +930,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     # Add KaizenEngine JavaScript
     onigiri_engine_js = """
     <script>
-    // Onigiri Performance Engine
+    // Kaizen Performance Engine
     window.KaizenEngine = {
         currentHoveredRow: null,
 

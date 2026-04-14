@@ -1251,7 +1251,7 @@ body.deck-edit-mode .deck-transfer-btn.has-selection .icon {
 /* Located at: menu.css */
 /* Add these new styles at the end of the file */
 
-/* --- Onigiri Favorites Widget --- */
+/* --- Kaizen Favorites Widget --- */
 .kaizen-favorites-widget {
     background-color: var(--canvas-inset);
     border: 1px solid var(--border);

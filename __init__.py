@@ -359,7 +359,7 @@ def on_profile_did_open():
 # --- INITIALIZATION ---
 
 # Move UI patching to top-level so it happens during module load.
-# This ensures Onigiri's hooks and wraps are established before other add-ons
+# This ensures Kaizen's hooks and wraps are established before other add-ons
 # might overwrite them, and prevents unstyled flashes.
 # NOTE: patch_congrats_page is safe to run here as it doesn't access mw.col immediately.
 patcher.patch_congrats_page()

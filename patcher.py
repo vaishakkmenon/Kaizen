@@ -201,7 +201,7 @@ def _get_profile_pic_html(user_name: str, addon_package: str, css_class: str = "
 def take_control_of_deck_browser_hook():
     """
     Finds external hooks, removes them from the main hook,
-    and stores them for Onigiri to manage, preventing duplication.
+    and stores them for Kaizen to manage, preventing duplication.
     """
     global _managed_hooks
     if _managed_hooks: # Ensure this runs only once
@@ -1023,7 +1023,7 @@ def on_webview_js_message(handled, message, context):
                 with open(filename, "wb") as f:
                     f.write(image_data)
         except Exception as e:
-            print(f"Onigiri: An error occurred during image save: {e}")
+            print(f"Kaizen: An error occurred during image save: {e}")
 
         return (True, None)
 
@@ -1105,7 +1105,7 @@ def on_webview_js_message(handled, message, context):
                 mw.col.conf["kaizen_sidebar_collapsed"] = is_collapsed
                 mw.col.setMod()
             except Exception as e:
-                print(f"Onigiri: Error saving sidebar state: {e}")
+                print(f"Kaizen: Error saving sidebar state: {e}")
             return (True, None)
         # --- Focus Mode ---
         if cmd.startswith("saveDeckFocusState:"):
@@ -1114,7 +1114,7 @@ def on_webview_js_message(handled, message, context):
                 mw.col.conf["kaizen_deck_focus_mode"] = is_focused
                 mw.col.setMod()
             except Exception as e:
-                print(f"Onigiri: Error saving deck focus state: {e}")
+                print(f"Kaizen: Error saving deck focus state: {e}")
             return (True, None)
         # --- Focus Mode ---
 
@@ -1332,7 +1332,7 @@ def patch_overview():
 
 	js_code = """
     document.addEventListener("DOMContentLoaded", function() {
-        // Onigiri Deck Title Fix
+        // Kaizen Deck Title Fix
         const titleElement = document.querySelector('.overview-title');
         if (titleElement) {
             // Anki provides the full deck path, so we split it by "::" and take the last part.
@@ -1353,18 +1353,18 @@ def patch_overview():
             document.body.classList.add('mini-overview');
         }
         
-        // Collect all external content (anything not Onigiri)
+        // Collect all external content (anything not Kaizen)
         const container = document.querySelector('.overview-center-container');
         const onigiriHeader = document.getElementById('kaizen-overview-header');
         const onigiriTitle = document.querySelector('.overview-title');
         const onigiriContainer = document.querySelector('.overview-container');
         const revealBtn = document.getElementById('onigiri-reveal-btn');
         
-        // Find all direct children of the container that are NOT Onigiri content
+        // Find all direct children of the container that are NOT Kaizen content
         const allExternalElements = [];
         if (container) {
             Array.from(container.children).forEach(function(child) {
-                // Skip Onigiri elements and the reveal button
+                // Skip Kaizen elements and the reveal button
                 if (child !== onigiriHeader &&
                     child !== onigiriTitle && 
                     child !== onigiriContainer && 
@@ -1958,7 +1958,7 @@ def generate_reviewer_background_css(addon_path):
             body {{ background-color: {light_color} !important; }}
             .night-mode body {{ background-color: {dark_color} !important; }}
             
-            /* Ensure card content maintains complete independence from Onigiri's background system */
+            /* Ensure card content maintains complete independence from Kaizen's background system */
             #qa, #qa * {{
                 background-attachment: initial !important;
                 background-blend-mode: initial !important;
@@ -2027,7 +2027,7 @@ def generate_reviewer_background_css(addon_path):
             background: transparent !important;
         }}
         
-        /* Ensure card content maintains complete independence from Onigiri's background system */
+        /* Ensure card content maintains complete independence from Kaizen's background system */
         /* Reset background inheritance for card content areas to prevent interference with card templates */
         #qa, #qa * {{
             background-attachment: initial !important;
@@ -2780,7 +2780,7 @@ def generate_icon_css(addon_package, conf):
                     # Default to SVG
                     return f"url('data:image/svg+xml;base64,{b64}')"
         except Exception as e:
-            print(f"Onigiri: Error loading icon {path}: {e}")
+            print(f"Kaizen: Error loading icon {path}: {e}")
             return ""
 
     hide_defaults = mw.col.conf.get("modern_menu_hide_default_icons", False)
@@ -3278,7 +3278,7 @@ def generate_dynamic_css(conf):
 		if key in non_card_related:
 			dark_rules.append(f"    {key}: {value} !important;")
 	
-	# Add scoped styles for Onigiri UI elements
+	# Add scoped styles for Kaizen UI elements
 	onigiri_ui_light = []
 	onigiri_ui_dark = []
 	
@@ -3333,7 +3333,7 @@ def generate_dynamic_css(conf):
         </style>
         """
 
-	# MODIFIED to include scoped Onigiri UI styles and reset card styles
+	# MODIFIED to include scoped Kaizen UI styles and reset card styles
 	return f"""
     {font_css_block}
     <style id="modern-menu-dynamic-styles">
@@ -3341,7 +3341,7 @@ def generate_dynamic_css(conf):
     :root {{ {light_rules} }}
     .night-mode {{ {dark_rules} }}
     
-    /* Scoped Onigiri UI styles */
+    /* Scoped Kaizen UI styles */
     .onigiri-ui, 
     [class*="onigiri-"],
     .modern-menu,
@@ -3373,7 +3373,7 @@ def _get_hook_name(hook):
     return f"{module_name}.{hook.__name__}"
 
 def _get_external_hooks():
-    """Returns the list of hooks that Onigiri is managing."""
+    """Returns the list of hooks that Kaizen is managing."""
     return _managed_hooks
 
 
@@ -3519,7 +3519,7 @@ def on_reviewer_did_answer_card(reviewer, card, ease):
 def _kaizen_render_deck_node(self, node, ctx) -> str:
     """
     A patched version of DeckBrowser._render_deck_node that creates the
-    HTML structure Onigiri's CSS and JS expect (e.g., td.collapse-cell).
+    HTML structure Kaizen's CSS and JS expect (e.g., td.collapse-cell).
     """
     buf = []  # Use a list for efficient string building
 
@@ -3536,7 +3536,7 @@ def _kaizen_render_deck_node(self, node, ctx) -> str:
         setattr(ctx, "kaizen_conf", conf)
 
     # --- ADD THIS BLOCK ---
-    # --- Onigiri Favorites ---
+    # --- Kaizen Favorites ---
     favorites = mw.col.conf.get("kaizen_favorite_decks", [])
     did_str = str(node.deck_id)
     is_favorite = did_str in favorites
@@ -3548,7 +3548,7 @@ def _kaizen_render_deck_node(self, node, ctx) -> str:
           title="Toggle favorite">
     </span>
     """
-    # --- End Onigiri Favorites ---
+    # --- End Kaizen Favorites ---
     # --- END OF BLOCK ---
 
     hide_all_deck_counts = conf.get("hideAllDeckCounts", False)
@@ -3572,7 +3572,7 @@ def _kaizen_render_deck_node(self, node, ctx) -> str:
     show_enhanced = conf.get("enhancedDeckStats", False)
     
     # Debug Logging
-    # print(f"Onigiri Debug: Deck {node.deck_id} | Show: {show_enhanced} | Has Stats: {enhanced_stats is not None} | In Stats: {node.deck_id in enhanced_stats if enhanced_stats else False}")
+    # print(f"Kaizen Debug: Deck {node.deck_id} | Show: {show_enhanced} | Has Stats: {enhanced_stats is not None} | In Stats: {node.deck_id in enhanced_stats if enhanced_stats else False}")
 
     
     if not hide_all_deck_counts:
@@ -3747,7 +3747,7 @@ def _on_sync_did_finish():
         elif mw.state == "review" and hasattr(mw.reviewer, 'web') and mw.reviewer.web:
              mw.reviewer.web.eval("SyncStatusManager.setSyncing(false);")
     except Exception as e:
-        print(f"Onigiri: Error stopping sync animation: {e}")
+        print(f"Kaizen: Error stopping sync animation: {e}")
 
 def apply_patches():
     """
@@ -4123,15 +4123,15 @@ def _onigiri_render_deck_tree(self, *args, **kwargs):
                 
                 # Attach to instance
                 self._onigiri_enhanced_stats = enhanced_stats
-                # print(f"Onigiri: Pre-fetched enhanced stats for {len(enhanced_stats)} decks")
+                # print(f"Kaizen: Pre-fetched enhanced stats for {len(enhanced_stats)} decks")
             except Exception as e:
-                print(f"Onigiri: Error pre-fetching enhanced stats: {e}")
+                print(f"Kaizen: Error pre-fetching enhanced stats: {e}")
                 self._onigiri_enhanced_stats = None
         else:
              self._onigiri_enhanced_stats = None
 
     except Exception as e:
-        print(f"Onigiri: Error in _onigiri_render_deck_tree wrapper: {e}")
+        print(f"Kaizen: Error in _onigiri_render_deck_tree wrapper: {e}")
 
     # Call original
     return _old_render_deck_tree(self, *args, **kwargs)
@@ -4144,4 +4144,4 @@ if not hasattr(DeckBrowser, '_onigiri_patched_render_tree'):
         DeckBrowser._render_deck_tree = _onigiri_render_deck_tree
         DeckBrowser._onigiri_patched_render_tree = True
     else:
-        print("Onigiri: Warning - DeckBrowser._render_deck_tree not found, enhanced stats patch optional skipped.")
+        print("Kaizen: Warning - DeckBrowser._render_deck_tree not found, enhanced stats patch optional skipped.")

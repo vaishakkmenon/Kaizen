@@ -1,5 +1,5 @@
 # --- Kaizen ---
-# Handles the creation of the top-level Onigiri menu.
+# Handles the creation of the top-level Kaizen menu.
 
 import os
 import json
@@ -32,7 +32,7 @@ def get_kaizen_version():
 
 def open_settings(page_index=0):
     """
-    Opens the Onigiri settings dialog to a specific page and resets the UI upon save.
+    Opens the Kaizen settings dialog to a specific page and resets the UI upon save.
     This function now accepts a page_index to open to a specific tab.
     """
     global _addon_path
@@ -47,7 +47,7 @@ def open_settings(page_index=0):
 
 def setup_kaizen_menu(addon_path):
     """
-    Creates and adds the 'Onigiri' top-level menu to Anki's main window.
+    Creates and adds the 'Kaizen' top-level menu to Anki's main window.
     This menu will contain actions for general settings, profile settings, and viewing the profile.
     """
     global _addon_path
@@ -56,7 +56,7 @@ def setup_kaizen_menu(addon_path):
     # The function to open the profile page is already defined in the patcher module.
     open_profile = patcher.show_profile_page
 
-    # Create the top-level menu with the Onigiri icon
+    # Create the top-level menu with the Kaizen icon
     onigiri_menu = QMenu("Kaizen", mw)
 
     profile_action = QAction("Profile", mw)

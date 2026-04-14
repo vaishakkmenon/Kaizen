@@ -1,4 +1,4 @@
-# --- Onigiri ---
+# --- Kaizen ---
 # This file contains large, static data sets used by the settings dialog
 # to keep the main settings.py file clean and focused on logic.
 

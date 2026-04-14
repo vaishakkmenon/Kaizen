@@ -18,7 +18,7 @@ def _render_deck_tree_html_only(deck_browser: DeckBrowser) -> str:
         deck_browser._render_data = kaizen_renderer.RenderData(tree=tree_data)
     
     ctx = RenderDeckNodeContext(current_deck_id=deck_browser.mw.col.decks.get_current_id())
-    # Note: _render_deck_node is patched by Onigiri in patcher.py
+    # Note: _render_deck_node is patched by Kaizen in patcher.py
     return "".join(deck_browser._render_deck_node(child, ctx) for child in tree_data.children)
 
 def on_deck_collapse(deck_browser: DeckBrowser, deck_id: str) -> None:
@@ -80,7 +80,7 @@ def on_deck_collapse(deck_browser: DeckBrowser, deck_id: str) -> None:
         deck_browser.web.eval(js)
 
     except Exception as e:
-        print(f"Onigiri: Error in on_deck_collapse for deck_id '{deck_id}': {e}")
+        print(f"Kaizen: Error in on_deck_collapse for deck_id '{deck_id}': {e}")
         import traceback
         traceback.print_exc()
 
@@ -95,41 +95,41 @@ def on_decks_move(data_str: str) -> None:
         try:
             mw.kaizen_transfer_window.close()
         except Exception as e:
-            print(f"Onigiri: Could not close transfer window: {e}")
+            print(f"Kaizen: Could not close transfer window: {e}")
         mw.kaizen_transfer_window = None
 
     try:
-        print(f"Onigiri: on_decks_move called with data_str: {data_str}")
+        print(f"Kaizen: on_decks_move called with data_str: {data_str}")
         data = json.loads(data_str)
-        print(f"Onigiri: parsed data: {data}")
+        print(f"Kaizen: parsed data: {data}")
         source_dids_str = data.get("source_dids", [])
         target_did_str = data.get("target_did")
-        print(f"Onigiri: source_dids_str: {source_dids_str}, target_did_str: {target_did_str}")
+        print(f"Kaizen: source_dids_str: {source_dids_str}, target_did_str: {target_did_str}")
 
         if not source_dids_str or target_did_str is None:
-            print(f"Onigiri: Missing data - source_dids_str: {source_dids_str}, target_did_str: {target_did_str}")
+            print(f"Kaizen: Missing data - source_dids_str: {source_dids_str}, target_did_str: {target_did_str}")
             return
 
         source_dids = [DeckId(int(did)) for did in source_dids_str]
         target_did = DeckId(int(target_did_str))
         # Corrected print statement
-        print(f"Onigiri: converted to DeckIds - source_dids: {source_dids}, target_did: {target_did}")
+        print(f"Kaizen: converted to DeckIds - source_dids: {source_dids}, target_did: {target_did}")
 
         # Anki's reparent function handles invalid moves (e.g., moving a parent into its child)
         mw.col.decks.reparent(source_dids, target_did)
-        print(f"Onigiri: Successfully called reparent")
+        print(f"Kaizen: Successfully called reparent")
 
         # Force a complete deck browser refresh to update all internal state
         # This prevents stale deck IDs from persisting in the context menu
         if mw.deckBrowser:
             # Call show() which triggers a full re-render via _renderPage
             mw.deckBrowser.show()
-            print(f"Onigiri: Successfully refreshed deck browser with full render")
+            print(f"Kaizen: Successfully refreshed deck browser with full render")
         else:
-            print(f"Onigiri: deckBrowser is None, cannot refresh")
+            print(f"Kaizen: deckBrowser is None, cannot refresh")
 
     except (ValueError, TypeError, json.JSONDecodeError) as e:
-        print(f"Onigiri: Could not process deck move request: {e}")
+        print(f"Kaizen: Could not process deck move request: {e}")
 
 def refresh_deck_tree_state(deck_browser: DeckBrowser) -> None:
     """
@@ -186,6 +186,6 @@ def refresh_deck_tree_state(deck_browser: DeckBrowser) -> None:
         deck_browser.web.eval(js)
 
     except Exception as e:
-        print(f"Onigiri: Error in refresh_deck_tree_state: {e}")
+        print(f"Kaizen: Error in refresh_deck_tree_state: {e}")
         import traceback
         traceback.print_exc()

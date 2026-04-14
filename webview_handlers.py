@@ -21,7 +21,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
              return (True, None) # Handled
         except Exception as e:
              import traceback
-             error_msg = f"Onigiri Error: {str(e)}\n{traceback.format_exc()}"
+             error_msg = f"Kaizen Error: {str(e)}\n{traceback.format_exc()}"
              print(error_msg)
              tooltip(f"Error showing create deck dialog: {e}")
              return (True, None)
@@ -33,7 +33,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
                 deck_tree_updater.on_deck_collapse(context, deck_id)
                 return (True, None)
         except Exception as e:
-            print(f"Onigiri: Error handling deck collapse: {e}")
+            print(f"Kaizen: Error handling deck collapse: {e}")
         return (True, None)
 
     if cmd.startswith("kaizen_toggle_favorite:"):
@@ -66,7 +66,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
             
             return (True, None)
         except Exception as e:
-            print(f"Onigiri: Error handling favorite toggle: {e}")
+            print(f"Kaizen: Error handling favorite toggle: {e}")
             import traceback
             traceback.print_exc()
             return (True, None) # Still handle the command

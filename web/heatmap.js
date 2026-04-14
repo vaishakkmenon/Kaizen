@@ -1,5 +1,5 @@
 /*
-    Onigiri Heatmap Renderer
+    Kaizen Heatmap Renderer
     This script is responsible for drawing the heatmap graph based on review data,
     with different views for Year, Month, and Week.
 */
