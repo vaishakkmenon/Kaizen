@@ -243,7 +243,7 @@ custom_body_template = """
     }
 })();
 
-const OnigiriEditor = {
+const KaizenEditor = {
     longPressTimer: null,
     EDIT_MODE: false,
     SELECTED_DECKS: new Set(),
@@ -262,8 +262,8 @@ const OnigiriEditor = {
         // --- RESTORE EDIT MODE STATE FROM SESSIONSTORAGE ---
         // This ensures edit mode persists across page refreshes (e.g., after deck operations)
         try {
-            const savedEditMode = sessionStorage.getItem('onigiri_edit_mode');
-            const savedSelectedDecks = sessionStorage.getItem('onigiri_selected_decks');
+            const savedEditMode = sessionStorage.getItem('kaizen_edit_mode');
+            const savedSelectedDecks = sessionStorage.getItem('kaizen_selected_decks');
             
             if (savedEditMode === 'true') {
                 // Restore selected decks first
@@ -325,7 +325,7 @@ const OnigiriEditor = {
         
         // Save edit mode state to sessionStorage
         try {
-            sessionStorage.setItem('onigiri_edit_mode', 'true');
+            sessionStorage.setItem('kaizen_edit_mode', 'true');
         } catch (e) {
             console.warn('Failed to save edit mode state:', e);
         }
@@ -340,8 +340,8 @@ const OnigiriEditor = {
         
         // Clear edit mode state from sessionStorage
         try {
-            sessionStorage.removeItem('onigiri_edit_mode');
-            sessionStorage.removeItem('onigiri_selected_decks');
+            sessionStorage.removeItem('kaizen_edit_mode');
+            sessionStorage.removeItem('kaizen_selected_decks');
         } catch (e) {
             console.warn('Failed to clear edit mode state:', e);
         }
@@ -369,7 +369,7 @@ const OnigiriEditor = {
                 // Save selected decks to sessionStorage whenever selection changes
                 try {
                     const deckIds = Array.from(this.SELECTED_DECKS);
-                    sessionStorage.setItem('onigiri_selected_decks', JSON.stringify(deckIds));
+                    sessionStorage.setItem('kaizen_selected_decks', JSON.stringify(deckIds));
                 } catch (e) {
                     console.warn('Failed to save selected decks:', e);
                 }
@@ -442,12 +442,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof anki !== 'undefined' && anki.setupDeckBrowser) {
         anki.setupDeckBrowser();
     }
-    OnigiriEditor.init();
+    KaizenEditor.init();
 
     // Add a global escape key listener to exit edit mode
     document.addEventListener('keydown', (e) => {
-        if (e.key === "Escape" && OnigiriEditor.EDIT_MODE) {
-            OnigiriEditor.exitEditMode();
+        if (e.key === "Escape" && KaizenEditor.EDIT_MODE) {
+            KaizenEditor.exitEditMode();
         }
     });
 });

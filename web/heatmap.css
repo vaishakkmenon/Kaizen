@@ -3,7 +3,7 @@
 */
 
 #kaizen-heatmap-container,
-#onigiri-profile-heatmap-container {
+#kaizen-profile-heatmap-container {
     padding-top: 5px;
     padding-bottom: 15px;
     padding-left: 15px;
@@ -385,7 +385,7 @@
 }
 
 #kaizen-heatmap-container:hover .heatmap-day-cell.today .day-shape,
-#onigiri-profile-heatmap-container:hover .heatmap-day-cell.today .day-shape {
+#kaizen-profile-heatmap-container:hover .heatmap-day-cell.today .day-shape {
     animation: glow 3s ease-in-out;
 }
 

@@ -91,7 +91,7 @@ def apply_menu_styling():
 
     # 3. Construct the QSS
     new_style_block = f"""
-    /* ONIGIRI_MENU_START */
+    /* KAIZEN_MENU_START */
     QMenu {{
         background-color: {bg_color};
         border: 1px solid {border_color};
@@ -115,7 +115,7 @@ def apply_menu_styling():
         background-color: {border_color};
         margin: 4px 10px;
     }}
-    /* ONIGIRI_MENU_END */
+    /* KAIZEN_MENU_END */
     """
     
     # 4. Inject the stylesheet safely (Replace if exists, Append if not)
@@ -124,7 +124,7 @@ def apply_menu_styling():
         current_sheet = app.styleSheet()
         
         # Regex to find existing block
-        pattern = re.compile(r'/\* ONIGIRI_MENU_START \*/.*?/\* ONIGIRI_MENU_END \*/', re.DOTALL)
+        pattern = re.compile(r'/\* KAIZEN_MENU_START \*/.*?/\* KAIZEN_MENU_END \*/', re.DOTALL)
         
         if pattern.search(current_sheet):
             # Replace existing block
@@ -144,7 +144,7 @@ def patch_qmenu():
     # to set the WA_TranslucentBackground attribute on every new menu instances.
     
     # Store reference to original init
-    if hasattr(QMenu, "_onigiri_patched"):
+    if hasattr(QMenu, "_kaizen_patched"):
         return
 
     original_init = QMenu.__init__
@@ -156,7 +156,7 @@ def patch_qmenu():
 
     # Apply the patch
     QMenu.__init__ = new_init
-    QMenu._onigiri_patched = True
+    QMenu._kaizen_patched = True
 
 
 # --- Toolbar Patching ---
@@ -219,13 +219,13 @@ def take_control_of_deck_browser_hook():
     if _managed_hooks: # Ensure this runs only once
         return
 
-    onigiri_module_name = config.__name__.split('.')[0]
+    kaizen_module_name = config.__name__.split('.')[0]
     # Make a copy of the list to modify it safely
     original_hooks = list(gui_hooks.deck_browser_will_render_content._hooks)
 
     for hook in original_hooks:
         hook_id = _get_hook_name(hook)
-        if onigiri_module_name not in hook_id:
+        if kaizen_module_name not in hook_id:
             _managed_hooks.append(hook)
             # Remove the hook so it doesn't run on its own
             gui_hooks.deck_browser_will_render_content.remove(hook)
@@ -486,7 +486,7 @@ class MrTaiyakiStoreDialog(QDialog):
         store_data["image_base_path"] = f"/_addons/{addon_package}/system_files/gamification_images/restaurant_folder/"
         store_data["coin_image_path"] = f"/_addons/{addon_package}/system_files/gamification_images/Tayaki_coin.png"
         
-        data_script = f"<script>window.ONIGIRI_STORE_DATA = {json.dumps(store_data, ensure_ascii=False)};</script>"
+        data_script = f"<script>window.KAIZEN_STORE_DATA = {json.dumps(store_data, ensure_ascii=False)};</script>"
         head_html = generate_dynamic_css(conf) + data_script
         
         css_files = [
@@ -759,12 +759,12 @@ def _get_stats_html():
 
     heatmap_html = ""
     if show_heatmap:
-        heatmap_html = "<div id='onigiri-profile-heatmap-container'></div>"
+        heatmap_html = "<div id='kaizen-profile-heatmap-container'></div>"
 
     # 3. Construct the final HTML for the stats section
     html_content = f"""
     {stats_grid_html}
-    <div id='onigiri-profile-heatmap-wrapper' style='margin-top: 20px;'>
+    <div id='kaizen-profile-heatmap-wrapper' style='margin-top: 20px;'>
         {heatmap_html}
     </div>
     """
@@ -970,7 +970,7 @@ def _generate_profile_html_body():
 class ProfileDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        self.setWindowTitle("Your Onigiri Profile")
+        self.setWindowTitle("Your Kaizen Profile")
         self.setMinimumSize(500, 600)
         self.setMaximumSize(700, 900)
         self.web = AnkiWebView(self)
@@ -1002,8 +1002,8 @@ class ProfileDialog(QDialog):
         # After webview is set up, run javascript to render heatmap
         heatmap_data, heatmap_config = _get_heatmap_data_and_config_for_profile()
         self.web.eval(f"""
-            if (document.getElementById('onigiri-profile-heatmap-container')) {{
-                KaizenHeatmap.render('onigiri-profile-heatmap-container', {json.dumps(heatmap_data)}, {json.dumps(heatmap_config)});
+            if (document.getElementById('kaizen-profile-heatmap-container')) {{
+                KaizenHeatmap.render('kaizen-profile-heatmap-container', {json.dumps(heatmap_data)}, {json.dumps(heatmap_config)});
             }}
         """)
 
@@ -1035,7 +1035,7 @@ def on_webview_js_message(handled, message, context):
             image_data = base64.b64decode(data)
 
             filename, _ = QFileDialog.getSaveFileName(
-                _profile_dialog, "Save Profile Image", "onigiri-profile.png", "PNG Images (*.png)"
+                _profile_dialog, "Save Profile Image", "kaizen-profile.png", "PNG Images (*.png)"
             )
 
             if filename:
@@ -1050,7 +1050,7 @@ def on_webview_js_message(handled, message, context):
         cmd = message
         
         # Let webview_handlers handle the command
-        # if cmd.startswith("onigiri_"):
+        # if cmd.startswith("kaizen_"):
         #    return webview_handlers.handle_webview_cmd((False, None), cmd, context)
         
         if cmd == "showUserProfile":
@@ -1222,7 +1222,7 @@ def patch_overview():
 	mini_css = ""
 	if overview_style == "mini":
 		mini_css = """
-        <style id="onigiri-mini-overview-style">
+        <style id="kaizen-mini-overview-style">
             body.mini-overview {
                 align-items: flex-start; /* Override the vertical centering */
                 padding-top: 5vh;      /* Add space from the top */
@@ -1329,7 +1329,7 @@ def patch_overview():
 					f'{study_now_text}'
 				'</button>'
 				f'{bottom_actions_html}'
-				'<button id="onigiri-reveal-btn">Click to reveal</button>'
+				'<button id="kaizen-reveal-btn">Click to reveal</button>'
 			'</div>'
 		)
 
@@ -1374,22 +1374,22 @@ def patch_overview():
         
         // Collect all external content (anything not Kaizen)
         const container = document.querySelector('.overview-center-container');
-        const onigiriHeader = document.getElementById('kaizen-overview-header');
-        const onigiriTitle = document.querySelector('.overview-title');
-        const onigiriContainer = document.querySelector('.overview-container');
-        const revealBtn = document.getElementById('onigiri-reveal-btn');
+        const kaizenHeader = document.getElementById('kaizen-overview-header');
+        const kaizenTitle = document.querySelector('.overview-title');
+        const kaizenContainer = document.querySelector('.overview-container');
+        const revealBtn = document.getElementById('kaizen-reveal-btn');
         
         // Find all direct children of the container that are NOT Kaizen content
         const allExternalElements = [];
         if (container) {
             Array.from(container.children).forEach(function(child) {
                 // Skip Kaizen elements and the reveal button
-                if (child !== onigiriHeader &&
-                    child !== onigiriTitle && 
-                    child !== onigiriContainer && 
+                if (child !== kaizenHeader &&
+                    child !== kaizenTitle && 
+                    child !== kaizenContainer && 
                     child !== revealBtn && 
                     child.id !== 'kaizen-overview-header' &&
-                    child.id !== 'onigiri-reveal-btn' &&
+                    child.id !== 'kaizen-reveal-btn' &&
                     !child.classList.contains('overview-header') &&
                     !child.classList.contains('overview-title') &&
                     !child.classList.contains('overview-container')) {
@@ -1456,8 +1456,8 @@ def patch_overview():
     """
 
 	reveal_button_css = """
-    <style id="onigiri-reveal-button-style">
-        #onigiri-reveal-btn {
+    <style id="kaizen-reveal-button-style">
+        #kaizen-reveal-btn {
             display: block;
             margin: 20px auto;
             padding: 10px 20px;
@@ -1469,10 +1469,10 @@ def patch_overview():
             font-weight: 500;
             transition: all 0.2s ease;
         }
-        #onigiri-reveal-btn:hover {
+        #kaizen-reveal-btn:hover {
             transform: scale(1.05);
         }
-        .night-mode #onigiri-reveal-btn {
+        .night-mode #kaizen-reveal-btn {
             color: white !important;
         }
         .descfont.descmid.description.dyn {
@@ -2134,7 +2134,7 @@ def generate_overview_background_css(addon_path):
     opacity_float = opacity_val / 100.0
 
     return f"""
-    <style id="onigiri-overview-background-style">
+    <style id="kaizen-overview-background-style">
         /* Use body::before pseudo-element for instant background rendering - no JavaScript delay */
         body {{
             position: relative;
@@ -2197,7 +2197,7 @@ def generate_toolbar_background_css(addon_path):
 		opacity = 100 # Opacity not supported for toolbar custom bg yet
 		image_path = f"user_files/toolbar_bg/{image}" if image else ""
 
-	return _render_background_css("body", mode, light, dark, image_path, image_path, blur, addon_path, "onigiri-toolbar-bg-style", opacity)
+	return _render_background_css("body", mode, light, dark, image_path, image_path, blur, addon_path, "kaizen-toolbar-bg-style", opacity)
 
 def generate_reviewer_top_bar_html_and_css():
     """Generates the HTML and basic structural CSS for the new web-based reviewer top bar."""
@@ -2252,10 +2252,10 @@ def generate_reviewer_top_bar_html_and_css():
                 )
                 
                 # Register the hook if not already registered
-                if not hasattr(mw, '_onigiri_restaurant_hook_registered'):
+                if not hasattr(mw, '_kaizen_restaurant_hook_registered'):
                     from aqt import gui_hooks
                     gui_hooks.reviewer_did_answer_card.append(on_reviewer_did_answer_card)
-                    mw._onigiri_restaurant_hook_registered = True
+                    mw._kaizen_restaurant_hook_registered = True
                     
         except Exception as e:
             print(f"Error getting restaurant level: {e}")
@@ -2616,7 +2616,7 @@ def generate_reviewer_bottom_bar_background_css(addon_path: str) -> str:
         else:
             l_img = conf.get("kaizen_reviewer_bg_image", "") # Fallback or same key? Settings saves to 'image' and 'image_light'/'image_dark'
             # Let's check settings.py saving logic. 
-            # It saves to 'onigiri_reviewer_bg_image' for single, and 'onigiri_reviewer_bg_image_light'/'dark' for separate.
+            # It saves to 'kaizen_reviewer_bg_image' for single, and 'kaizen_reviewer_bg_image_light'/'dark' for separate.
             # But let's be safe and check specific keys.
             if not l_img:
                  l_img = conf.get("kaizen_reviewer_bg_image_light", "")
@@ -2681,7 +2681,7 @@ def generate_reviewer_bottom_bar_background_css(addon_path: str) -> str:
 def generate_profile_bar_fix_css():
     """Generates responsive CSS to ensure the profile picture fits within the profile bar."""
     return """
-<style id="onigiri-profile-bar-fix">
+<style id="kaizen-profile-bar-fix">
 /* --- NEW RULES START --- */
 .profile-bar {
     display: flex;
@@ -3106,7 +3106,7 @@ def generate_font_css(addon_package):
 
     # Generate the final CSS block
     font_css = f"""
-    <style id="onigiri-font-styles">
+    <style id="kaizen-font-styles">
         {font_faces}
         :root {{
             --font-main: {main_font_info['family']};
@@ -3118,7 +3118,7 @@ def generate_font_css(addon_package):
         }}
         
         /* Apply fonts to specific elements */
-        #onigiri-reveal-btn {{
+        #kaizen-reveal-btn {{
             font-family: var(--font-main) !important;
             box-shadow: none !important;
             border: none !important;
@@ -3298,8 +3298,8 @@ def generate_dynamic_css(conf):
 			dark_rules.append(f"    {key}: {value} !important;")
 	
 	# Add scoped styles for Kaizen UI elements
-	onigiri_ui_light = []
-	onigiri_ui_dark = []
+	kaizen_ui_light = []
+	kaizen_ui_dark = []
 	
 	text_related = {
 		"--fg", "--fg-subtle", "--fg-faint", "--fg-on-accent",
@@ -3310,17 +3310,17 @@ def generate_dynamic_css(conf):
 	
 	for key, value in light_colors.items():
 		if key in text_related:
-			onigiri_ui_light.append(f"    {key}: {value} !important;")
+			kaizen_ui_light.append(f"    {key}: {value} !important;")
 			
 	for key, value in dark_colors.items():
 		if key in text_related:
-			onigiri_ui_dark.append(f"    {key}: {value} !important;")
+			kaizen_ui_dark.append(f"    {key}: {value} !important;")
 	
 	# Convert lists to strings
 	light_rules = "\n".join(light_rules)
 	dark_rules = "\n".join(dark_rules)
-	onigiri_ui_light = "\n".join(onigiri_ui_light)
-	onigiri_ui_dark = "\n".join(onigiri_ui_dark)
+	kaizen_ui_light = "\n".join(kaizen_ui_light)
+	kaizen_ui_dark = "\n".join(kaizen_ui_dark)
 
 	# Special case: One setting for two CSS variables
 	if "--button-primary-bg" in light_colors:
@@ -3342,9 +3342,9 @@ def generate_dynamic_css(conf):
 		# Map intensity (0-100) to blur radius (0-20px)
 		blur_px = (effect_intensity / 100.0) * 20
 		# --- FIX: Added heatmap container IDs to the selectors ---
-		glass_selectors = ".stats-container, .congrats-card, .stat-card, #kaizen-heatmap-container, #onigiri-profile-heatmap-container"
+		glass_selectors = ".stats-container, .congrats-card, .stat-card, #kaizen-heatmap-container, #kaizen-profile-heatmap-container"
 		glass_style_block = f"""
-        <style id="onigiri-glass-effect">
+        <style id="kaizen-glass-effect">
         {glass_selectors} {{
             backdrop-filter: blur({blur_px}px);
             -webkit-backdrop-filter: blur({blur_px}px);
@@ -3361,26 +3361,26 @@ def generate_dynamic_css(conf):
     .night-mode {{ {dark_rules} }}
     
     /* Scoped Kaizen UI styles */
-    .onigiri-ui, 
-    [class*="onigiri-"],
+    .kaizen-ui, 
+    [class*="kaizen-"],
     .modern-menu,
     .modern-menu *:not(.card, .card *),
     .kaizen-profile-page,
     .kaizen-profile-page *:not(.card, .card *),
     .kaizen-restaurant,
     .kaizen-restaurant *:not(.card, .card *) {{
-        {onigiri_ui_light}
+        {kaizen_ui_light}
     }}
     
-    .night-mode .onigiri-ui,
-    .night-mode [class*="onigiri-"],
+    .night-mode .kaizen-ui,
+    .night-mode [class*="kaizen-"],
     .night-mode .modern-menu,
     .night-mode .modern-menu *:not(.card, .card *),
     .night-mode .kaizen-profile-page,
     .night-mode .kaizen-profile-page *:not(.card, .card *),
     .night-mode .kaizen-restaurant,
     .night-mode .kaizen-restaurant *:not(.card, .card *) {{
-        {onigiri_ui_dark}
+        {kaizen_ui_dark}
     }}
     </style>
     {glass_style_block}
@@ -3582,7 +3582,7 @@ def _kaizen_render_deck_node(self, node, ctx) -> str:
     # Enhanced Deck Stats Logic
     # Enhanced Deck Stats Logic
     # 1. Try checking the instance directly (set by our new _render_deck_tree patch or deck_tree_updater)
-    enhanced_stats = getattr(self, "_onigiri_enhanced_stats", None)
+    enhanced_stats = getattr(self, "_kaizen_enhanced_stats", None)
     
     # 2. Fallback to _render_data if not found (legacy/redundancy)
     if enhanced_stats is None and hasattr(self, "_render_data"):
@@ -3805,7 +3805,7 @@ def apply_patches():
     gui_hooks.state_did_change.append(_update_toolbar_visibility)
     
     # Mark the hook as registered and update toolbar state
-    mw._onigiri_restaurant_hook_registered = True
+    mw._kaizen_restaurant_hook_registered = True
     mw.progress.single_shot(0, lambda: _update_toolbar_visibility(mw.state, "startup"))
 
 def generate_reviewer_buttons_css(conf):
@@ -4097,7 +4097,7 @@ def generate_reviewer_buttons_css(conf):
                     if (ease) {
                         btn.setAttribute('data-kaizen-ease', ease);
                     } else {
-                        btn.classList.add('onigiri-other-btn');
+                        btn.classList.add('kaizen-other-btn');
                     }
                 });
             }
@@ -4113,7 +4113,7 @@ def generate_reviewer_buttons_css(conf):
         """)
         
     return "<style>" + "\\n".join(css) + "</style>"
-def _onigiri_render_deck_tree(self, *args, **kwargs):
+def _kaizen_render_deck_tree(self, *args, **kwargs):
     """
     Patched version of DeckBrowser._render_deck_tree to pre-fetch enhanced stats.
     """
@@ -4141,26 +4141,26 @@ def _onigiri_render_deck_tree(self, *args, **kwargs):
                     elif queue == 2: stats["review"] += count
                 
                 # Attach to instance
-                self._onigiri_enhanced_stats = enhanced_stats
+                self._kaizen_enhanced_stats = enhanced_stats
                 # print(f"Kaizen: Pre-fetched enhanced stats for {len(enhanced_stats)} decks")
             except Exception as e:
                 print(f"Kaizen: Error pre-fetching enhanced stats: {e}")
-                self._onigiri_enhanced_stats = None
+                self._kaizen_enhanced_stats = None
         else:
-             self._onigiri_enhanced_stats = None
+             self._kaizen_enhanced_stats = None
 
     except Exception as e:
-        print(f"Kaizen: Error in _onigiri_render_deck_tree wrapper: {e}")
+        print(f"Kaizen: Error in _kaizen_render_deck_tree wrapper: {e}")
 
     # Call original
     return _old_render_deck_tree(self, *args, **kwargs)
 
 # Store original method
 from aqt.deckbrowser import DeckBrowser
-if not hasattr(DeckBrowser, '_onigiri_patched_render_tree'):
+if not hasattr(DeckBrowser, '_kaizen_patched_render_tree'):
     if hasattr(DeckBrowser, '_render_deck_tree'):
         _old_render_deck_tree = DeckBrowser._render_deck_tree
-        DeckBrowser._render_deck_tree = _onigiri_render_deck_tree
-        DeckBrowser._onigiri_patched_render_tree = True
+        DeckBrowser._render_deck_tree = _kaizen_render_deck_tree
+        DeckBrowser._kaizen_patched_render_tree = True
     else:
         print("Kaizen: Warning - DeckBrowser._render_deck_tree not found, enhanced stats patch optional skipped.")

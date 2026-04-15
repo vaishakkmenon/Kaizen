@@ -56,20 +56,20 @@
 
     function setupActionButtons() {
         // Check config
-        if (typeof window.ONIGIRI_CONFIG === 'undefined') return;
+        if (typeof window.KAIZEN_CONFIG === 'undefined') return;
 
         // Only show toolbar icons if mode is 'collapsed'
-        if (window.ONIGIRI_CONFIG.sidebarActionsMode !== 'collapsed') {
+        if (window.KAIZEN_CONFIG.sidebarActionsMode !== 'collapsed') {
             return;
         }
 
         const toolbar = setupSidebarToolbar();
         if (!toolbar) return;
 
-        const pkg = window.ONIGIRI_CONFIG.addonPackage || '1011095603';
+        const pkg = window.KAIZEN_CONFIG.addonPackage || '1011095603';
         const iconBase = `/_addons/${pkg}/system_files/system_icons/`;
         const userIconBase = `/_addons/${pkg}/user_files/icons/`;
-        const collapsedIcons = window.ONIGIRI_CONFIG.collapsedIcons || {};
+        const collapsedIcons = window.KAIZEN_CONFIG.collapsedIcons || {};
 
         // Map action id -> default system icon filename
         const defaultIcons = {
@@ -121,7 +121,7 @@
 
             toolbar.appendChild(btn);
 
-            if (action.id === 'sync' && window.ONIGIRI_SYNC_STATUS === 'sync') {
+            if (action.id === 'sync' && window.KAIZEN_SYNC_STATUS === 'sync') {
                 btn.classList.add('sync-needed');
             }
         });
@@ -240,11 +240,11 @@
         editBtn.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            if (typeof OnigiriEditor !== 'undefined') {
-                if (OnigiriEditor.EDIT_MODE) {
-                    OnigiriEditor.exitEditMode();
+            if (typeof KaizenEditor !== 'undefined') {
+                if (KaizenEditor.EDIT_MODE) {
+                    KaizenEditor.exitEditMode();
                 } else {
-                    OnigiriEditor.enterEditMode();
+                    KaizenEditor.enterEditMode();
                 }
                 // Refresh resize handle after edit mode toggle
                 setTimeout(() => refreshResizeHandle(), 10);

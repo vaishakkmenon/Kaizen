@@ -60,11 +60,11 @@ def setup_kaizen_menu(addon_path):
     open_profile = patcher.show_profile_page
 
     # Create the top-level menu with the Kaizen icon
-    onigiri_menu = QMenu("Kaizen", mw)
+    kaizen_menu = QMenu("Kaizen", mw)
 
     profile_action = QAction("Profile", mw)
     profile_action.triggered.connect(open_profile)
-    onigiri_menu.addAction(profile_action)
+    kaizen_menu.addAction(profile_action)
 
     # Gamification submenu disabled
     # gamification_menu = QMenu("Gamification", mw)
@@ -74,29 +74,29 @@ def setup_kaizen_menu(addon_path):
     # store_action = QAction("Mr. Taiyaki Store", mw)
     # store_action.triggered.connect(open_taiyaki_store)
     # gamification_menu.addAction(store_action)
-    # onigiri_menu.addMenu(gamification_menu)
+    # kaizen_menu.addMenu(gamification_menu)
 
     # Create the 'Settings' action (opens settings to General tab, index 0)
     settings_action = QAction("Kaizen Settings", mw)
     settings_action.triggered.connect(lambda _: open_settings(0))
-    onigiri_menu.addAction(settings_action)
+    kaizen_menu.addAction(settings_action)
 
-    onigiri_menu.addSeparator()
+    kaizen_menu.addSeparator()
 
     # --- ADD THIS BLOCK ---
     welcome_action = QAction("Welcome Screen", mw)
     welcome_action.triggered.connect(welcome_dialog.show_welcome_dialog)
-    onigiri_menu.addAction(welcome_action)
+    kaizen_menu.addAction(welcome_action)
 
     credits_action = QAction("Credits", mw)
     credits_action.triggered.connect(credits_dialog.show_credits_dialog)
-    onigiri_menu.addAction(credits_action)
+    kaizen_menu.addAction(credits_action)
     # --- END: ADD THIS BLOCK ---
 
     # Add version info at the bottom (disabled)
     version_action = QAction(f"Version: {get_kaizen_version()}", mw)
     version_action.setEnabled(False)  # Make it non-clickable
-    onigiri_menu.addAction(version_action)
+    kaizen_menu.addAction(version_action)
 
     # Add the newly created menu to the main window's menubar
-    mw.form.menubar.addMenu(onigiri_menu)
+    mw.form.menubar.addMenu(kaizen_menu)

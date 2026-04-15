@@ -80,7 +80,7 @@ def handle_webview_cmd(handled: Tuple[bool, Any], cmd: str, context) -> Tuple[bo
         except Exception as e:
             return (True, None)
 
-    if cmd.startswith("onigiri_move_decks:"):
+    if cmd.startswith("kaizen_move_decks:"):
         try:
             json_payload = cmd.split(":", 1)[1]
             deck_tree_updater.on_decks_move(json_payload)

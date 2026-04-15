@@ -1,5 +1,5 @@
 {
-    "onigiriWidgetOrder": [
+    "kaizenWidgetOrder": [
         "title",
         "stats",
         "heatmap"

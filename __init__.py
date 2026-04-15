@@ -237,7 +237,7 @@ def verify_coin_integrity():
                 
                 if security_token is None:
                     # First time - generate token
-                    print("[ONIGIRI SECURITY] Generating initial security token")
+                    print("[KAIZEN SECURITY] Generating initial security token")
                     security_token = generate_coin_token(coins)
                     restaurant_data['_security_token'] = security_token
                     f.seek(0)
@@ -245,7 +245,7 @@ def verify_coin_integrity():
                     f.truncate()
                 elif not verify_coin_data(coins, security_token):
                     # Tampering detected!
-                    print(f"[ONIGIRI SECURITY] ⚠️ TAMPERING DETECTED! Coins: {coins}, Invalid token")
+                    print(f"[KAIZEN SECURITY] ⚠️ TAMPERING DETECTED! Coins: {coins}, Invalid token")
                     restaurant_data['taiyaki_coins'] = 0
                     restaurant_data['_security_token'] = generate_coin_token(0)
                     f.seek(0)
@@ -259,7 +259,7 @@ def verify_coin_integrity():
                             del conf['achievements']['restaurant_level']['taiyaki_coins']
                             config.write_config(conf)
                     
-                    print("[ONIGIRI SECURITY] Coins reset to 0 due to tampering")
+                    print("[KAIZEN SECURITY] Coins reset to 0 due to tampering")
                 else:
                     # Token is valid - ensure config.json does NOT have coins
                     # Check RAW config to see if it exists on disk
@@ -268,7 +268,7 @@ def verify_coin_integrity():
                     
                     if raw_conf and 'achievements' in raw_conf and 'restaurant_level' in raw_conf['achievements']:
                         if 'taiyaki_coins' in raw_conf['achievements']['restaurant_level']:
-                            print("[ONIGIRI SECURITY] Removing taiyaki_coins from config.json (cleanup)")
+                            print("[KAIZEN SECURITY] Removing taiyaki_coins from config.json (cleanup)")
                             # We use config.get_config() to get the clean version (which already strips it)
                             # and then save that to overwrite the dirty file.
                             conf = config.get_config()
@@ -285,7 +285,7 @@ def verify_coin_integrity():
                         # This is optional but good for consistency
                         pass
     except Exception as e:
-        print(f"[ONIGIRI SECURITY] Error verifying coin integrity: {e}")
+        print(f"[KAIZEN SECURITY] Error verifying coin integrity: {e}")
 
 
 def apply_full_hide_mode():

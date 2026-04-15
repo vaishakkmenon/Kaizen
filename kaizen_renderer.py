@@ -933,7 +933,7 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     tree_html = deck_tree_updater._render_deck_tree_html_only(self)
     
     # Add KaizenEngine JavaScript
-    onigiri_engine_js = """
+    kaizen_engine_js = """
     <script>
     // Kaizen Performance Engine
     window.KaizenEngine = {
@@ -1206,8 +1206,8 @@ def render_kaizen_deck_browser(self: DeckBrowser, reuse: bool = False) -> None:
     # Create JS Injection Script
     js_injection = f"""
     <script>
-        window.ONIGIRI_CONFIG = {json.dumps(js_config)};
-        window.ONIGIRI_SYNC_STATUS = "{sync_status}";
+        window.KAIZEN_CONFIG = {json.dumps(js_config)};
+        window.KAIZEN_SYNC_STATUS = "{sync_status}";
     </script>
     """
     

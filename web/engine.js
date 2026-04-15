@@ -31,7 +31,7 @@ window.KaizenEngine = {
         this.deckListContainer.classList.add('scroll-restoring');
 
         // --- START: New flicker-fix logic ---
-        if (typeof OnigiriEditor !== 'undefined' && OnigiriEditor.EDIT_MODE) {
+        if (typeof KaizenEditor !== 'undefined' && KaizenEditor.EDIT_MODE) {
             // 1. Create a temporary container
             const tempContainer = document.createElement('tbody');
             tempContainer.innerHTML = newHtml;
@@ -47,14 +47,14 @@ window.KaizenEngine = {
                 checkbox.dataset.did = did;
                 
                 // Restore the 'checked' state from the editor's memory
-                checkbox.checked = OnigiriEditor.SELECTED_DECKS.has(did);
+                checkbox.checked = KaizenEditor.SELECTED_DECKS.has(did);
 
                 checkbox.onclick = (e) => {
                     e.stopPropagation();
                     if (e.target.checked) {
-                        OnigiriEditor.SELECTED_DECKS.add(e.target.dataset.did);
+                        KaizenEditor.SELECTED_DECKS.add(e.target.dataset.did);
                     } else {
-                        OnigiriEditor.SELECTED_DECKS.delete(e.target.dataset.did);
+                        KaizenEditor.SELECTED_DECKS.delete(e.target.dataset.did);
                     }
                 };
 
@@ -82,8 +82,8 @@ window.KaizenEngine = {
         }
 
         // The logic below is no longer needed, as it's handled above
-        // if (typeof OnigiriEditor !== 'undefined' && OnigiriEditor.EDIT_MODE) {
-        //     OnigiriEditor.reapplyEditModeState();
+        // if (typeof KaizenEditor !== 'undefined' && KaizenEditor.EDIT_MODE) {
+        //     KaizenEditor.reapplyEditModeState();
         // }
 
         setTimeout(() => {

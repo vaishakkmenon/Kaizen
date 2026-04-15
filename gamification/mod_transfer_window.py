@@ -327,7 +327,7 @@ def show_transfer_window(source_dids_json: str) -> None:
                 }}
 
                 try {{
-                    const command = 'onigiri_move_decks:' + JSON.stringify(payload);
+                    const command = 'kaizen_move_decks:' + JSON.stringify(payload);
                     pycmd(command);
                 }} catch (error) {{
                     alert('Error sending command: ' + error.message);
