@@ -18,7 +18,7 @@ import copy
 @dataclass
 class RenderData:
     """Wrapper for deck tree data that Anki's context menu expects."""
-    tree: object  # DeckDueTreeNode from Anki
+    tree: object = None  # DeckDueTreeNode from Anki
 
 # --- ADDED: Button HTML definitions ---
 BUTTON_HTML = {
